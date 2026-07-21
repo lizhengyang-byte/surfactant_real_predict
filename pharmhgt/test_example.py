@@ -26,9 +26,9 @@ from pharmhgt.model import PharmHGT
 import optuna
 
 DEVICE = 'cuda' if torch.cuda.is_available() else 'cpu'
-N_TRIALS = 12
-N_EPOCHS = 40
-EARLY_STOP = 10
+N_TRIALS = 30
+N_EPOCHS = 100
+EARLY_STOP = 30
 
 
 @torch.no_grad()
@@ -97,12 +97,12 @@ def train_one_model(hid_dim, depth, num_heads, dropout, lr, weight_decay,
 
 
 def objective(trial, train_loader, val_loader):
-    hid_dim = trial.suggest_categorical('hid_dim', [64, 128, 256, 384])
-    depth = trial.suggest_int('depth', 2, 4)
-    num_heads = trial.suggest_categorical('num_heads', [2, 4])
-    dropout = trial.suggest_float('dropout', 0.0, 0.3)
-    lr = trial.suggest_float('lr', 1e-4, 1e-3, log=True)
-    weight_decay = trial.suggest_float('weight_decay', 1e-6, 1e-4, log=True)
+    hid_dim = trial.suggest_categorical('hid_dim', [128, 256, 384, 512])
+    depth = trial.suggest_int('depth', 2, 5)
+    num_heads = trial.suggest_categorical('num_heads', [2, 4, 8])
+    dropout = trial.suggest_float('dropout', 0.0, 0.25)
+    lr = trial.suggest_float('lr', 5e-5, 1e-3, log=True)
+    weight_decay = trial.suggest_float('weight_decay', 1e-7, 5e-5, log=True)
     batch_size = trial.suggest_categorical('batch_size', [8, 16, 32])
 
     train_loader.dataset.dataset._graphs = [None] * len(train_loader.dataset.dataset)
@@ -124,12 +124,12 @@ def objective(trial, train_loader, val_loader):
 
 
 # ---------------------------------------------------------------------------
-# 1. Load data (use example_data.csv; replace with your own CSV path)
+# 1. Load data
 # ---------------------------------------------------------------------------
 data_path = os.path.join(os.path.dirname(__file__), 'example_data.csv')
 df = pd.read_csv(data_path)
 df = df.dropna(subset=['SMILES', 'pCMC'])
-print(f'Raw molecules: {len(df)}')
+print(f'Total molecules: {len(df)}')
 
 # ---------------------------------------------------------------------------
 # 2. Split: train 80%, val 10%, test 10%
@@ -162,7 +162,7 @@ print()
 # 4. Optuna hyperparameter search
 # ---------------------------------------------------------------------------
 print('=' * 55)
-print('Optuna Hyperparameter Search')
+print(f'Optuna Search ({N_TRIALS} trials)')
 print('=' * 55)
 
 train_loader = DataLoader(train_dataset, batch_size=16, shuffle=True,
@@ -216,10 +216,10 @@ test_rmse, test_mae, test_r2 = evaluate(model, test_loader)
 print(f'\n{"=" * 55}')
 print(f'Test Results')
 print(f'{"=" * 55}')
-print(f'  RMSE: {test_rmse:.4f}')
-print(f'  MAE:  {test_mae:.4f}')
-print(f'  R²:   {test_r2:.4f}')
-print(f'  Params: {study.best_params}')
+print(f'  Test RMSE: {test_rmse:.4f}')
+print(f'  Test MAE:  {test_mae:.4f}')
+print(f'  Test R2:   {test_r2:.4f}')
+print(f'  Best params: {study.best_params}')
 
 # ---- Save model & study ----
 os.makedirs('models/pharmhgt', exist_ok=True)
