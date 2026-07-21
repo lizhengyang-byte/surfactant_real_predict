@@ -303,25 +303,29 @@ class SurfactantGraphDataset(Dataset):
     """
 
     def __init__(self, df, smiles_col='SMILES', target_col='pCMC', cache_dir=None, verbose=True):
+        self.cache_dir = cache_dir
         self.smiles_list = []
         self.targets = []
-        self.cache_dir = cache_dir
+        self._graphs = []
 
         invalid = 0
-        for _, row in df.iterrows():
+        for i, (_, row) in enumerate(df.iterrows()):
             smi = row[smiles_col]
             g = smiles_to_heterograph(smi)
             if g is not None:
                 self.smiles_list.append(smi)
                 self.targets.append(row[target_col])
+                self._graphs.append(g)
             else:
                 invalid += 1
+            if verbose and (i + 1) % 200 == 0:
+                print(f'    built {i+1}/{len(df)} graphs...')
 
         self.targets = np.array(self.targets, dtype=np.float32)
-        self._graphs = [None] * len(self.smiles_list)
 
-        if verbose and invalid > 0:
-            print(f'    (skipped {invalid} invalid SMILES)')
+        if verbose:
+            print(f'    total: {len(self.smiles_list)} valid molecules'
+                  f'{"  (skipped " + str(invalid) + ")" if invalid else ""}')
 
         if cache_dir is not None:
             os.makedirs(cache_dir, exist_ok=True)
@@ -330,16 +334,12 @@ class SurfactantGraphDataset(Dataset):
         return len(self.smiles_list)
 
     def __getitem__(self, idx):
-        if self._graphs[idx] is not None:
-            g = self._graphs[idx]
-        else:
-            g = smiles_to_heterograph(self.smiles_list[idx])
-            if g is None:
-                g = HeteroData()
-                g['atom'].x = torch.zeros((1, 42), dtype=torch.float)
-                g['pharm'].x = torch.zeros((1, 194), dtype=torch.float)
-            self._graphs[idx] = g
-        return g, torch.tensor(self.targets[idx], dtype=torch.float)
+        g = self._graphs[idx]
+        if g is None:
+            g = HeteroData()
+            g['atom'].x = torch.zeros((1, 42), dtype=torch.float)
+            g['pharm'].x = torch.zeros((1, 194), dtype=torch.float)
+        return g.clone(), torch.tensor(self.targets[idx], dtype=torch.float)
 
 
 def collate_graphs(batch):
