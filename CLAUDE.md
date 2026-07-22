@@ -41,7 +41,7 @@ Machine learning pipeline for predicting surfactant (表面活性剂) critical m
 
 All 6 training scripts follow the same pattern:
 
-1. **Featurization:** `load_or_compute_features()` from `smiles_to_features_pharmhgt.py` reads SMILES from CSV, computes 522-dim vectors, caches under `data/features/pharmhgt/` (`.npy` files + `metadata.json`, cached via MD5 hash of SMILES column)
+1. **Featurization:** `load_or_compute_features()` from `smiles_to_features_pharmhgt.py` reads SMILES from CSV, computes 522-dim vectors, caches under `data/features/surfpro/` (`.npy` files + `metadata.json`, cached via MD5 hash of SMILES column)
 2. **Split:** `train_test_split(0.125)` → validation set
 3. **Tuning (tree models):** Optuna with K-Fold CV, TPE sampler, MedianPruner
 4. **Final training:** Full data with best params
@@ -109,7 +109,7 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 
 ## Key Design Decisions
 
-- **Cache-based featurization:** MD5 hash of SMILES detects data changes; `.npy` files + `metadata.json` under `data/features/pharmhgt/`. Pass `force_recompute=True` to recompute.
+- **Cache-based featurization:** MD5 hash of SMILES detects data changes; `.npy` files + `metadata.json` under `data/features/surfpro/`. Pass `force_recompute=True` to recompute.
 - **Tree models use Optuna; deep models use fixed architectures.** CatBoost/LightGBM/XGBoost each have Optuna search with K-Fold CV. MLP/RNN/Transformer use predefined architectures (no tuning).
 - **XGBoost gap penalty:** penalizes CV score if train-val gap > 0.3 to discourage overfitting.
 - **Deep models treat 522-dim vector as 522 time steps × 1 feature** (RNN and Transformer treat the feature vector as a sequence).

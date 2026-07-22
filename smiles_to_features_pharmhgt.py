@@ -43,7 +43,7 @@ PHARM_FEAT_DIM = 194   # MACCS keys
 REACT_FEAT_DIM = 34    # BRICS bond types
 FEATURE_DIM = 522
 
-CACHE_DIR = os.path.join('data', 'features', 'pharmhgt')
+CACHE_DIR = os.path.join('data', 'features', 'surfpro')
 
 # ===========================================================================
 # 1. Feature Extraction — Atom-level (55-dim) & Bond-level (14-dim)
