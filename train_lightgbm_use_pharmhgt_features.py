@@ -9,8 +9,8 @@ Usage:
   python train_lightgbm_use_pharmhgt_features.py
 
 Data:
-  ./data/surfpro_imputed.csv  (training, imputed)
-  ./data/surfpro_test.csv     (test)
+  ./data/surfpro/surfpro_train.csv  (training)
+  ./data/surfpro/surfpro_test.csv   (test)
 """
 
 import os, sys, math, random, warnings
@@ -38,8 +38,8 @@ warnings.filterwarnings('ignore')
 # ===========================================================================
 
 def main():
-    DATA_TRAIN = './data/surfpro_imputed.csv'
-    DATA_TEST = './data/surfpro_test.csv'
+    DATA_TRAIN = './data/surfpro/surfpro_train.csv'
+    DATA_TEST = './data/surfpro/surfpro_test.csv'
     TARGET_COL = 'pCMC'
     SMILES_COL = 'SMILES'
     VAL_FRAC = 0.125

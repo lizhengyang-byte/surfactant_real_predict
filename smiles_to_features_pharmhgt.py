@@ -476,8 +476,8 @@ def _featurize_dataframe(df, smiles_col='SMILES', target_col='pCMC', verbose=Tru
 
 
 def load_or_compute_features(
-    train_csv='./data/surfpro_imputed.csv',
-    test_csv='./data/surfpro_test.csv',
+    train_csv='./data/surfpro/surfpro_train.csv',
+    test_csv='./data/surfpro/surfpro_test.csv',
     target_col='pCMC',
     smiles_col='SMILES',
     cache_dir=None,

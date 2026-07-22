@@ -25,10 +25,10 @@ Machine learning pipeline for predicting surfactant (表面活性剂) critical m
 ├── train_rnn_use_pharmhgt_features.py         # RNN-LSTM (3-layer, 64 hidden)
 ├── train_transformer_use_pharmhgt_features.py # Transformer Encoder (3-layer, 128 d_model)
 ├── data/
-│   └── surfpro/                   # Raw CSV data (gitignored previously, now tracked)
-│       ├── surfpro_train.csv      # Training set (with fold column)
-│       ├── surfpro_test.csv       # Test set
-│       ├── surfpro_imputed.csv    # Imputed training set (used by training scripts)
+│   └── surfpro/                   # Raw CSV data
+│       ├── surfpro_train.csv      # Training set (with fold column, used by all scripts)
+│       ├── surfpro_test.csv       # Test set (used by all scripts)
+│       ├── surfpro_imputed.csv    # Imputed training set (not currently used)
 │       ├── surfpro_literature.csv # Literature compilation with references
 │       └── surfpro_bibliography.bib
 ├── doc/
