@@ -4,95 +4,85 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Machine learning pipeline for predicting surfactant (表面活性剂) critical micelle concentration (pCMC = log CMC) from molecular structure. Two complementary approaches:
+Machine learning pipeline for predicting surfactant (表面活性剂) critical micelle concentration (pCMC = log CMC) from molecular structure. The pipeline extracts **522-dim handcrafted molecular features** (PharmHGT-style, but as flat vectors rather than graphs) and trains 6 regression models:
 
-1. **PharmHGT GNN** (`pharmhgt/` package) — Heterogeneous Graph Transformer on molecular graphs (atom/bond/pharmacophore views)
-2. **522-dim Handcrafted Features** (root scripts) — Feature engineering + 6 regression models (CatBoost, LightGBM, XGBoost, MLP, RNN, Transformer)
+1. **Tree models** — CatBoost, LightGBM, XGBoost (Optuna hyperparameter tuning)
+2. **Deep learning models** — MLP, RNN-LSTM, Transformer Encoder (PyTorch, fixed architectures)
+
+**Target variable:** pCMC (primary), with auxiliary targets AW_ST_CMC, Gamma_max, Area_min, Pi_CMC, pC20 available in data.
 
 ## Code Architecture
 
-### PharmHGT GNN Pipeline
+### Directory Layout
 
 ```text
-pharmhgt/
-├── config.py        # PharmHGTConfig dataclass (all hyperparameters)
-├── data.py          # SurfactantGraphDataset: SMILES → PyG HeteroData
-│                    #   3 node/edge views:
-│                    #     - ('atom','bond','atom')  covalent bonds
-│                    #     - ('pharm','react','pharm') BRICS reaction edges
-│                    #     - ('atom','junc','pharm') fragment membership
-│                    #   42-dim atom / 14-dim bond / 194-dim pharm / 34-dim reac features
-├── layers.py        # Building blocks: AttentionConv, HeteroGNNLayer, MVMP, GraphGRU
-├── model.py         # PharmHGT: proj → MVMP (×depth) → GraphGRU → MLP head
-├── train.py         # Training loop with NoamLR, gradient clipping, early stopping
-│                    #   Usage: python -m pharmhgt.train [--target pCMC] [--epochs 300]
-├── test_example.py  # Optuna hyperparameter search (30 trials) on example_data.csv
-└── training_report.md  # Best results: hid_dim=384, depth=5, heads=8 → RMSE=0.508
+├── smiles_to_features_pharmhgt.py   # Shared 522-dim featurization (the core module)
+├── all_smiles_to_features.py        # Quick smoke test for featurization
+├── train_catboost_use_pharmhgt_features.py    # CatBoost + Optuna
+├── train_lightgbm_use_pharmhgt_features.py    # LightGBM + Optuna
+├── train_xgboost_use_pharmhgt_features.py     # XGBoost + Optuna + holdout
+├── train_mlp_use_pharmhgt_features.py         # MLP (4×512 GELU)
+├── train_rnn_use_pharmhgt_features.py         # RNN-LSTM (3-layer, 64 hidden)
+├── train_transformer_use_pharmhgt_features.py # Transformer Encoder (3-layer, 128 d_model)
+├── data/
+│   └── surfpro/                   # Raw CSV data (gitignored previously, now tracked)
+│       ├── surfpro_train.csv      # Training set (with fold column)
+│       ├── surfpro_test.csv       # Test set
+│       ├── surfpro_imputed.csv    # Imputed training set (used by training scripts)
+│       ├── surfpro_literature.csv # Literature compilation with references
+│       └── surfpro_bibliography.bib
+├── doc/
+│   ├── technical_overview_pharmhgt.md           # English technical doc
+│   └── smiles_to_features_pharmhgt_技术文档.md   # Chinese technical doc
+└── __pycache__/
 ```
 
-**Data flow**: `SMILES → smiles_to_heterograph() → HeteroData → SurfactantGraphDataset → DataLoader(collate_graphs) → PharmHGT.forward()`
-
-- Atom features: 42-dim one-hot (element, degree, charge, chirality, H count, hybridization, aromatic, mass)
-- Bond features: 14-dim (type, conjugation, ring, stereo)
-- Pharmacophore features: 194-dim (MACCS + RDKit BaseFeatures)
-- Reaction features: 34-dim (BRICS bond rule encoding)
-- Junction edges connect each atom to its BRICS fragment node
-- Edge index and edge attr are created with reverse edges (bidirectional)
-- Gasteiger charges computed during graph construction
-
-### 522-dim Handcrafted Feature Pipeline
-
-```text
-Root scripts (standalone):
-├── smiles_to_features_pharmhgt.py   # Shared featurization module
-│   # Produces 522-dim vector per SMILES (cached under data/features/pharmhgt/)
-│   # 220 atom agg + 56 bond agg + 194 MACCS + 34 BRICS + 6 surfactant + 12 descriptors
-│
-├── train_catboost_use_pharmhgt_features.py    # Optuna 10 trials, 5-fold CV
-├── train_lightgbm_use_pharmhgt_features.py    # Optuna 50 trials, 5-fold CV
-├── train_xgboost_use_pharmhgt_features.py     # Optuna 200 trials, Top-K holdout
-├── train_mlp_use_pharmhgt_features.py         # Fixed params: 4×512 GELU, AdamW
-├── train_rnn_use_pharmhgt_features.py         # Fixed params: 3-layer LSTM, 64 hidden
-└── train_transformer_use_pharmhgt_features.py # Fixed params: 3-layer encoder, 128 d_model
-```
+### Data Flow
 
 All 6 training scripts follow the same pattern:
 
-1. `load_or_compute_features()` → X/y for train + test
-2. `train_test_split(0.125)` → val set
-3. [Tree models] Optuna with K-Fold CV
-4. Train on full data with best params, evaluate on test
-5. Save model to `models/predictor/weights/`, plot to `reports/`
+1. **Featurization:** `load_or_compute_features()` from `smiles_to_features_pharmhgt.py` reads SMILES from CSV, computes 522-dim vectors, caches under `data/features/pharmhgt/` (`.npy` files + `metadata.json`, cached via MD5 hash of SMILES column)
+2. **Split:** `train_test_split(0.125)` → validation set
+3. **Tuning (tree models):** Optuna with K-Fold CV, TPE sampler, MedianPruner
+4. **Final training:** Full data with best params
+5. **Output:** Reports (`reports/{model}_pharmhgt_pred_vs_true.png`), model weights (`models/predictor/weights/{model}_pharmhgt_model.pkl`)
 
-### ophth_pharmhgt_official/ (paper reference implementation)
+**Output directories (`reports/`, `models/`) are created at runtime** — they do not exist until a training script runs.
 
-A git submodule containing the original PharmHGT paper code (DGL-based, not PyG). The `pharmhgt/` package in this repo is an independent PyTorch Geometric reimplementation. Not actively modified.
+### 522-dim Feature Breakdown
 
-## Key Dependencies
+| Module | Dim | Method |
+|--------|-----|--------|
+| Atom-level aggregation | 220 | 55-dim atom features × 4 stats (mean/std/min/max) |
+| Bond-level aggregation | 56 | 14-dim bond features × 4 stats |
+| Pharmacophore | 194 | MACCS keys (padded) |
+| Reactivity | 34 | BRICS fragment CRC32 bucket histogram |
+| Surfactant type | 4 | anionic/cationic/nonionic/zwitterionic one-hot |
+| Head/tail ratio | 2 | head-atom fraction, tail-carbon fraction |
+| Molecular descriptors | 12 | Normalized RDKit global descriptors |
+| **Total** | **522** | |
 
-- **RDKit** — SMILES parsing, fingerprints, descriptors, BRICS decomposition
-- **PyTorch + PyTorch Geometric** — GNN (PharmHGT), MLP, RNN, Transformer
-- **scikit-learn** — data splits, metrics (RMSE/MAE/R²), preprocessing
-- **CatBoost / LightGBM / XGBoost** — gradient boosting models
-- **Optuna** — hyperparameter optimization (TPE sampler, MedianPruner)
+**Atom features (55-dim):** element one-hot (16), degree one-hot (6), formal charge (1), implicit H one-hot (5), hybridization one-hot (5), aromatic (1), in-ring (1), mass/100 (1), chiral center (1), radical electrons/2 (1), explicit valence one-hot (4), ring size 3-6 one-hot (4), Gasteiger charge bucket (4), ring ≥7 (1), is N/O (1), H-bond donor (1), H-bond acceptor (1), heavy neighbor count/4 (1).
+
+**Bond features (14-dim):** bond type one-hot (4), conjugated (1), in-ring (1), stereo one-hot (6), aromatic (1), in-ring duplicate (1).
+
+**Surfactant domain knowledge (in `smiles_to_features_pharmhgt.py`):** DFS-based tail detection (longest continuous carbon chain ≥4), SMARTS head-group matching, counterion exclusion from SMILES.
+
+### Model-Specific Details
+
+| Model | Tuning | Architecture / Key Params |
+|-------|--------|--------------------------|
+| CatBoost | Optuna 10 trials × 5-fold CV | depth [4,10], lr [5e-3, 0.3], iterations [500,3000] |
+| LightGBM | Optuna 50 trials × 5-fold CV | boosting [gbdt,dart], depth [3,15], num_leaves [15,255] |
+| XGBoost | Optuna 200 trials × Top-K holdout | gap penalty if train-val >0.3, learning_rate [1e-3, 0.3] |
+| MLP | Fixed (no Optuna) | 4×512 GELU, LayerNorm, AdamW 1e-3, batch 32, early stopping |
+| RNN-LSTM | Fixed (no Optuna) | 3-layer LSTM, 64 hidden, dropout 0.3, AdamW 1e-3 |
+| Transformer | Fixed (no Optuna) | 3-layer encoder, 128 d_model, 8 heads, batch 16, AdamW 5e-4 |
 
 ## Commands
 
 ```bash
-# Train GNN (PharmHGT, PyTorch Geometric)
-python -m pharmhgt.train                              # default config
-python -m pharmhgt.train --target pCMC --epochs 500   # custom
-python -m pharmhgt.train --lr 1e-3 --hid_dim 512 --depth 6
-
-# Train GNN (PharmHGT official, DGL) with pCMC data
-python pharmhgt_official/train_pcmc.py                      # default (20 Optuna trials)
-python pharmhgt_official/train_pcmc.py --epochs 80 --trials 30
-python pharmhgt_official/train_pcmc.py --lr 5e-4 --hid_dim 384 --trials 0
-
-# Optuna tuning for GNN with example data
-python pharmhgt/test_example.py
-
-# Train handcrafted-feature models
+# Train any model (all follow the same pattern)
 python train_catboost_use_pharmhgt_features.py
 python train_lightgbm_use_pharmhgt_features.py
 python train_xgboost_use_pharmhgt_features.py
@@ -101,25 +91,26 @@ python train_rnn_use_pharmhgt_features.py
 python train_transformer_use_pharmhgt_features.py
 
 # Quick smoke test for featurization
+python all_smiles_to_features.py
+
+# Single-molecule inference
 python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; print(smiles_to_features_pharmhgt('CCO').shape)"
 ```
 
-**Note**: No unit tests in this repo. Validation is inline in notebooks/scripts (NaN/Inf checks, shape assertions). `data/` directory is gitignored (contains generated features).
+## Key Dependencies
+
+- **RDKit** — SMILES parsing, MACCS keys, BRICS decomposition, molecular descriptors
+- **PyTorch** — MLP, RNN-LSTM, Transformer Encoder
+- **scikit-learn** — train_test_split, KFold, metrics (RMSE/MAE/R²)
+- **CatBoost / LightGBM / XGBoost** — gradient boosting
+- **Optuna** — hyperparameter optimization (TPE sampler, MedianPruner, n_startup_trials=5)
+- **NumPy, Pandas, Matplotlib/Seaborn** — data handling, plotting
+- **joblib** — model serialization
 
 ## Key Design Decisions
 
-- **PharmHGT config-driven**: `PharmHGTConfig` dataclass in `pharmhgt/config.py` — override any parameter via argparse
-- **Noam LR scheduler**: `warmup_steps * steps_per_epoch` warmup, then inverse sqrt decay (in `pharmhgt/train.py`)
-- **PharmHGT official (DGL)**: Legacy paper reference implementation in `pharmhgt_official/`. The streamlined training script `pharmhgt_official/train_pcmc.py` wraps it for pCMC-only prediction (no wandb, no JSON config, internal data split, Optuna support)
-- **Optuna pruning**: `MedianPruner` with `n_startup_trials=5` across all tree-model training; GNN uses same pattern in `test_example.py`
-- **XGBoost gap penalty**: Penalizes CV score if train-val gap > 0.3 to discourage overfitting
-- **Cache-based featurization**: MD5 hash of SMILES detects data changes; `.npy` files + `metadata.json`
-- **Surfactant domain knowledge**: DFS-based tail detection, SMARTS head-group matching, counterion exclusion — only used in the 522-dim pipeline, not in the GNN
-
-## Data Sources
-
-- Training: `data/surfpro_imputed.csv` (imputed training set)
-- Test: `data/surfpro_test.csv`
-- GNN example: `pharmhgt_official/example_data.csv`
-- Generated features cached under `data/features/` (gitignored)
-- Raw bibliographic data in `data/basic/surfpro_bibliography.bib`
+- **Cache-based featurization:** MD5 hash of SMILES detects data changes; `.npy` files + `metadata.json` under `data/features/pharmhgt/`. Pass `force_recompute=True` to recompute.
+- **Tree models use Optuna; deep models use fixed architectures.** CatBoost/LightGBM/XGBoost each have Optuna search with K-Fold CV. MLP/RNN/Transformer use predefined architectures (no tuning).
+- **XGBoost gap penalty:** penalizes CV score if train-val gap > 0.3 to discourage overfitting.
+- **Deep models treat 522-dim vector as 522 time steps × 1 feature** (RNN and Transformer treat the feature vector as a sequence).
+- **No unit tests.** Validation is inline (NaN/Inf checks, shape assertions).
