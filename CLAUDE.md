@@ -24,6 +24,8 @@ Machine learning pipeline for predicting surfactant (表面活性剂) critical m
 ├── train_mlp_use_pharmhgt_features.py         # MLP (4×512 GELU)
 ├── train_rnn_use_pharmhgt_features.py         # RNN-LSTM (3-layer, 64 hidden)
 ├── train_transformer_use_pharmhgt_features.py # Transformer Encoder (3-layer, 128 d_model)
+├── utils.py                            # Run management: timestamped dirs, metrics, index
+├── all_smiles_to_features.py           # Feature pre-computation (run once before training)
 ├── data/
 │   └── surfpro/                   # Raw CSV data
 │       ├── surfpro_train.csv      # Training set (with fold column, used by all scripts)
@@ -45,9 +47,24 @@ All 6 training scripts follow the same pattern:
 2. **Split:** `train_test_split(0.125)` → validation set
 3. **Tuning (tree models):** Optuna with K-Fold CV, TPE sampler, MedianPruner
 4. **Final training:** Full data with best params
-5. **Output:** Reports (`reports/{model}_pharmhgt_pred_vs_true.png`), model weights (`models/predictor/weights/{model}_pharmhgt_model.pkl`)
+5. **Output:** Model, plot, config, metrics, and full log saved to a timestamped directory under `runs/{model}_{timestamp}/`
 
-**Output directories (`reports/`, `models/`) are created at runtime** — they do not exist until a training script runs.
+### Run Management
+
+Every training script uses `utils.py` to create a self-contained run directory:
+
+```text
+runs/
+├── catboost_20260722_143025/
+│   ├── config.json         # Hyperparameters + data config (用于复现)
+│   ├── train.log           # 完整运行日志（stdout 重定向，含 Optuna 输出）
+│   ├── metrics.json        # 评估指标 test_rmse / test_mae / test_r2
+│   ├── pred_vs_true.png    # 预测 vs 真值 + 残差图（仅树模型）
+│   └── model.pkl           # 模型权重
+├── lightgbm_20260722_150112/
+│   └── ...
+└── _runs_index.csv         # 所有运行摘要，方便横向对比
+```
 
 ### 522-dim Feature Breakdown
 

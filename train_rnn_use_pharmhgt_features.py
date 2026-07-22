@@ -21,6 +21,7 @@ import pandas as pd
 
 # Shared featurization
 from smiles_to_features_pharmhgt import load_or_compute_features
+from utils import setup_run, save_metrics, update_index
 
 # PyTorch
 import torch
@@ -120,6 +121,25 @@ def main():
 
     random.seed(SEED)
     np.random.seed(SEED)
+    # ---- 初始化运行日志 ----
+    run_dir = setup_run('rnn', {
+        'model': 'rnn',
+        'feature_type': 'pharmhgt_522',
+        'feature_dim': 522,
+        'data_train': DATA_TRAIN,
+        'data_test': DATA_TEST,
+        'target_col': TARGET_COL,
+        'val_frac': VAL_FRAC,
+        'seed': SEED,
+        'n_layers': n_layers,
+        'hidden_dim': hidden_dim,
+        'dropout': dropout,
+        'activation': activation,
+        'lr': lr,
+        'weight_decay': weight_decay,
+        'batch_size': batch_size,
+    })
+
     torch.manual_seed(SEED)
     if DEVICE.type == 'cuda':
         torch.cuda.manual_seed(SEED)
@@ -230,7 +250,7 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
     # ---- Save model ----
-    model_path = 'models/predictor/weights/rnn_pharmhgt_model.pkl'
+    model_path = os.path.join(run_dir, 'model.pkl')
     # Save model metadata + state dict
     torch.save({
         'model_type': 'rnn',
@@ -255,5 +275,15 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
 
+        # ---- 保存指标 & 更新索引 ----
+    metrics = {
+        'test_rmse': round(test_rmse, 4),
+        'test_mae': round(test_mae, 4),
+        'test_r2': round(test_r2, 4),
+        'best_val_rmse': round(best_rmse, 4),
+    
+    }
+    save_metrics(run_dir, metrics)
+    update_index(run_dir, 'rnn', metrics)
 if __name__ == '__main__':
     main()

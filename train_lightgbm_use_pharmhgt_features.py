@@ -20,6 +20,7 @@ import pandas as pd
 
 # Shared featurization
 from smiles_to_features_pharmhgt import load_or_compute_features, FEATURE_NAMES
+from utils import setup_run, save_metrics, update_index
 
 # LightGBM
 import lightgbm as lgb
@@ -49,6 +50,20 @@ def main():
 
     random.seed(SEED)
     np.random.seed(SEED)
+    # ---- 初始化运行日志 ----
+    run_dir = setup_run('lightgbm', {
+        'model': 'lightgbm',
+        'feature_type': 'pharmhgt_522',
+        'feature_dim': 522,
+        'data_train': DATA_TRAIN,
+        'data_test': DATA_TEST,
+        'target_col': TARGET_COL,
+        'val_frac': VAL_FRAC,
+        'seed': SEED,
+        'n_optuna_trials': N_OPTUNA_TRIALS,
+        'n_folds': N_FOLDS,
+    })
+
 
     print("=" * 60)
     print("LightGBM + PharmHGT-style Featurization for LogCMC (pCMC) Prediction")
@@ -232,8 +247,7 @@ def main():
         ax.set_title(f'MAE = {test_mae:.4f}')
 
         plt.tight_layout()
-        plot_path = 'reports/lightgbm_pharmhgt_pred_vs_true.png'
-        os.makedirs('reports', exist_ok=True)
+        plot_path = os.path.join(run_dir, 'pred_vs_true.png')
         plt.savefig(plot_path, dpi=150, bbox_inches='tight')
         print(f"\nPlot saved to {plot_path}")
     except ImportError:
@@ -241,7 +255,7 @@ def main():
 
     # ---- Save model ----
     import joblib
-    model_path = 'models/predictor/weights/lightgbm_pharmhgt_model.pkl'
+    model_path = os.path.join(run_dir, 'model.pkl')
     joblib.dump(final_model, model_path)
     print(f"Model saved to {model_path}")
 
@@ -258,5 +272,15 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
 
+        # ---- 保存指标 & 更新索引 ----
+    metrics = {
+        'test_rmse': round(test_rmse, 4),
+        'test_mae': round(test_mae, 4),
+        'test_r2': round(test_r2, 4),
+        'best_cv_rmse': round(study.best_value, 4),
+    
+    }
+    save_metrics(run_dir, metrics)
+    update_index(run_dir, 'lightgbm', metrics)
 if __name__ == '__main__':
     main()
