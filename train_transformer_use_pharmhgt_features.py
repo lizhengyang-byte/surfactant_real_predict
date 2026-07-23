@@ -15,7 +15,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import sys, math, random, warnings
+import sys, math, random, warnings, os
 
 import numpy as np
 import pandas as pd
@@ -140,6 +140,19 @@ def main():
     VAL_FRAC = 0.125
     SEED = 42
 
+    # Fixed hyperparameters
+    d_model = 128
+    nhead = 4
+    num_layers = 3
+    dim_feedforward = 256
+    dropout = 0.1
+    activation = 'gelu'
+    lr = 1e-3
+    weight_decay = 1e-5
+    batch_size = 16
+    n_epochs = 500
+    grad_clip = 5.0
+
     random.seed(SEED)
     np.random.seed(SEED)
     # ---- 初始化运行日志 ----
@@ -187,38 +200,7 @@ def main():
     input_dim = X_full.shape[1]
 
     # ======================================================================
-    # Fixed Hyperparameters
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print("Using fixed hyperparameters (no Optuna tuning)")
-    print("=" * 60)
 
-    d_model = 128
-    nhead = 4
-    num_layers = 3
-    dim_feedforward = 256
-    dropout = 0.1
-    activation = 'gelu'
-    lr = 1e-3
-    weight_decay = 1e-5
-    batch_size = 16
-    n_epochs = 500
-    grad_clip = 5.0
-
-    print(f"  d_model:        {d_model}")
-    print(f"  nhead:          {nhead}")
-    print(f"  num_layers:     {num_layers}")
-    print(f"  dim_feedforward:{dim_feedforward}")
-    print(f"  dropout:        {dropout}")
-    print(f"  activation:     {activation}")
-    print(f"  lr:             {lr}")
-    print(f"  weight_decay:   {weight_decay}")
-    print(f"  batch_size:     {batch_size}")
-    print(f"  n_epochs:       {n_epochs}")
-    print(f"  grad_clip:      {grad_clip}")
-
-    # ======================================================================
-    # Final Training
     # ======================================================================
     print("\n" + "=" * 60)
     print("Training Final Model")
@@ -315,13 +297,12 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
 
-        # ---- 保存指标 & 更新索引 ----
+    # ---- 保存指标 & 更新索引 ----
     metrics = {
         'test_rmse': round(test_rmse, 4),
         'test_mae': round(test_mae, 4),
         'test_r2': round(test_r2, 4),
         'best_val_rmse': round(best_rmse, 4),
-    
     }
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'transformer', metrics)

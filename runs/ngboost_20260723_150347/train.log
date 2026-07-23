@@ -1,0 +1,61 @@
+============================================================
+ngboost — 运行开始  20260723_150347
+  输出目录:  runs\ngboost_20260723_150347
+============================================================
+============================================================
+NGBoost + PharmHGT-style Featurization for LogCMC (pCMC) Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro
+  Train features: (1204, 522)
+  Test features:  (140, 522)
+
+Split: Train 1053, Val 151, Test 140
+
+============================================================
+Using pretuned hyperparameters (skipping Optuna search)
+============================================================
+  Params: {'n_estimators': 637, 'learning_rate': 0.03374093172394316, 'minibatch_frac': 0.7231391767644131, 'max_depth': 5, 'min_samples_leaf': 13, 'score_rule': 'LogScore'}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+[iter 0] loss=1.4929 val_loss=0.0000 scale=1.0000 norm=1.0504
+[iter 100] loss=0.2573 val_loss=0.0000 scale=1.0000 norm=0.5132
+[iter 200] loss=-0.1056 val_loss=0.0000 scale=1.0000 norm=0.4691
+[iter 300] loss=-0.3353 val_loss=0.0000 scale=0.5000 norm=0.2214
+[iter 400] loss=-0.4636 val_loss=0.0000 scale=0.5000 norm=0.2062
+[iter 500] loss=-0.5622 val_loss=0.0000 scale=0.5000 norm=0.2009
+[iter 600] loss=-0.6786 val_loss=0.0000 scale=0.5000 norm=0.1949
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.1723
+  Test RMSE: 0.4150
+  Test MAE:  0.2853
+  Test R²:   0.8605
+  Distribution: Normal (mean ± std)
+  Avg pred std: 0.1432
+
+============================================================
+Feature Importance
+============================================================
+  (unexpected shape (2, 522), skipping)
+
+Plot saved to runs\ngboost_20260723_150347\pred_vs_true.png
+Model saved to runs\ngboost_20260723_150347\model.pkl
+
+============================================================
+SUMMARY — NGBoost + PharmHGT Features
+============================================================
+  Features:      522-dim
+  Train:         1204 (split 1053 train + 151 val)
+  Test:          140
+  Params:    pretuned (skipped Optuna)
+  Test RMSE:     0.4150
+  Test MAE:      0.2853
+  Test R²:       0.8605
+  Distribution:  Normal (probabilistic output)
+
+指标已保存: runs\ngboost_20260723_150347\metrics.json
+索引已更新: runs\_runs_index.csv

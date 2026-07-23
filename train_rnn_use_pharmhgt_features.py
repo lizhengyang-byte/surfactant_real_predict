@@ -14,7 +14,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import sys, math, random, warnings
+import sys, math, random, warnings, os
 
 import numpy as np
 import pandas as pd
@@ -119,6 +119,15 @@ def main():
     VAL_FRAC = 0.125
     SEED = 42
 
+    # Fixed hyperparameters
+    n_layers = 3
+    hidden_dim = 64
+    dropout = 0.2
+    activation = 'relu'
+    lr = 1e-3
+    weight_decay = 1e-5
+    batch_size = 32
+
     random.seed(SEED)
     np.random.seed(SEED)
     # ---- 初始化运行日志 ----
@@ -162,29 +171,6 @@ def main():
     print(f"\nSplit: Train {len(X_train)}, Val {len(X_val)}, Test {len(X_test)}")
 
     input_dim = X_full.shape[1]
-
-    # ======================================================================
-    # Fixed Hyperparameters
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print("Using fixed hyperparameters (no Optuna tuning)")
-    print("=" * 60)
-
-    n_layers = 3
-    hidden_dim = 64
-    dropout = 0.2
-    activation = 'relu'
-    lr = 1e-3
-    weight_decay = 1e-5
-    batch_size = 32
-
-    print(f"  n_layers:     {n_layers}")
-    print(f"  hidden_dim:   {hidden_dim}")
-    print(f"  dropout:      {dropout}")
-    print(f"  activation:   {activation}")
-    print(f"  lr:           {lr}")
-    print(f"  weight_decay: {weight_decay}")
-    print(f"  batch_size:   {batch_size}")
 
     # ======================================================================
     # Final Training
@@ -275,15 +261,15 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
 
-        # ---- 保存指标 & 更新索引 ----
+    # ---- 保存指标 & 更新索引 ----
     metrics = {
         'test_rmse': round(test_rmse, 4),
         'test_mae': round(test_mae, 4),
         'test_r2': round(test_r2, 4),
         'best_val_rmse': round(best_rmse, 4),
-    
     }
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'rnn', metrics)
+
 if __name__ == '__main__':
     main()

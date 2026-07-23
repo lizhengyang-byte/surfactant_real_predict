@@ -13,7 +13,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import sys, math, random, warnings
+import sys, math, random, warnings, os
 
 import numpy as np
 import pandas as pd
@@ -119,6 +119,15 @@ def main():
     VAL_FRAC = 0.125
     SEED = 42
 
+    # Fixed hyperparameters
+    n_layers = 4
+    hidden_dim = 512
+    dropout = 0.1
+    activation = 'gelu'
+    lr = 1e-3
+    weight_decay = 1e-6
+    batch_size = 64
+
     random.seed(SEED)
     np.random.seed(SEED)
     # ---- 初始化运行日志 ----
@@ -164,34 +173,10 @@ def main():
     input_dim = X_full.shape[1]
 
     # ======================================================================
-    # Fixed Hyperparameters
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print("Using fixed hyperparameters (no Optuna tuning)")
-    print("=" * 60)
-
-    n_layers = 4
-    hidden_dim = 512
-    dropout = 0.1
-    activation = 'gelu'
-    lr = 1e-3
-    weight_decay = 1e-6
-    batch_size = 64
-
-    print(f"  n_layers:     {n_layers}")
-    print(f"  hidden_dim:   {hidden_dim}")
-    print(f"  dropout:      {dropout}")
-    print(f"  activation:   {activation}")
-    print(f"  lr:           {lr}")
-    print(f"  weight_decay: {weight_decay}")
-    print(f"  batch_size:   {batch_size}")
-
-    # ======================================================================
     # Final Training
     # ======================================================================
     print("\n" + "=" * 60)
     print("Training Final Model")
-    print("=" * 60)
 
     final_model = MLPRegressor(input_dim, hidden_dim, n_layers, dropout, activation).to(DEVICE)
     optimizer = optim.AdamW(final_model.parameters(), lr=lr, weight_decay=weight_decay)
@@ -200,7 +185,7 @@ def main():
     full_loader = make_loader(X_full, y_full, batch_size)
     val_loader = make_loader(X_val, y_val, batch_size, shuffle=False)
 
-    n_epochs = 800
+    n_epochs = 3000
     best_rmse = float('inf')
     patience = 50
     trigger = 0
@@ -275,15 +260,15 @@ def main():
     print(f"  Test R²:   {test_r2:.4f}")
 
 
-        # ---- 保存指标 & 更新索引 ----
+    # ---- 保存指标 & 更新索引 ----
     metrics = {
         'test_rmse': round(test_rmse, 4),
         'test_mae': round(test_mae, 4),
         'test_r2': round(test_r2, 4),
         'best_val_rmse': round(best_rmse, 4),
-    
     }
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'mlp', metrics)
+
 if __name__ == '__main__':
     main()
