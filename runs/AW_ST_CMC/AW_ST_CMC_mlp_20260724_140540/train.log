@@ -1,0 +1,39 @@
+============================================================
+mlp — 运行开始  20260724_140540
+  输出目录:  runs\AW_ST_CMC\AW_ST_CMC_mlp_20260724_140540
+============================================================
+============================================================
+MLP + PharmHGT-style Featurization for AW_ST_CMC Prediction
+============================================================
+
+============================================================
+Training Final Model
+============================================================
+    Epoch 300/3000 — Val RMSE: 2.0037 (best: 1.2760)
+    Early stopping at epoch 550
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  14.4377
+  Test RMSE: 3.7997
+  Test MAE:  2.7545
+  Test R²:   0.7179
+Model saved to runs\AW_ST_CMC\AW_ST_CMC_mlp_20260724_140540\model.pkl
+
+============================================================
+SUMMARY — MLP + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     843 (split 737 train + 106 val)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 3.6940
+  Best val RMSE: 0.8740
+  Test RMSE: 3.7997
+  Test MAE:  2.7545
+  Test R²:   0.7179
+
+指标已保存: runs\AW_ST_CMC\AW_ST_CMC_mlp_20260724_140540\metrics.json
+索引已更新: runs\AW_ST_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv
