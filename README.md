@@ -1,6 +1,6 @@
 # SurfPredict — 表面活性剂多性质预测
 
-基于 **522 维手工分子特征（PharmHGT 风格）** 的机器学习 pipeline，预测表面活性剂的多种界面性质。
+基于 **522 维手工分子特征（PharmHGT 风格）** 的机器学习 pipeline，预测表面活性剂的 **6 种界面性质**。
 
 > **当前最佳（pCMC）**: MLP + Optuna 调参 | Test R² = **0.9052** | RMSE = 0.3422
 
@@ -8,12 +8,16 @@
 
 ## 支持的目标性质
 
-| 目标 | 描述 | 训练样本 | 最佳模型 |
-|------|------|---------|---------|
-| **pCMC** | log CMC（临界胶束浓度） | 1204 | MLP (R²=0.905) |
-| **AW_ST_CMC** | 临界胶束浓度时的表面张力 | 843 | — |
+| 目标 | 描述 | 训练样本 | 最佳模型 | 目录 |
+|------|------|---------|---------|------|
+| **pCMC** | log CMC（临界胶束浓度） | 1204 | MLP (R²=0.905) | `train/train_pCMC_models/` |
+| **AW_ST_CMC** | 临界胶束浓度时的表面张力 | 843 | LightGBM | `train/train_AW_ST_CMCmodels/` |
+| **Gamma_max** | 最大表面过剩 | 628 | — | `train/train_Gamma_max_models/` |
+| **Area_min** | 最小分子面积 | 607 | — | `train/train_Area_min_models/` |
+| **Pi_CMC** | 表面压力 | 631 | — | `train/train_Pi_CMC_models/` |
+| **pC20** | 表面活性剂效率 | 564 | — | `train/train_pC20_models/` |
 
-> 更多目标（Gamma_max, Area_min, Pi_CMC, pC20）待扩展。
+> **Gamma_max 特殊处理**: 数值极小（~10⁻⁶），训练时自动乘以 10⁶，预测时自动还原（`use_models.py` 已封装）。
 
 ---
 
@@ -21,42 +25,55 @@
 
 ```
 ├── train/
-│   ├── train_pCMC_models/          # pCMC 预测（完整 10 模型）
-│   │   ├── smiles_to_features_pharmhgt.py  # 522 维特征提取
-│   │   ├── utils.py                        # 运行管理
-│   │   ├── shap_utils.py                   # SHAP 分析工具
-│   │   ├── train_*.py                      # 10 个训练脚本
-│   │   ├── shap_*.py                       # 7 个 SHAP 分析脚本
-│   │   └── all_smiles_to_features.py       # 特征预运算
-│   └── train_AW_ST_CMCmodels/      # AW_ST_CMC 预测（同上结构）
+│   ├── train_pCMC_models/            # pCMC 预测
+│   ├── train_AW_ST_CMCmodels/        # AW_ST_CMC 预测
+│   ├── train_Gamma_max_models/       # Gamma_max 预测（含 Y_SCALE 缩放）
+│   ├── train_Area_min_models/        # Area_min 预测
+│   ├── train_Pi_CMC_models/          # Pi_CMC 预测
+│   └── train_pC20_models/            # pC20 预测
+│
+│   # 每个目录包含 22 个文件:
+│   #   smiles_to_features_pharmhgt.py  — 522 维特征提取
+│   #   utils.py                        — 运行管理（时间戳目录、双写索引）
+│   #   shap_utils.py                   — SHAP 分析工具
+│   #   train_*.py (10 个)             — 10 个模型的训练脚本
+│   #   shap_*.py (7 个)               — SHAP 分析脚本
+│   #   all_smiles_to_features.py       — 特征预运算
+│
 ├── data/
 │   └── surfpro/                    # 原始 CSV 数据
-│       ├── surfpro_train.csv       # 训练集 (1335 行, 含 fold 列)
-│       ├── surfpro_test.csv        # 测试集 (140 行)
-│       ├── surfpro_imputed.csv     # 插补数据（未使用）
-│       └── surfpro_literature.csv  # 文献数据汇编
+│       ├── surfpro_train.csv       # 训练集 (1335 行, 10 列)
+│       └── surfpro_test.csv        # 测试集 (140 行)
 ├── data/features/surfpro/
-│   ├── pCMC/                       # pCMC 特征缓存
-│   └── AW_ST_CMC/                  # AW_ST_CMC 特征缓存
+│   ├── pCMC/                       # 各 target 的特征缓存
+│   ├── AW_ST_CMC/
+│   ├── Gamma_max/
+│   ├── Area_min/
+│   ├── Pi_CMC/
+│   └── pC20/
 ├── runs/
 │   ├── _runs_index.csv             # 全局索引（所有 target 混合）
-│   ├── pCMC/                       # pCMC 训练结果
-│   │   ├── _runs_index.csv         # pCMC 专有索引
-│   │   └── pCMC_{model}_{timestamp}/
-│   │       ├── config.json         # 超参数配置
-│   │       ├── train.log           # 完整运行日志
+│   ├── pCMC/                       # 各 target 的训练结果
+│   │   ├── _runs_index.csv         # target 专有索引
+│   │   └── {target}_{model}_{timestamp}/
+│   │       ├── config.json         # 超参数 + y_scale
 │   │       ├── metrics.json        # 评估指标
 │   │       ├── model.pkl           # 模型权重
+│   │       ├── train.log           # 完整运行日志
 │   │       ├── pred_vs_true.png    # 预测 vs 真值
-│   │       └── shap_*.png          # SHAP 分析图（如有）
-│   └── AW_ST_CMC/                  # AW_ST_CMC 训练结果（同上结构）
+│   │       └── shap_*.png          # SHAP 分析图
+│   ├── AW_ST_CMC/
+│   ├── Gamma_max/
+│   ├── Area_min/
+│   ├── Pi_CMC/
+│   └── pC20/
+├── use/                            # 预测 API 包
+│   ├── __init__.py
+│   └── use_models.py               # SmilesPredictor, SmilesPredict()
 ├── doc/
 │   ├── report/                     # 训练报告 + SHAP 对比图
 │   ├── smiles_to_features_pharmhgt_技术文档.md
 │   └── technical_overview_pharmhgt.md
-├── use/                            # 预测 API 包
-│   ├── __init__.py
-│   └── use_models.py               # SmilesPredictor, SmilesPredict()
 ├── test/                           # 快速测试脚本
 └── README.md
 ```
@@ -65,35 +82,45 @@
 
 ## 快速开始
 
+### 单分子预测（推荐方式）
+
+```python
+from use_models import SmilesPredict, SmilesPredictor, list_models
+
+# ---- 最简单的调用形式 ----
+pred = SmilesPredict('CCO')                              # pCMC（默认 target）
+pred = SmilesPredict('CCO', target='AW_ST_CMC')          # 指定预测目标
+pred = SmilesPredict('CCO', model_name='catboost', target='pC20')
+
+pred = SmilesPredict(['CCO', 'CCC(=O)O'], target='Gamma_max')  # 批量
+pred, feats = SmilesPredict('CCO', target='pCMC', return_features=True)
+
+# ---- 查看可用模型 ----
+df = list_models(target='pCMC')
+df = list_models()                          # 全局（所有 target）
+```
+
 ### 训练模型
 
 ```bash
 # pCMC 预测
 cd train/train_pCMC_models
-python train_mlp_use_pharmhgt_features.py         # 最佳模型 (GPU)
-python train_cif_use_pharmhgt_features.py          # 性价比之选 (CPU)
-python train_catboost_use_pharmhgt_features.py     # Boosting 最优 (CPU)
+python train_mlp_use_pharmhgt_features.py         # 最佳模型
+python train_cif_use_pharmhgt_features.py          # 性价比之选
+python train_catboost_use_pharmhgt_features.py     # Boosting 最优
 
-# AW_ST_CMC 预测
+# 其他 target（结构和用法完全一致）
 cd train/train_AW_ST_CMCmodels
 python train_lightgbm_use_pharmhgt_features.py
+
+cd train/train_Gamma_max_models
+python train_mlp_use_pharmhgt_features.py          # y 自动缩放
 ```
 
-### 单分子预测
-
+首次训练前需生成特征缓存：
 ```bash
-# 使用训练好的最佳模型
-python -c "
-from use.use_models import SmilesPredict
-print(SmilesPredict('CCO'))              # 默认 MLP
-print(SmilesPredict('CCO', model_name='catboost'))
-"
-
-# 特征提取验证
-python -c "
-from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt
-print(smiles_to_features_pharmhgt('CCO').shape)  # (522,)
-"
+cd train/train_{target}_models
+python all_smiles_to_features.py
 ```
 
 ---
@@ -103,8 +130,8 @@ print(smiles_to_features_pharmhgt('CCO').shape)  # (522,)
 | 排名 | 模型 | R² | RMSE | MAE | 算法类别 | 调参 |
 |:---:|------|:---:|:----:|:----:|:--------:|:----:|
 | 🥇 | **MLP** 🏆 | **0.9052** | **0.3422** | **0.2403** | 深度学习 | Optuna 50 trials |
-| 🥇 | CIF | 0.8751 | 0.3928 | 0.2701 | Bagging | Optuna 50 trials |
-| 🥇 | CatBoost | 0.8733 | 0.3955 | 0.2669 | Boosting | Optuna 50 trials |
+| 2 | CIF | 0.8751 | 0.3928 | 0.2701 | Bagging | Optuna 50 trials |
+| 3 | CatBoost | 0.8733 | 0.3955 | 0.2669 | Boosting | Optuna 50 trials |
 | 4 | XGBoost | 0.8706 | 0.3998 | 0.2695 | Boosting | Optuna 200 trials |
 | 5 | NGBoost | 0.8605 | 0.4150 | 0.2853 | 概率 Boosting | Optuna 50 trials |
 | 6 | LightGBM | 0.8602 | 0.4155 | 0.2745 | Boosting | Optuna 50 trials |
@@ -140,6 +167,19 @@ print(smiles_to_features_pharmhgt('CCO').shape)  # (522,)
 
 ---
 
+## 预测 API
+
+| 函数 | 说明 |
+|------|------|
+| `SmilesPredict(smiles, target, model_name)` | 一行预测（最简） |
+| `SmilesPredictor(target, model_name)` | 对象式预测 |
+| `quick_predict(smiles, target)` | 快速单分子 |
+| `list_models(target)` | 列出可用模型 |
+
+> `target` 可选: `pCMC`(默认), `AW_ST_CMC`, `Gamma_max`, `Area_min`, `Pi_CMC`, `pC20`
+
+---
+
 ## 运行管理
 
 | 功能 | 说明 |
@@ -148,7 +188,8 @@ print(smiles_to_features_pharmhgt('CCO').shape)  # (522,)
 | 保存内容 | `config.json` + `metrics.json` + `model.pkl` + `train.log` + `pred_vs_true.png` |
 | 双写索引 | `runs/{target}/_runs_index.csv`（专有）+ `runs/_runs_index.csv`（全局）|
 | 特征缓存 | `data/features/surfpro/{target}/` — MD5 校验自动检测变更 |
-| 日志重定向 | stdout 同时输出到终端和 `train.log`（崩溃自动恢复）|
+| Gamma_max 缩放 | `y_scale=1_000_000` 记录在 `config.json`，预测 API 自动还原 |
+| 日志重定向 | stdout 同时输出到终端和 `train.log`（atexit 崩溃恢复）|
 
 ---
 
