@@ -13,7 +13,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import sys, math, random, warnings, os
+math, random, warnings, os
 
 import numpy as np
 import pandas as pd
@@ -275,7 +275,7 @@ def main():
         run_dir = setup_run('mlp', final_config)
 
     print("=" * 60)
-    print("MLP + PharmHGT-style Featurization for LogCMC AW_ST_CMC Prediction")
+    print("MLP + PharmHGT-style Featurization for AW_ST_CMC Prediction")
     print("=" * 60)
 
     # ======================================================================

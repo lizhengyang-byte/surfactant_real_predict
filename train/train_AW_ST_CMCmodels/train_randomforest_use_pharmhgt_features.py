@@ -16,7 +16,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import os, sys, math, random, warnings
+import os, random, warnings
 
 import numpy as np
 import pandas as pd
@@ -75,7 +75,7 @@ def main():
     })
 
     print("=" * 60)
-    print("RandomForest + PharmHGT-style Featurization for LogCMC AW_ST_CMC Prediction")
+    print("RandomForest + PharmHGT-style Featurization for AW_ST_CMC Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----

@@ -13,7 +13,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import os, sys, math, random, warnings
+import os, random, warnings
 
 import numpy as np
 import pandas as pd
@@ -66,7 +66,7 @@ def main():
 
 
     print("=" * 60)
-    print("LightGBM + PharmHGT-style Featurization for LogCMC AW_ST_CMC Prediction")
+    print("LightGBM + PharmHGT-style Featurization for AW_ST_CMC Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----
@@ -203,17 +203,6 @@ def main():
     print(f"{'='*60}")
     importances = final_model.feature_importances_
     top_idx = np.argsort(importances)[::-1][:20]
-    feature_names = [
-        'atom_mean', 'atom_std', 'atom_min', 'atom_max',
-        'bond_mean', 'bond_std', 'bond_min', 'bond_max',
-    ] + [f'maccs_{i}' for i in range(194)] + [f'brics_{i}' for i in range(34)] + [
-        'surf_anionic', 'surf_cationic', 'surf_nonionic', 'surf_zwitterionic',
-        'head_ratio', 'tail_ratio',
-        'MolWt', 'LogP', 'TPSA', 'RotBonds', 'HBA', 'HBD',
-        'NumRings', 'AroRings', 'AliRings', 'FracSP3', 'HeavyAtoms', 'NAtoms',
-    ]
-    # The concatenated feature vector has a specific layout — generate names
-    # atom agg (220) + bond agg (56) + maccs (194) + brics (34) + surf (4) + head/tail (2) + desc (12)
     names = FEATURE_NAMES  # from smiles_to_features_pharmhgt
     for rank, idx in enumerate(top_idx):
         print(f"  {rank+1:2d}. {names[idx]:25s}  {importances[idx]:.1f}")
@@ -271,14 +260,12 @@ def main():
     print(f"  Test MAE:  {test_mae:.4f}")
     print(f"  Test R²:   {test_r2:.4f}")
 
-
-        # ---- 保存指标 & 更新索引 ----
+    # ---- 保存指标 & 更新索引 ----
     metrics = {
         'test_rmse': round(test_rmse, 4),
         'test_mae': round(test_mae, 4),
         'test_r2': round(test_r2, 4),
         'best_cv_rmse': round(study.best_value, 4),
-    
     }
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'lightgbm', metrics)

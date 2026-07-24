@@ -13,7 +13,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import os, sys, math, random, warnings, zlib
+import os, random, warnings, zlib
 
 import numpy as np
 import pandas as pd
@@ -66,7 +66,7 @@ def main():
     np.random.seed(SEED)
 
     print("=" * 60)
-    print("CatBoost + PharmHGT-style Featurization for LogCMC AW_ST_CMC Prediction")
+    print("CatBoost + PharmHGT-style Featurization for AW_ST_CMC Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----

@@ -15,7 +15,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import sys, math, random, warnings, os
+math, random, warnings, os
 
 import numpy as np
 import pandas as pd
@@ -181,7 +181,7 @@ def main():
         torch.cuda.manual_seed(SEED)
 
     print("=" * 60)
-    print("Transformer Encoder + PharmHGT-style Featurization for LogCMC AW_ST_CMC Prediction")
+    print("Transformer Encoder + PharmHGT-style Featurization for AW_ST_CMC Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----
