@@ -13,7 +13,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import os, random, warnings
+import sys, import os, random, warnings
 
 import numpy as np
 import pandas as pd
@@ -170,7 +170,7 @@ def train_and_eval_mlp(X_tr, y_tr, X_val, y_val, params, n_epochs, device, verbo
 def main():
     DATA_TRAIN = './data/surfpro/surfpro_train.csv'
     DATA_TEST = './data/surfpro/surfpro_test.csv'
-    TARGET_COL = 'AW_ST_CMC'
+    TARGET_COL = 'Area_min'
     SMILES_COL = 'SMILES'
     VAL_FRAC = 0.125
     SEED = 42
@@ -275,7 +275,7 @@ def main():
         run_dir = setup_run('mlp', final_config)
 
     print("=" * 60)
-    print("MLP + PharmHGT-style Featurization for AW_ST_CMC Prediction")
+    print("MLP + PharmHGT-style Featurization for Area_min Prediction")
     print("=" * 60)
 
     # ======================================================================

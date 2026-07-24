@@ -170,7 +170,7 @@ def train_and_eval_mlp(X_tr, y_tr, X_val, y_val, params, n_epochs, device, verbo
 def main():
     DATA_TRAIN = './data/surfpro/surfpro_train.csv'
     DATA_TEST = './data/surfpro/surfpro_test.csv'
-    TARGET_COL = 'AW_ST_CMC'
+    TARGET_COL = 'Gamma_max'
     SMILES_COL = 'SMILES'
     VAL_FRAC = 0.125
     SEED = 42
@@ -190,6 +190,11 @@ def main():
         train_csv=DATA_TRAIN, test_csv=DATA_TEST,
         target_col=TARGET_COL, smiles_col=SMILES_COL,
     )
+
+    # Gamma_max: scale y by 1e6 for numerical stability
+    Y_SCALE = 1_000_000
+    y_full = y_full * Y_SCALE
+    y_test = y_test * Y_SCALE
     input_dim = X_full.shape[1]
     print(f"  Input dim: {input_dim}")
 
@@ -263,7 +268,7 @@ def main():
         study.optimize(objective, n_trials=N_OPTUNA_TRIALS, show_progress_bar=True)
 
         print(f"\n=== Best Trial ===")
-        print(f"  CV RMSE: {study.best_value:.6f}")
+        print(f"  CV RMSE: {study.best_value / Y_SCALE:.6f}")
         print(f"  Params:  {study.best_params}")
 
         best_params = study.best_params.copy()
@@ -271,11 +276,12 @@ def main():
 
         # ---- 创建最终运行的日志（用最佳参数重新初始化 run_dir） ----
         final_config = {'model': 'mlp', 'optuna_trials': N_OPTUNA_TRIALS, 'n_folds': N_FOLDS, **best_params}
-        final_config['best_cv_rmse'] = round(study_best_value, 4)
+        'y_scale': Y_SCALE,
+        final_config['best_cv_rmse'] = round(study_best_value / Y_SCALE, 4)
         run_dir = setup_run('mlp', final_config)
 
     print("=" * 60)
-    print("MLP + PharmHGT-style Featurization for AW_ST_CMC Prediction")
+    print("MLP + PharmHGT-style Featurization for Gamma_max Prediction")
     print("=" * 60)
 
     # ======================================================================
@@ -314,12 +320,14 @@ def main():
     final_model.eval()
     with torch.no_grad():
         X_test_t = torch.tensor(X_test, dtype=torch.float32).to(DEVICE)
-        y_pred = final_model(X_test_t).cpu().numpy()
+        y_pred_scaled = final_model(X_test_t).cpu().numpy()
+        y_pred = y_pred_scaled / Y_SCALE
+        y_test_orig = y_test / Y_SCALE
 
-    test_mse = mean_squared_error(y_test, y_pred)
+    test_mse = mean_squared_error(y_test_orig, y_pred)
     test_rmse = np.sqrt(test_mse)
-    test_mae = mean_absolute_error(y_test, y_pred)
-    test_r2 = r2_score(y_test, y_pred)
+    test_mae = mean_absolute_error(y_test_orig, y_pred)
+    test_r2 = r2_score(y_test_orig, y_pred)
 
     print(f"  Test MSE:  {test_mse:.4f}")
     print(f"  Test RMSE: {test_rmse:.4f}")
@@ -347,7 +355,7 @@ def main():
     print(f"  Test:      {len(X_test)}")
     if study_best_value is not None:
         print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV")
-        print(f"  Best CV RMSE: {study_best_value:.4f}")
+        print(f"  Best CV RMSE: {study_best_value / Y_SCALE:.4f}")
     print(f"  Best val RMSE: {best_val_rmse:.4f}")
     print(f"  Test RMSE: {test_rmse:.4f}")
     print(f"  Test MAE:  {test_mae:.4f}")
@@ -361,7 +369,7 @@ def main():
         'best_val_rmse': round(best_val_rmse, 4),
     }
     if study_best_value is not None:
-        metrics['best_cv_rmse'] = round(study_best_value, 4)
+        metrics['best_cv_rmse'] = round(study_best_value / Y_SCALE, 4)
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'mlp', metrics)
 

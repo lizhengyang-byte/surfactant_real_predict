@@ -135,7 +135,7 @@ def make_loader(X, y, batch_size, shuffle=True):
 def main():
     DATA_TRAIN = './data/surfpro/surfpro_train.csv'
     DATA_TEST = './data/surfpro/surfpro_test.csv'
-    TARGET_COL = 'AW_ST_CMC'
+    TARGET_COL = 'Gamma_max'
     SMILES_COL = 'SMILES'
     VAL_FRAC = 0.125
     SEED = 42
@@ -181,7 +181,7 @@ def main():
         torch.cuda.manual_seed(SEED)
 
     print("=" * 60)
-    print("Transformer Encoder + PharmHGT-style Featurization for AW_ST_CMC Prediction")
+    print("Transformer Encoder + PharmHGT-style Featurization for Gamma_max Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----
@@ -189,6 +189,11 @@ def main():
         train_csv=DATA_TRAIN, test_csv=DATA_TEST,
         target_col=TARGET_COL, smiles_col=SMILES_COL,
     )
+
+    # Gamma_max: scale y by 1e6 for numerical stability
+    Y_SCALE = 1_000_000
+    y_full = y_full * Y_SCALE
+    y_test = y_test * Y_SCALE
     print(f"  Train features: {X_full.shape}")
     print(f"  Test features:  {X_test.shape}")
 
@@ -257,12 +262,14 @@ def main():
     final_model.eval()
     with torch.no_grad():
         X_test_t = torch.tensor(X_test, dtype=torch.float32).to(DEVICE)
-        y_pred = final_model(X_test_t).cpu().numpy()
+        y_pred_scaled = final_model(X_test_t).cpu().numpy()
+        y_pred = y_pred_scaled / Y_SCALE
+        y_test_orig = y_test / Y_SCALE
 
-    test_mse = mean_squared_error(y_test, y_pred)
+    test_mse = mean_squared_error(y_test_orig, y_pred)
     test_rmse = np.sqrt(test_mse)
-    test_mae = mean_absolute_error(y_test, y_pred)
-    test_r2 = r2_score(y_test, y_pred)
+    test_mae = mean_absolute_error(y_test_orig, y_pred)
+    test_r2 = r2_score(y_test_orig, y_pred)
 
     print(f"  Test MSE:  {test_mse:.4f}")
     print(f"  Test RMSE: {test_rmse:.4f}")

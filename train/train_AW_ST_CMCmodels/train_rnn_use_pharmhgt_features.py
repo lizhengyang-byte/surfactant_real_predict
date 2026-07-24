@@ -14,7 +14,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-math, random, warnings, os
+import os, random, warnings
 
 import numpy as np
 import pandas as pd

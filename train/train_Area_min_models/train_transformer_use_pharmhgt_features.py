@@ -15,7 +15,7 @@ Data:
   ./data/surfpro/surfpro_test.csv   (test)
 """
 
-import os, random, warnings
+import sys, import os, random, warnings
 
 import numpy as np
 import pandas as pd
@@ -135,7 +135,7 @@ def make_loader(X, y, batch_size, shuffle=True):
 def main():
     DATA_TRAIN = './data/surfpro/surfpro_train.csv'
     DATA_TEST = './data/surfpro/surfpro_test.csv'
-    TARGET_COL = 'AW_ST_CMC'
+    TARGET_COL = 'Area_min'
     SMILES_COL = 'SMILES'
     VAL_FRAC = 0.125
     SEED = 42
@@ -181,7 +181,7 @@ def main():
         torch.cuda.manual_seed(SEED)
 
     print("=" * 60)
-    print("Transformer Encoder + PharmHGT-style Featurization for AW_ST_CMC Prediction")
+    print("Transformer Encoder + PharmHGT-style Featurization for Area_min Prediction")
     print("=" * 60)
 
     # ---- Load / featurize (cached) ----
