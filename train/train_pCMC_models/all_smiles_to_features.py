@@ -7,7 +7,7 @@ all_smiles_to_features.py — 特征工程预运算：计算所有 522 维特征
 作用：
     1. 从 data/surfpro/ 读取训练集和测试集 SMILES
     2. 计算全部 522 维 PharmHGT 风格分子特征
-    3. 缓存至 data/features/surfpro/（.npy + metadata.json）
+    3. 缓存至 data/features/surfpro/pCMC/（.npy + metadata.json）
     4. 后续训练脚本 train_*.py 直接从缓存加载，跳过重算
 
 缓存失效策略：

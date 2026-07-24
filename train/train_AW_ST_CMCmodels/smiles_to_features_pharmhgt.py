@@ -43,7 +43,7 @@ PHARM_FEAT_DIM = 194   # MACCS keys
 REACT_FEAT_DIM = 34    # BRICS bond types
 FEATURE_DIM = 522
 
-CACHE_DIR = os.path.join('data', 'features', 'surfpro')
+CACHE_DIR = os.path.join('data', 'features', 'surfpro', 'AW_ST_CMC')
 
 # ===========================================================================
 # 1. Feature Extraction — Atom-level (55-dim) & Bond-level (14-dim)
@@ -478,7 +478,7 @@ def _featurize_dataframe(df, smiles_col='SMILES', target_col='pCMC', verbose=Tru
 def load_or_compute_features(
     train_csv='./data/surfpro/surfpro_train.csv',
     test_csv='./data/surfpro/surfpro_test.csv',
-    target_col='pCMC',
+    target_col='AW_ST_CMC',
     smiles_col='SMILES',
     cache_dir=None,
     force_recompute=False,

@@ -2,10 +2,12 @@
 utils.py — 实验运行管理与日志记录工具
 
 每个训练脚本在 main() 开头调用 setup_run()，自动：
-  1. 创建 runs/{model}_{timestamp}/ 目录
+  1. 创建 runs/pCMC/pCMC_{model}_{timestamp}/ 目录
   2. 将 stdout 同时重定向到终端和 train.log
   3. 保存 config.json（超参数 + 数据配置）
-  4. 训练结束时保存 metrics.json + 追加 runs/_runs_index.csv
+  4. 训练结束时：保存 metrics.json + 双写索引
+      ├─ runs/pCMC/_runs_index.csv   (target 专属)
+      └─ runs/_runs_index.csv        (全局总览)
 
 用法：
     from utils import setup_run, save_metrics, update_index
@@ -19,8 +21,10 @@ utils.py — 实验运行管理与日志记录工具
 import os, sys, json, csv, atexit
 from datetime import datetime
 
-RUNS_DIR = 'runs'
+TARGET_NAME = 'pCMC'
+RUNS_DIR = os.path.join('runs', TARGET_NAME)
 INDEX_PATH = os.path.join(RUNS_DIR, '_runs_index.csv')
+GLOBAL_INDEX_PATH = os.path.join('runs', '_runs_index.csv')
 
 
 class _StreamTee:
@@ -63,7 +67,7 @@ def setup_run(model_name, config):
         run_dir (str): 运行目录路径。
     """
     timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-    run_name = f'{model_name}_{timestamp}'
+    run_name = f'{TARGET_NAME}_{model_name}_{timestamp}'
     run_dir = os.path.join(RUNS_DIR, run_name)
     os.makedirs(run_dir, exist_ok=True)
 
@@ -91,22 +95,73 @@ def save_metrics(run_dir, metrics):
     return path
 
 
-def update_index(run_dir, model_name, metrics):
-    """将本次运行结果追加到 runs/_runs_index.csv（方便横向对比）。"""
-    os.makedirs(RUNS_DIR, exist_ok=True)
+def _write_index_row(filepath, fieldnames, row):
+    """向单个索引文件追加一行（不存在时自动写入表头）。"""
+    dir_path = os.path.dirname(filepath)
+    if dir_path:
+        os.makedirs(dir_path, exist_ok=True)
+    file_exists = os.path.isfile(filepath)
+    with open(filepath, 'a', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
+        if not file_exists:
+            writer.writeheader()
+        writer.writerow(row)
 
+
+def _rewrite_index_row(filepath, new_row, all_fieldnames):
+    """重写索引文件：合并新旧列，保留旧行数据，追加新行。
+
+    适用于全局索引：旧文件可能有不同的列结构，追加模式会导致列错位。
+    """
+    dir_path = os.path.dirname(filepath)
+    if dir_path:
+        os.makedirs(dir_path, exist_ok=True)
+
+    # 读取旧行（如果存在）
+    old_rows = []
+    old_columns = []
+    if os.path.isfile(filepath):
+        try:
+            with open(filepath, 'r', encoding='utf-8') as f:
+                reader = csv.DictReader(f)
+                old_columns = reader.fieldnames or []
+                for r in reader:
+                    old_rows.append(r)
+        except (StopIteration, csv.Error):
+            pass
+
+    # 合并列：保持旧列顺序，新列追加末尾
+    merged = list(dict.fromkeys(old_columns + all_fieldnames))
+
+    # 重写全部
+    with open(filepath, 'w', newline='', encoding='utf-8') as f:
+        writer = csv.DictWriter(f, fieldnames=merged)
+        writer.writeheader()
+        for r in old_rows:
+            writer.writerow(r)
+        writer.writerow(new_row)
+
+
+def update_index(run_dir, model_name, metrics):
+    """将本次运行结果同时写入 target 专有索引和全局索引。
+
+    双写:
+      runs/pCMC/_runs_index.csv  — pCMC 专属索引（追加）
+      runs/_runs_index.csv       — 全局总览索引（重写，兼容旧格式）
+    """
     row = {
+        'target': TARGET_NAME,
         'model': model_name,
         'run_dir': os.path.relpath(run_dir),
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
     }
     row.update(metrics)
 
-    file_exists = os.path.isfile(INDEX_PATH)
-    with open(INDEX_PATH, 'a', newline='', encoding='utf-8') as f:
-        writer = csv.DictWriter(f, fieldnames=list(row.keys()))
-        if not file_exists:
-            writer.writeheader()
-        writer.writerow(row)
-
+    # 1. 写入 target 专有索引（追加模式，列结构一致）
+    fieldnames = list(row.keys())
+    _write_index_row(INDEX_PATH, fieldnames, row)
     print(f"索引已更新: {INDEX_PATH}")
+
+    # 2. 写入全局索引（重写模式，兼容旧文件列结构）
+    _rewrite_index_row(GLOBAL_INDEX_PATH, row, fieldnames)
+    print(f"索引已更新: {GLOBAL_INDEX_PATH}")

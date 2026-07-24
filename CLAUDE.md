@@ -4,67 +4,105 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Machine learning pipeline for predicting surfactant (表面活性剂) critical micelle concentration (pCMC = log CMC) from molecular structure. The pipeline extracts **522-dim handcrafted molecular features** (PharmHGT-style, but as flat vectors rather than graphs) and trains 6 regression models:
+Surfactant (表面活性剂) interfacial property prediction from molecular structure. The pipeline computes **522-dim handcrafted molecular features** (PharmHGT-style flat vectors) and trains **10 regression models** across **6 target variables**.
 
-1. **Tree models** — CatBoost, LightGBM, XGBoost (Optuna hyperparameter tuning)
-2. **Deep learning models** — MLP, RNN-LSTM, Transformer Encoder (PyTorch, fixed architectures)
+**6 Target Properties (with training-set availability):**
 
-**Target variable:** pCMC (primary), with auxiliary targets AW_ST_CMC, Gamma_max, Area_min, Pi_CMC, pC20 available in data.
+| Target      | Description                     | Train samples | Missing rate |
+|-------------|---------------------------------|--------------:|-------------:|
+| **pCMC**    | log CMC (primary target)        | 1204          | 9.8%         |
+| **pC20**    | Surfactant efficiency           | 564           | 57.8%        |
+| **AW_ST_CMC** | Surface tension at CMC        | 843           | 36.9%        |
+| **Pi_CMC**  | Surface pressure at CMC         | 631           | 52.7%        |
+| **Gamma_max** | Max surface excess            | 628           | 53.0%        |
+| **Area_min** | Min area per molecule          | 607           | 54.5%        |
+
+**Key correlations:** pCMC↔pC20 (r=0.76), AW_ST_CMC↔Pi_CMC (r=-0.99, nearly linear), Gamma_max↔Area_min (r=-0.62).
+
+## Commands
+
+```bash
+# Train any model (pCMC only; change TARGET_COL in script for other targets)
+python train_catboost_use_pharmhgt_features.py
+python train_lightgbm_use_pharmhgt_features.py
+python train_xgboost_use_pharmhgt_features.py
+python train_histgb_use_pharmhgt_features.py
+python train_ngboost_use_pharmhgt_features.py
+python train_randomforest_use_pharmhgt_features.py
+python train_cif_use_pharmhgt_features.py
+python train_mlp_use_pharmhgt_features.py
+python train_rnn_use_pharmhgt_features.py
+python train_transformer_use_pharmhgt_features.py
+
+# Pre-compute features once (speeds up all training scripts)
+python all_smiles_to_features.py
+
+# Single-molecule prediction (uses best trained model)
+python -c "from use.use_models import SmilesPredict; print(SmilesPredict('CCO'))"
+
+# CLI prediction
+python use/use_models.py --smiles "CCCCCCCCCCCCCCOS(=O)(=O)[O-].[Na+]" --model mlp
+
+# List all trained models
+python -c "from use.use_models import list_models; print(list_models())"
+
+# SHAP analysis for any trained model
+python shap_catboost.py
+python shap_lightgbm.py
+python shap_xgboost.py
+# ... etc
+
+# Feature dimension check
+python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; print(smiles_to_features_pharmhgt('CCO').shape)"
+```
 
 ## Code Architecture
 
 ### Directory Layout
 
 ```text
-├── smiles_to_features_pharmhgt.py   # Shared 522-dim featurization (the core module)
-├── all_smiles_to_features.py        # Quick smoke test for featurization
-├── train_catboost_use_pharmhgt_features.py    # CatBoost + Optuna
-├── train_lightgbm_use_pharmhgt_features.py    # LightGBM + Optuna
-├── train_xgboost_use_pharmhgt_features.py     # XGBoost + Optuna + holdout
-├── train_mlp_use_pharmhgt_features.py         # MLP (4×512 GELU)
-├── train_rnn_use_pharmhgt_features.py         # RNN-LSTM (3-layer, 64 hidden)
-├── train_transformer_use_pharmhgt_features.py # Transformer Encoder (3-layer, 128 d_model)
-├── utils.py                            # Run management: timestamped dirs, metrics, index
-├── all_smiles_to_features.py           # Feature pre-computation (run once before training)
+├── all_smiles_to_features.py          # One-time feature pre-computation & cache
+├── utils.py                           # Run management: timestamped dirs, stdout tee, metrics, index
+├── train_*.py                         # 10 training scripts (one per model, all follow same pattern)
+├── shap_*.py                          # 7 SHAP analysis scripts + 1 cross-model comparison
+├── shap_utils.py                      # Shared SHAP utilities
+├── use/                               # Prediction API package
+│   ├── __init__.py
+│   └── use_models.py                  # SmilesPredictor class, SmilesPredict(), list_models()
+├── test/
+│   ├── 01.py                          # MLP batch prediction on test CSV
+│   └── 02.py                          # CatBoost single SMILES prediction
 ├── data/
-│   └── surfpro/                   # Raw CSV data
-│       ├── surfpro_train.csv      # Training set (with fold column, used by all scripts)
-│       ├── surfpro_test.csv       # Test set (used by all scripts)
-│       ├── surfpro_imputed.csv    # Imputed training set (not currently used)
-│       ├── surfpro_literature.csv # Literature compilation with references
+│   └── surfpro/
+│       ├── surfpro_train.csv          # Training set (1335 rows, 10 cols incl. fold)
+│       ├── surfpro_test.csv           # Test set (140 rows, 9 cols)
+│       ├── surfpro_imputed.csv        # Imputed data (not used by training scripts)
+│       ├── surfpro_literature.csv     # Literature compilation with references
 │       └── surfpro_bibliography.bib
 ├── doc/
-│   ├── technical_overview_pharmhgt.md           # English technical doc
-│   └── smiles_to_features_pharmhgt_技术文档.md   # Chinese technical doc
-└── __pycache__/
+│   ├── technical_overview_pharmhgt.md
+│   ├── smiles_to_features_pharmhgt_技术文档.md  # Chinese tech doc
+│   ├── feature_reference_522dim.md             # Complete 522-dim feature index
+│   └── report/                                 # Model training reports + SHAP figures
+└── runs/
+    ├── _runs_index.csv                # Cross-model comparison (model / target / metrics)
+    └── {target}/                      # Organized by target variable
+        └── {model}_{timestamp}/
+            ├── config.json            # Reproducible hyperparams + data config
+            ├── train.log              # Full stdout (incl. Optuna output)
+            ├── metrics.json           # test_rmse / test_mae / test_r2
+            ├── model.pkl              # Model weights (joblib or torch.save)
+            ├── pred_vs_true.png       # Prediction vs truth + residual plot
+            └── shap_*.png / shap_values.npy  # SHAP analysis (generated by shap_*.py)
 ```
 
-### Data Flow
+### Data Flow (all 10 training scripts follow the same 5-step pattern)
 
-All 6 training scripts follow the same pattern:
-
-1. **Featurization:** `load_or_compute_features()` from `smiles_to_features_pharmhgt.py` reads SMILES from CSV, computes 522-dim vectors, caches under `data/features/surfpro/` (`.npy` files + `metadata.json`, cached via MD5 hash of SMILES column)
-2. **Split:** `train_test_split(0.125)` → validation set
-3. **Tuning (tree models):** Optuna with K-Fold CV, TPE sampler, MedianPruner
-4. **Final training:** Full data with best params
-5. **Output:** Model, plot, config, metrics, and full log saved to a timestamped directory under `runs/{model}_{timestamp}/`
-
-### Run Management
-
-Every training script uses `utils.py` to create a self-contained run directory:
-
-```text
-runs/
-├── catboost_20260722_143025/
-│   ├── config.json         # Hyperparameters + data config (用于复现)
-│   ├── train.log           # 完整运行日志（stdout 重定向，含 Optuna 输出）
-│   ├── metrics.json        # 评估指标 test_rmse / test_mae / test_r2
-│   ├── pred_vs_true.png    # 预测 vs 真值 + 残差图（仅树模型）
-│   └── model.pkl           # 模型权重
-├── lightgbm_20260722_150112/
-│   └── ...
-└── _runs_index.csv         # 所有运行摘要，方便横向对比
-```
+1. **Featurization:** `load_or_compute_features()` reads SMILES from CSV, computes 522-dim vectors, caches as `.npy` files under `data/features/surfpro/`. Cache key = MD5 hash of SMILES column + target_col name.
+2. **Split:** `train_test_split(0.125, random_state=42)` → validation set
+3. **Tuning (tree models):** Optuna with K-Fold CV, TPE sampler, MedianPruner. Deep models (MLP/RNN/Transformer) use fixed architectures.
+4. **Final training:** Train on full training data with best params
+5. **Output:** Timestamped run directory with config, metrics, model, plot
 
 ### 522-dim Feature Breakdown
 
@@ -72,47 +110,75 @@ runs/
 |--------|-----|--------|
 | Atom-level aggregation | 220 | 55-dim atom features × 4 stats (mean/std/min/max) |
 | Bond-level aggregation | 56 | 14-dim bond features × 4 stats |
-| Pharmacophore | 194 | MACCS keys (padded) |
+| Pharmacophore | 194 | MACCS keys (padded to 194) |
 | Reactivity | 34 | BRICS fragment CRC32 bucket histogram |
 | Surfactant type | 4 | anionic/cationic/nonionic/zwitterionic one-hot |
 | Head/tail ratio | 2 | head-atom fraction, tail-carbon fraction |
-| Molecular descriptors | 12 | Normalized RDKit global descriptors |
+| Molecular descriptors | 12 | Normalized RDKit global descriptors (MolWt, LogP, TPSA, etc.) |
 | **Total** | **522** | |
 
-**Atom features (55-dim):** element one-hot (16), degree one-hot (6), formal charge (1), implicit H one-hot (5), hybridization one-hot (5), aromatic (1), in-ring (1), mass/100 (1), chiral center (1), radical electrons/2 (1), explicit valence one-hot (4), ring size 3-6 one-hot (4), Gasteiger charge bucket (4), ring ≥7 (1), is N/O (1), H-bond donor (1), H-bond acceptor (1), heavy neighbor count/4 (1).
+**Atom features (55-dim):** element one-hot (16), degree one-hot (6), formal charge, implicit H one-hot (5), hybridization one-hot (5), aromatic, in-ring, mass/100, chiral center, radical electrons/2, explicit valence one-hot (4), ring size 3-6 one-hot (4), Gasteiger charge bucket (4), ring ≥7, is N/O, H-bond donor, H-bond acceptor, heavy neighbor count/4.
 
-**Bond features (14-dim):** bond type one-hot (4), conjugated (1), in-ring (1), stereo one-hot (6), aromatic (1), in-ring duplicate (1).
+**Bond features (14-dim):** bond type one-hot (4), conjugated, in-ring, stereo one-hot (6), aromatic, in-ring duplicate.
 
-**Surfactant domain knowledge (in `smiles_to_features_pharmhgt.py`):** DFS-based tail detection (longest continuous carbon chain ≥4), SMARTS head-group matching, counterion exclusion from SMILES.
+## Model Details
 
-### Model-Specific Details
+**Current best model (pCMC): MLP** — Test RMSE=0.342, R²=0.905 (Optuna-tuned: 3×990 GELU, dropout=0.27, lr=0.0067, batch=95).
+**Runner-up:** CIF (ExtraTrees) — Test RMSE=0.393, R²=0.875.
 
 | Model | Tuning | Architecture / Key Params |
 |-------|--------|--------------------------|
-| CatBoost | Optuna 10 trials × 5-fold CV | depth [4,10], lr [5e-3, 0.3], iterations [500,3000] |
+| CatBoost | Optuna 50 trials × 5-fold CV | depth [4,10], lr [5e-3, 0.3], iterations [500,3000], l2_leaf_reg [1,50] |
 | LightGBM | Optuna 50 trials × 5-fold CV | boosting [gbdt,dart], depth [3,15], num_leaves [15,255] |
-| XGBoost | Optuna 200 trials × Top-K holdout | gap penalty if train-val >0.3, learning_rate [1e-3, 0.3] |
-| MLP | Fixed (no Optuna) | 4×512 GELU, LayerNorm, AdamW 1e-3, batch 32, early stopping |
-| RNN-LSTM | Fixed (no Optuna) | 3-layer LSTM, 64 hidden, dropout 0.3, AdamW 1e-3 |
-| Transformer | Fixed (no Optuna) | 3-layer encoder, 128 d_model, 8 heads, batch 16, AdamW 5e-4 |
+| XGBoost | Optuna 200 trials × Top-K holdout | gap penalty (train-val >0.3), multivariate TPE, top-5 holdout filter |
+| HistGB | Optuna 50 trials × 5-fold CV | sklearn HistGradientBoostingRegressor |
+| NGBoost | Pretuned (no Optuna) | n_estimators=637, lr=0.0337, max_depth=5 (probabilistic: predicts mean+var) |
+| RandomForest | Optuna 50 trials × 5-fold CV | n_estimators [200,2000], max_depth [3,30] |
+| CIF (ExtraTrees) | Optuna 50 trials × 5-fold CV | Same search space as RF |
+| MLP | Optuna 50 trials × 5-fold CV (optional) | Linear→BatchNorm→GELU→Dropout × N layers, Linear→1. Params: n_layers[2,6], hidden_dim[128,1024] |
+| RNN-LSTM | Fixed (no Optuna) | 3-layer LSTM, 64 hidden, dropout 0.2, lr 1e-3, 800 epochs |
+| Transformer | Fixed (no Optuna) | 3-layer encoder, 128 d_model, 4 heads, FFN 256, GELU, CosineAnnealingLR |
 
-## Commands
+**Deep models treat 522-dim vector as sequence:** RNN and Transformer reshape (batch, 522) → (batch, 522, 1), treating each feature dimension as a time step.
 
-```bash
-# Train any model (all follow the same pattern)
-python train_catboost_use_pharmhgt_features.py
-python train_lightgbm_use_pharmhgt_features.py
-python train_xgboost_use_pharmhgt_features.py
-python train_mlp_use_pharmhgt_features.py
-python train_rnn_use_pharmhgt_features.py
-python train_transformer_use_pharmhgt_features.py
+## Caching System
 
-# Quick smoke test for featurization
-python all_smiles_to_features.py
+- Feature cache: `data/features/surfpro/{X_train, y_train, X_test, y_test}.npy` + `metadata.json`
+- Cache key = MD5 of concatenated SMILES strings
+- **IMPORTANT:** Cache stores (X, y) pairs for the SPECIFIC target used during caching. Switching to another target requires recomputation (different `dropna(subset=[target_col])` → different valid molecules).
+- For AW_ST_CMC specifically: using pCMC's cached X loses 129/843 training samples (worst case).
+- Pass `force_recompute=True` to `load_or_compute_features()` to force re-cache.
+- Run `all_smiles_to_features.py` once to warm the cache.
 
-# Single-molecule inference
-python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; print(smiles_to_features_pharmhgt('CCO').shape)"
+## Prediction API (`use/` package)
+
+```python
+from use import SmilesPredictor, SmilesPredict, quick_predict, list_models
+
+# Auto-load best model (lowest test_rmse from _runs_index.csv)
+predictor = SmilesPredictor(model_name='best')
+pred = predictor.predict('CCO')
+
+# Specific model
+predictor = SmilesPredictor(model_name='mlp')
+pred = predictor.predict('CCO')
+
+# One-liner (defaults to MLP)
+SmilesPredict('CCO')
+
+# List all trained models with metrics
+list_models()
 ```
+
+## SHAP Analysis
+
+Each tree model has a corresponding `shap_{model}.py` script that:
+1. Loads cached features + latest run model
+2. Computes SHAP values on test set
+3. Saves: summary beeswarm, top-20 bar, top-5 dependence plots, best/median/worst waterfall, interaction heatmap
+4. All outputs go into the model's run directory
+
+Cross-model comparison: `shap_compare.py` generates `doc/report/shap_cross_model_ranking.png` and `doc/report/shap_feature_agreement.png`.
 
 ## Key Dependencies
 
@@ -121,13 +187,17 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 - **scikit-learn** — train_test_split, KFold, metrics (RMSE/MAE/R²)
 - **CatBoost / LightGBM / XGBoost** — gradient boosting
 - **Optuna** — hyperparameter optimization (TPE sampler, MedianPruner, n_startup_trials=5)
-- **NumPy, Pandas, Matplotlib/Seaborn** — data handling, plotting
-- **joblib** — model serialization
+- **SHAP** — model interpretability (TreeExplainer for tree models, KernelExplainer for NGBoost)
+- **NumPy, Pandas, Matplotlib, Seaborn** — data handling, plotting
+- **joblib** — sklearn/CatBoost/LightGBM/XGBoost model serialization
 
 ## Key Design Decisions
 
-- **Cache-based featurization:** MD5 hash of SMILES detects data changes; `.npy` files + `metadata.json` under `data/features/surfpro/`. Pass `force_recompute=True` to recompute.
-- **Tree models use Optuna; deep models use fixed architectures.** CatBoost/LightGBM/XGBoost each have Optuna search with K-Fold CV. MLP/RNN/Transformer use predefined architectures (no tuning).
-- **XGBoost gap penalty:** penalizes CV score if train-val gap > 0.3 to discourage overfitting.
-- **Deep models treat 522-dim vector as 522 time steps × 1 feature** (RNN and Transformer treat the feature vector as a sequence).
+- **All models share the same 522-dim feature vector.** Featurization is decoupled from training in `smiles_to_features_pharmhgt.py`.
+- **Target variable is HARDCODED** in each training script (`TARGET_COL = 'pCMC'`). To change target, edit the script or add a cmdline arg.
+- **Tree models use Optuna; deep models use fixed architectures** (except MLP, which has optional Optuna).
+- **Run management is self-contained:** every run creates `runs/{target}/{model}_{timestamp}/` with config, log, metrics, model — no external experiment tracking.
 - **No unit tests.** Validation is inline (NaN/Inf checks, shape assertions).
+- **Feature cache is target-specific:** cached X count depends on target's non-null count. Changing target invalidates the cache.
+- **XGBoost has the most sophisticated tuning:** 200 trials + Top-K holdout selection + gap penalty against overfitting.
+- **Prediction API auto-selects best model** from `_runs_index.csv` by lowest test_rmse.

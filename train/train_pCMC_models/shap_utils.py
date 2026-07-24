@@ -4,7 +4,7 @@ shap_utils.py — SHAP 分析共用工具
 提供：
  - setup_matplotlib()         配置 matplotlib 中文字体
  - load_features()           从缓存加载 522 维特征
- - find_latest_run()         从 runs/ 自动定位最新权重目录
+ - find_latest_run()         从 runs/pCMC/ 自动定位最新权重目录
  - get_top_features()        获取 top-N 重要特征索引
  - get_sample_indices()      获取最佳/最差/中位数预测样本索引
  - feature_name()            获取特征名称
@@ -14,8 +14,8 @@ import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
 
-FEATURE_DIR = os.path.join('data', 'features', 'surfpro')
-RUNS_DIR = 'runs'
+FEATURE_DIR = os.path.join('data', 'features', 'surfpro', 'pCMC')
+RUNS_DIR = os.path.join('runs', 'pCMC')
 
 # 惰性导入特征名称（模块级首次访问时加载）
 _FEATURE_NAMES = None
@@ -46,7 +46,7 @@ def load_features():
 
 
 def find_latest_run(model_prefix):
-    """在 runs/ 中查找该模型最新（按时间戳）的运行目录。
+    """在 runs/pCMC/ 中查找该模型最新（按时间戳）的运行目录。
 
     Args:
         model_prefix: 模型前缀，如 'catboost'、'rf'、'mlp'。
@@ -54,7 +54,7 @@ def find_latest_run(model_prefix):
     Returns:
         run_dir (str): 最新运行目录的路径。
     """
-    pattern = re.compile(rf'^{re.escape(model_prefix)}_(\d{{8}}_\d{{6}})$')
+    pattern = re.compile(rf'^(?:pCMC_)?{re.escape(model_prefix)}_(\d{{8}}_\d{{6}})$')
     candidates = []
     for d in os.listdir(RUNS_DIR):
         m = pattern.match(d)
