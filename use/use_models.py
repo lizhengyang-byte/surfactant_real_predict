@@ -2,45 +2,29 @@
 SurfPredict — Unified Model Prediction API
 ===========================================
 
-从 runs/ 自动加载已训练的模型，提供统一的分子性质预测接口。
-可在项目内任意位置（包括其他子目录）通过 import 调用。
+从 runs/ 自动加载已训练的模型，提供统一的分子性质预测接口，
+支持多目标（pCMC / AW_ST_CMC / Gamma_max / Area_min / Pi_CMC / pC20）。
 
 用法:
-    from use.use_models import SmilesPredict, SmilesPredictor, list_models
+    from use_models import SmilesPredict, SmilesPredictor, list_models
 
-    # ---- 方式 0：一行预测（最简单） ----
-    pred = SmilesPredict('CCO')
-    pred = SmilesPredict('CCO', model_name='catboost')
-    pred = SmilesPredict(['CCO', 'CCC(=O)O'])          # 批量
-    pred, feats = SmilesPredict('CCO', return_features=True)  # +特征向量
+    # ---- 最简单的调用形式 ----
+    pred = SmilesPredict('CCO', target='pCMC')                    # pCMC（缺省）
+    pred = SmilesPredict('CCO', model_name='catboost', target='AW_ST_CMC')
+    pred = SmilesPredict(['CCO', 'CCC(=O)O'], target='Gamma_max') # 批量
+    pred, feats = SmilesPredict('CCO', target='pCMC', return_features=True)
 
-    # ---- 方式 1：自动选择最佳模型 ----
-    predictor = SmilesPredictor()
-    pred = predictor.predict('CCO')
-
-    # ---- 方式 2：指定模型名称 ----
-    predictor = SmilesPredictor(model_name='catboost')
-    predictor = SmilesPredictor(model_name='xgboost')
-    predictor = SmilesPredictor(model_name='mlp')
-
-    # ---- 方式 3：指定具体运行目录 ----
-    predictor = SmilesPredictor(run_dir='runs/xgboost_20260722_193605')
-
-    # ---- 方式 4：加载所有模型做集成预测 ----
-    predictor = SmilesPredictor(model_name='all')
-
-    # ---- 方式 5：批量预测 + 特征向量 ----
-    preds = predictor.predict(['CCO', 'CCC(=O)O', 'c1ccccc1'])
-    pred, features = predictor.predict('CCO', return_features=True)
-    print(features.shape)  # (522,)
-
-    # ---- 查看可用模型 ----
-    df = list_models()
+    # ---- 查看某 target 的可用模型 ----
+    df = list_models(target='AW_ST_CMC')
 """
 
 import csv
-import os, re, warnings, sys, math
-from typing import Optional
+import json
+import os
+import re
+import warnings
+import sys
+from typing import Optional, Union, List
 
 import numpy as np
 import pandas as pd
@@ -49,11 +33,16 @@ import joblib
 warnings.filterwarnings('ignore')
 
 # ============================================================================
-# 将项目根目录加入 sys.path，确保从任何子目录都能导入同级的模块
+# Path setup
 # ============================================================================
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
+
+# smiles_to_features_pharmhgt.py 位于 train/train_pCMC_models/ 下
+_TRAIN_PCMC_PATH = os.path.join(PROJECT_ROOT, 'train', 'train_pCMC_models')
+if _TRAIN_PCMC_PATH not in sys.path:
+    sys.path.insert(0, _TRAIN_PCMC_PATH)
 
 from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt as _featurize_single
 
@@ -67,7 +56,6 @@ try:
     TORCH_AVAILABLE = True
 except ImportError:
     TORCH_AVAILABLE = False
-
 
 # ============================================================================
 # PyTorch Model Definitions (must match training scripts exactly)
@@ -100,9 +88,6 @@ if TORCH_AVAILABLE:
 
         def __init__(self, _input_dim, hidden_dim, n_layers, dropout, _activation='relu'):
             super().__init__()
-            # input_dim stored in checkpoint metadata;
-            # LSTM uses fixed input_size=1 (522 time steps × 1 feature).
-            # activation is not configurable for LSTM, kept for compat.
             self.lstm = nn.LSTM(
                 input_size=1,
                 hidden_size=hidden_dim,
@@ -113,9 +98,9 @@ if TORCH_AVAILABLE:
             self.fc = nn.Linear(hidden_dim, 1)
 
         def forward(self, x):
-            x = x.unsqueeze(-1)          # (batch, 522, 1)
-            lstm_out, _ = self.lstm(x)   # (batch, 522, hidden_dim)
-            last_out = lstm_out[:, -1, :]  # (batch, hidden_dim)
+            x = x.unsqueeze(-1)
+            lstm_out, _ = self.lstm(x)
+            last_out = lstm_out[:, -1, :]
             return self.fc(last_out).squeeze(-1)
 
     class _PositionalEncoding(nn.Module):
@@ -136,8 +121,7 @@ if TORCH_AVAILABLE:
             return x + self.pe[:, :x.size(1), :]
 
     class _TransformerRegressor(nn.Module):
-        """Transformer Encoder regression network
-        (matches train_transformer_use_pharmhgt_features.py)."""
+        """Transformer Encoder regression network."""
 
         def __init__(self, input_dim, d_model=128, nhead=4, num_layers=3,
                      dim_feedforward=256, dropout=0.1, activation='relu'):
@@ -152,11 +136,11 @@ if TORCH_AVAILABLE:
             self.fc = nn.Linear(d_model, 1)
 
         def forward(self, x):
-            x = x.unsqueeze(-1)                     # (batch, 522, 1)
-            x = self.input_proj(x)                  # (batch, 522, d_model)
+            x = x.unsqueeze(-1)
+            x = self.input_proj(x)
             x = self.pos_encoder(x)
-            x = self.transformer_encoder(x)         # (batch, 522, d_model)
-            x = x.mean(dim=1)                       # (batch, d_model)
+            x = self.transformer_encoder(x)
+            x = x.mean(dim=1)
             return self.fc(x).squeeze(-1)
 
 
@@ -164,41 +148,80 @@ if TORCH_AVAILABLE:
 # Internal helpers
 # ============================================================================
 
-_RUN_DIR_PATTERN = re.compile(r'^(\w+)_(\d{8}_\d{6})$')
+#: 匹配运行目录名: catboost_20260722_181638 或 pCMC_catboost_20260722_181638
+_RUN_DIR_PATTERN = re.compile(r'^(.+)_(\d{8}_\d{6})$')
 
-#: Names of tree-based (sklearn-compatible) models
-TREE_MODEL_NAMES = {'catboost', 'lightgbm', 'xgboost', 'histgb', 'rf', 'ngboost', 'cif'}
-#: Names of deep learning (PyTorch) models
-DEEP_MODEL_NAMES = {'mlp', 'rnn', 'transformer'}
+TARGETS = {'pCMC', 'AW_ST_CMC', 'Gamma_max', 'Area_min', 'Pi_CMC', 'pC20'}
 
 
-def _discover_model_runs():
-    """Scan runs/ for available model runs.
+def _parse_run_dir_name(dirname: str, target: str):
+    """从目录名中提取模型名和时间戳。
+
+    兼容新旧两种命名:
+      catboost_20260722_181638       → model=catboost
+      pCMC_catboost_20260722_181638  → model=catboost
+
+    Returns:
+        (model_name, timestamp_str) 或 (None, None)
+    """
+    m = _RUN_DIR_PATTERN.match(dirname)
+    if not m:
+        return None, None
+    run_name = m.group(1)
+    ts = m.group(2)
+    # 去掉 target 前缀（如果存在）
+    prefix = target + '_'
+    if run_name.startswith(prefix):
+        model_name = run_name[len(prefix):]
+    else:
+        model_name = run_name
+    return model_name, ts
+
+
+def _discover_model_runs(target: str = 'pCMC'):
+    """扫描 runs/{target}/ 下可用的模型运行。
 
     Returns:
         dict: {model_name: [(timestamp_str, run_dir_path), ...]},
-              sorted newest-first per model. Skips dirs without model.pkl.
+              按时间戳降序排列。跳过没有 model.pkl 的目录。
     """
-    if not os.path.isdir(RUNS_DIR):
-        raise FileNotFoundError(f"Runs directory not found: {RUNS_DIR}")
+    target_dir = os.path.join(RUNS_DIR, target)
+    if not os.path.isdir(target_dir):
+        return {}
 
     models = {}
-    for entry in os.listdir(RUNS_DIR):
-        dirpath = os.path.join(RUNS_DIR, entry)
+    for entry in os.listdir(target_dir):
+        dirpath = os.path.join(target_dir, entry)
         if not os.path.isdir(dirpath):
             continue
-        match = _RUN_DIR_PATTERN.match(entry)
-        if not match:
-            continue
-        model_name = match.group(1)
-        # Skip directories with no model.pkl (e.g. mlp_tuning temp dirs)
         if not os.path.isfile(os.path.join(dirpath, 'model.pkl')):
             continue
-        models.setdefault(model_name, []).append((match.group(2), dirpath))
+        model_name, ts = _parse_run_dir_name(entry, target)
+        if model_name is None:
+            continue
+        models.setdefault(model_name, []).append((ts, dirpath))
 
     for name in models:
         models[name].sort(key=lambda x: x[0], reverse=True)
     return models
+
+
+def _load_config(run_dir: str) -> dict:
+    """加载运行目录中的 config.json。"""
+    config_path = os.path.join(run_dir, 'config.json')
+    if os.path.isfile(config_path):
+        with open(config_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    return {}
+
+
+def _get_y_scale(run_dir: str) -> float:
+    """从 config.json 中读取 y_scale 缩放因子。
+
+    Gamma_max 使用 1_000_000，其他 target 为 1（即不缩放）。
+    """
+    config = _load_config(run_dir)
+    return float(config.get('y_scale', 1))
 
 
 def _load_sklearn_model(run_dir):
@@ -256,7 +279,6 @@ def _load_single_model(run_dir, device='cpu'):
     if not os.path.isfile(model_path):
         raise FileNotFoundError(f"Model file not found: {model_path}")
 
-    # Try PyTorch first
     if TORCH_AVAILABLE:
         try:
             ckpt = torch.load(model_path, map_location='cpu', weights_only=True)
@@ -265,7 +287,6 @@ def _load_single_model(run_dir, device='cpu'):
         except Exception:
             pass
 
-    # Fall back to sklearn/joblib
     return _load_sklearn_model(run_dir)
 
 
@@ -281,41 +302,38 @@ def _is_torch_model(model) -> bool:
 class SmilesPredictor:
     """Unified molecular property prediction interface.
 
-    Automatically manages model loading, featurization, and prediction.
+    支持多目标预测，自动管理模型加载、特征计算和预测。
 
     Examples:
-        >>> predictor = SmilesPredictor()
+        >>> predictor = SmilesPredictor(target='pCMC')
         >>> predictor.predict('CCO')
-        6.323...
 
-        >>> predictor = SmilesPredictor(model_name='catboost')
+        >>> predictor = SmilesPredictor(target='AW_ST_CMC', model_name='catboost')
         >>> predictor.predict(['CCO', 'CCC(=O)O'])
-        array([6.323, 4.012])
 
-        >>> predictor = SmilesPredictor(model_name='all')  # ensemble
-        >>> predictor.predict('CCO')
-        6.152...
+        >>> predictor = SmilesPredictor(target='Gamma_max')
+        >>> predictor.predict('CCO')  # 自动还原 Y_SCALE，返回 mol/m²
     """
 
     def __init__(self, model_name: str = 'best',
+                 target: str = 'pCMC',
                  run_dir: Optional[str] = None,
                  device: str = 'cpu'):
         """
         Args:
-            model_name: One of:
-                - ``'best'``: Auto-select model with lowest test_rmse from index.
-                - A model name: ``'catboost'``, ``'xgboost'``, ``'mlp'``,
-                  ``'rnn'``, ``'transformer'``, ``'lightgbm'``, ``'histgb'``,
-                  ``'rf'``, ``'ngboost'``, ``'cif'``.
-                - ``'all'``: Load every available model and ensemble (mean).
-            run_dir: Specific run directory path (overrides ``model_name``).
-            device: Torch device string (only used for deep models).
+            model_name: 'best'（自动选最优）, 模型名如 'catboost'/'mlp', 或 'all'（集成）。
+            target: 预测目标，可选 'pCMC', 'AW_ST_CMC', 'Gamma_max',
+                    'Area_min', 'Pi_CMC', 'pC20'。默认 'pCMC'。
+            run_dir: 指定运行目录路径（优先级高于 model_name）。
+            device: Torch 设备（仅深度学习模型使用）。
         """
         self.device = device
         self.model_name = model_name
+        self.target = target
         self.run_dir = run_dir
-        self._model = None        # single model (sklearn or torch)
-        self._models = {}         # name -> model  (for 'all' mode)
+        self.y_scale = 1.0  # 从 config.json 读取，默认不缩放
+        self._model = None
+        self._models = {}
 
         if run_dir:
             self.load_from_dir(run_dir)
@@ -329,67 +347,79 @@ class SmilesPredictor:
     # ---- Model discovery ---------------------------------------------------
 
     def available_models(self) -> pd.DataFrame:
-        """Return a DataFrame with metadata for every trained model.
-
-        Columns include ``model``, ``run_dir``, ``test_rmse``, ``test_mae``,
-        ``test_r2``, and ``best_cv_rmse`` where available.  Sorted by
-        test_rmse (best first).
-        """
-        return list_models()
+        """返回当前 target 下所有训练模型的性能指标。"""
+        return list_models(target=self.target)
 
     # ---- Loading -----------------------------------------------------------
 
     def load_best(self):
-        """Auto-load the model with the lowest test_rmse from the runs index."""
+        """自动加载当前 target 下 test_rmse 最低的模型。"""
         df = self.available_models()
         if df.empty:
             raise RuntimeError(
-                "No trained models found.  Run a training script first:\n"
-                "  python train_catboost_use_pharmhgt_features.py"
+                f"No trained models found for target '{self.target}'. "
+                f"Run a training script first."
             )
         best = df.iloc[0]
         name = best['model']
         dir_rel = best['run_dir']
-        dir_abs = os.path.join(PROJECT_ROOT, dir_rel)
+        # 解析实际路径（兼容新旧格式）
+        dir_abs = _resolve_run_dir(dir_rel, self.target)
+        if dir_abs is None:
+            raise FileNotFoundError(
+                f"Model '{name}' for target '{self.target}' listed in index "
+                f"but no model.pkl found on disk."
+            )
         rmse = best.get('test_rmse', 'N/A')
 
-        print(f"[SurfPredict] Best model: {name}  (test_rmse={rmse})")
+        print(f"[SurfPredict] Best model ({self.target}): {name}  (test_rmse={rmse})")
         self.model_name = name
         self.run_dir = dir_abs
         self._load_from_dir(dir_abs)
 
     def load(self, model_name: str):
-        """Load the latest run of a specific model.
+        """加载当前 target 下指定模型的最新运行。
 
         Args:
-            model_name: e.g. 'catboost', 'xgboost', 'mlp', 'rnn', 'transformer'
+            model_name: 如 'catboost', 'xgboost', 'mlp' 等。
         """
-        models = _discover_model_runs()
+        models = _discover_model_runs(self.target)
         if model_name not in models:
             raise KeyError(
-                f"Model '{model_name}' not found. "
+                f"Model '{model_name}' not found for target '{self.target}'. "
                 f"Available: {sorted(models)}\n"
-                f"Use list_models() for full details."
+                f"Use list_models(target='{self.target}') for full details."
             )
         ts, dirpath = models[model_name][0]
-        print(f"[SurfPredict] Loading {model_name} (latest: {ts})")
+        print(f"[SurfPredict] Loading {model_name} ({self.target}, latest: {ts})")
         self.model_name = model_name
         self.run_dir = dirpath
         self._load_from_dir(dirpath)
 
     def load_from_dir(self, run_dir: str):
-        """Load a model from a specific run directory."""
+        """从指定运行目录加载模型。"""
         self.run_dir = os.path.abspath(run_dir)
         self._load_from_dir(self.run_dir)
-        m = _RUN_DIR_PATTERN.match(os.path.basename(self.run_dir))
-        if m:
-            self.model_name = m.group(1)
+        # 从目录名推断 target 和 model_name
+        parent = os.path.basename(os.path.dirname(self.run_dir))
+        if parent in TARGETS:
+            self.target = parent
+        dirname = os.path.basename(self.run_dir)
+        for t in TARGETS:
+            model_name, _ = _parse_run_dir_name(dirname, t)
+            if model_name:
+                self.model_name = model_name
+                break
+        if not self.model_name:
+            m = _RUN_DIR_PATTERN.match(dirname)
+            if m:
+                self.model_name = m.group(1)
 
     def load_all(self):
-        """Load every available model for ensemble prediction."""
-        models = _discover_model_runs()
+        """加载当前 target 下所有可用模型做集成预测。"""
+        models = _discover_model_runs(self.target)
         if not models:
-            raise RuntimeError("No trained models found.")
+            raise RuntimeError(f"No trained models found for target '{self.target}'.")
 
         loaded = 0
         for name in models:
@@ -401,31 +431,31 @@ class SmilesPredictor:
                 print(f"  [SurfPredict] Failed to load {name}: {e}")
 
         self.model_name = 'all'
-        print(f"[SurfPredict] Ensemble: {loaded}/{len(models)} models loaded")
+        print(f"[SurfPredict] Ensemble ({self.target}): {loaded}/{len(models)} models loaded")
 
     def _load_from_dir(self, run_dir):
-        """(internal) Load model from a directory and store it."""
+        """(internal) 加载模型 + 读取 y_scale。"""
         self._model = _load_single_model(run_dir, self.device)
+        self.y_scale = _get_y_scale(run_dir)
 
     # ---- Prediction --------------------------------------------------------
 
     def predict(self, smiles, return_features: bool = False):
-        """Predict pCMC from SMILES string(s).
+        """从 SMILES 预测目标性质。
 
         Args:
-            smiles: A SMILES string or an iterable of SMILES strings.
-            return_features: If True, also return the 522-dim feature matrix.
+            smiles: SMILES 字符串或字符串列表。
+            return_features: 是否同时返回 522-dim 特征矩阵。
 
         Returns:
-            * Single SMILES, ``return_features=False`` → ``float``
-            * Single SMILES, ``return_features=True``  → ``(float, np.ndarray)``
-            * Multiple SMILES, ``return_features=False`` → ``np.ndarray``
-            * Multiple SMILES, ``return_features=True``  → ``(np.ndarray, np.ndarray)``
+            * 单分子, return_features=False → float
+            * 单分子, return_features=True  → (float, np.ndarray)
+            * 多分子, return_features=False → np.ndarray
+            * 多分子, return_features=True  → (np.ndarray, np.ndarray)
         """
         single = isinstance(smiles, str)
         smiles_list = [smiles] if single else list(smiles)
 
-        # Featurize each molecule
         feats = []
         bad_indices = []
         for i, s in enumerate(smiles_list):
@@ -437,17 +467,17 @@ class SmilesPredictor:
 
         X = np.array(feats, dtype=np.float32)
 
-        # For single SMILES: raise immediately if invalid
         if single and bad_indices:
             raise ValueError(f"Invalid SMILES: '{smiles}'")
 
-        # For batch: warn and fill invalid rows with NaN
         if bad_indices:
-            X[bad_indices] = 0.0  # zero features so model doesn't crash
+            X[bad_indices] = 0.0
             print(f"[SurfPredict] Warning: {len(bad_indices)}/{len(smiles_list)} "
                   f"SMILES invalid; predictions may be unreliable.")
 
-        preds = self.predict_from_features(X)
+        preds_scaled = self.predict_from_features(X)
+        # 还原 y_scale（Gamma_max 自动除 1e6，其他 target 除 1 = 不变）
+        preds = preds_scaled / self.y_scale
 
         out = float(preds[0]) if single else preds
         if return_features:
@@ -455,14 +485,7 @@ class SmilesPredictor:
         return out
 
     def predict_from_features(self, features: np.ndarray) -> np.ndarray:
-        """Predict from a pre-computed (N, 522) feature matrix.
-
-        Args:
-            features: shape ``(N, 522)`` or ``(522,)``.
-
-        Returns:
-            Predictions as a 1-D ``np.ndarray`` of length N.
-        """
+        """从预计算的 (N, 522) 特征矩阵预测（返回缩放空间的值）。"""
         X = np.atleast_2d(np.asarray(features, dtype=np.float32))
 
         if self.model_name == 'all':
@@ -498,51 +521,93 @@ class SmilesPredictor:
 
     def __repr__(self):
         if self.model_name == 'all':
-            return f"<SmilesPredictor ensemble ({len(self._models)} models)>"
+            return f"<SmilesPredictor ensemble ({self.target}, {len(self._models)} models)>"
         base = os.path.basename(self.run_dir) if self.run_dir else '?'
-        return f"<SmilesPredictor {self.model_name} [{base}]>"
+        return f"<SmilesPredictor {self.model_name} [{base}] target={self.target}>"
 
 
 # ============================================================================
 # Module-level convenience functions
 # ============================================================================
 
-def list_models() -> pd.DataFrame:
-    """List all trained models with performance metrics.
+def _resolve_run_dir(run_dir_from_index: str, target: Optional[str] = None) -> Optional[str]:
+    """解析索引中的 run_dir 为实际存在的模型目录路径。
+
+    兼容新旧两种路径格式：
+      旧: runs\\catboost_20260722_181638         (文件已移至 runs/pCMC/ 下)
+      新: runs/pCMC/pCMC_catboost_20260722_...   (直接可用)
+    """
+    # 1) 尝试直接拼接 PROJECT_ROOT
+    d = os.path.join(PROJECT_ROOT, run_dir_from_index)
+    if os.path.isfile(os.path.join(d, 'model.pkl')):
+        return d
+
+    # 2) 尝试加上 target 子目录
+    #    runs\\catboost_20260722_181638 → runs/pCMC/catboost_20260722_181638
+    if target:
+        basename = os.path.basename(run_dir_from_index)
+        d2 = os.path.join(PROJECT_ROOT, 'runs', target, basename)
+        if os.path.isfile(os.path.join(d2, 'model.pkl')):
+            return d2
+
+    # 3) 尝试在 runs/{target}/ 下找目录名包含 target 前缀的
+    #    runs/pCMC/pCMC_catboost_20260722_...
+    if target:
+        target_dir = os.path.join(PROJECT_ROOT, 'runs', target)
+        if os.path.isdir(target_dir):
+            basename = os.path.basename(run_dir_from_index)
+            for entry in os.listdir(target_dir):
+                if basename in entry and os.path.isfile(os.path.join(target_dir, entry, 'model.pkl')):
+                    return os.path.join(target_dir, entry)
+
+    return None
+
+
+def list_models(target: Optional[str] = None) -> pd.DataFrame:
+    """列出所有训练的模型及其性能指标。
+
+    Args:
+        target: 预测目标过滤，可选 'pCMC', 'AW_ST_CMC', 等。
+                为 None 时读取全局索引（含所有 target）。
 
     Returns:
-        DataFrame with columns: model, run_dir, timestamp, test_rmse,
-        test_mae, test_r2, best_cv_rmse (sorted by test_rmse ascending).
+        DataFrame，按 test_rmse 升序排列。
     """
-    if not os.path.isfile(INDEX_PATH):
-        raise FileNotFoundError(
-            f"Index file not found: {INDEX_PATH}\n"
-            "Run a training script first to generate model files."
-        )
-    with open(INDEX_PATH, newline='', encoding='utf-8') as f:
+    if target is not None:
+        idx_path = os.path.join(RUNS_DIR, target, '_runs_index.csv')
+    else:
+        idx_path = INDEX_PATH
+
+    if not os.path.isfile(idx_path):
+        if target:
+            print(f"[SurfPredict] Index file not found: {idx_path}")
+        else:
+            raise FileNotFoundError(
+                f"Index file not found: {idx_path}\n"
+                "Run a training script first to generate model files."
+            )
+        return pd.DataFrame()
+
+    with open(idx_path, newline='', encoding='utf-8') as f:
         reader = csv.DictReader(f)
         rows = [r for r in reader]
 
     if not rows:
-        print("[SurfPredict] Index file is empty.")
         return pd.DataFrame()
 
     df = pd.DataFrame(rows)
-    # Convert numeric columns (best-effort)
     for col in ['test_rmse', 'test_mae', 'test_r2', 'best_cv_rmse']:
         if col in df.columns:
             df[col] = pd.to_numeric(df[col], errors='coerce')
 
-    # Keep only rows whose run_dir still has model.pkl
+    # 只保留 model.pkl 仍存在的行（兼容新旧路径格式）
     valid = []
     for _, row in df.iterrows():
-        d = os.path.join(PROJECT_ROOT, row['run_dir'])
-        if os.path.isfile(os.path.join(d, 'model.pkl')):
+        resolved = _resolve_run_dir(row['run_dir'], target)
+        if resolved:
             valid.append(row)
 
     if not valid:
-        print("[SurfPredict] Warning: index entries exist but no model.pkl "
-              "files found on disk.")
         return pd.DataFrame()
 
     result = pd.DataFrame(valid)
@@ -552,69 +617,81 @@ def list_models() -> pd.DataFrame:
 
 
 def quick_predict(smiles: str, model_name: str = 'best',
+                  target: str = 'pCMC',
                   device: str = 'cpu') -> float:
-    """Quick single-molecule prediction without creating a Predictor object.
+    """快速单分子预测。
 
     Examples:
         >>> quick_predict('CCO')
-        6.323...
-        >>> quick_predict('CCO', model_name='catboost')
-        6.152...
+        >>> quick_predict('CCO', target='AW_ST_CMC')
+        >>> quick_predict('CCO', model_name='catboost', target='Gamma_max')
     """
-    return SmilesPredictor(model_name=model_name, device=device).predict(smiles)
+    return SmilesPredictor(model_name=model_name, target=target,
+                           device=device).predict(smiles)
 
 
-def SmilesPredict(smiles, model_name='mlp', run_dir=None, return_features=False):
-    """Simplified one-line prediction. 直接出结果，不创建对象。
+def SmilesPredict(smiles,
+                  model_name: str = 'best',
+                  target: str = 'pCMC',
+                  run_dir: Optional[str] = None,
+                  return_features: bool = False):
+    """最简一行预测接口。
 
     Args:
         smiles: SMILES 字符串或列表。
-        model_name: 模型名，默认 'mlp'（当前最优）。
-        run_dir: 指定运行目录（优先级高于 model_name）。
+        model_name: 模型名，默认 'best'（自动选当前 target 最优模型）。
+        target: 预测目标，可选 'pCMC', 'AW_ST_CMC', 'Gamma_max',
+                'Area_min', 'Pi_CMC', 'pC20'。默认 'pCMC'。
+        run_dir: 指定运行目录（优先级最高）。
         return_features: 是否同时返回 522-dim 特征向量。
 
     Returns:
         float, np.ndarray, 或 (预测值, 特征矩阵) 元组。
 
     Examples:
-        >>> SmilesPredict('CCO')
-        0.1069
-        >>> SmilesPredict(['CCO', 'CCC(=O)O'])
-        array([0.1069, 0.0766])
-        >>> SmilesPredict('CCO', model_name='catboost')
-        0.9682
+        >>> SmilesPredict('CCO')                               # pCMC
+        >>> SmilesPredict('CCO', target='AW_ST_CMC')            # 表面张力
+        >>> SmilesPredict(['CCO', 'CCC(=O)O'], target='Gamma_max')  # 批量
+        >>> SmilesPredict('CCO', model_name='catboost', target='pC20')
+        >>> SmilesPredict('CCO', target='pCMC', return_features=True)
     """
-    engine = SmilesPredictor(model_name=model_name, run_dir=run_dir)
+    engine = SmilesPredictor(model_name=model_name, target=target,
+                             run_dir=run_dir)
     return engine.predict(smiles, return_features=return_features)
 
 
 # ============================================================================
-# CLI (``python use/use_models.py --smiles "CCO"``)
+# CLI (``python use/use_models.py --smiles "CCO" --target pCMC``)
 # ============================================================================
 
 def _cli():
     import argparse
     parser = argparse.ArgumentParser(
-        description='SurfPredict — Predict surfactant pCMC from SMILES',
+        description='SurfPredict — Predict surfactant properties from SMILES',
     )
     parser.add_argument('--smiles', '-s', nargs='+', required=True,
                         help='SMILES string(s) to predict')
     parser.add_argument('--model', '-m', default='best',
                         help='Model name or "best" (default)')
-    parser.add_argument('--list', '-l', action='store_true',
-                        help='List available models and exit')
+    parser.add_argument('--target', '-t', default='pCMC',
+                        choices=sorted(TARGETS),
+                        help='Target property (default: pCMC)')
+    parser.add_argument('--list', '-l', nargs='?', const=None, default=False,
+                        help='List models (optionally filter by target, e.g. -l pCMC)')
     parser.add_argument('--device', default='cpu',
                         help='Torch device (cpu/cuda)')
     args = parser.parse_args()
 
-    if args.list:
-        print(list_models())
+    if args.list is not False:
+        target_arg = args.list if args.list else None
+        print(list_models(target=target_arg))
         return
 
-    pred = SmilesPredictor(model_name=args.model, device=args.device)
+    pred = SmilesPredictor(model_name=args.model, target=args.target,
+                           device=args.device)
     for s in args.smiles:
         p = pred.predict(s)
-        print(f'{s}\t{p:.4f}')
+        print(f'{s}\t{p:.6f}')
 
 
 if __name__ == '__main__':
