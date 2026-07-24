@@ -126,7 +126,9 @@ def _rewrite_index_row(filepath, new_row, all_fieldnames):
                 reader = csv.DictReader(f)
                 old_columns = reader.fieldnames or []
                 for r in reader:
-                    old_rows.append(r)
+                    # 过滤 None 键（兼容旧文件中列数不匹配的行）
+                    clean = {k: v for k, v in r.items() if k is not None}
+                    old_rows.append(clean)
         except (StopIteration, csv.Error):
             pass
 
