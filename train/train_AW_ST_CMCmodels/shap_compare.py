@@ -10,6 +10,11 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+
+# Make project root importable when run directly
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from train.train_AW_ST_CMCmodels.shap_utils import RUNS_DIR, FEATURE_DIR, _get_feature_names
 
 # 模型列表（按 Test R² 降序）

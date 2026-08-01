@@ -9,6 +9,10 @@ shap_utils.py — SHAP 分析共用工具
  - get_sample_indices()      获取最佳/最差/中位数预测样本索引
  - feature_name()            获取特征名称
 """
+# Make project root importable when run directly
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 import os, re, warnings
 import numpy as np
 import matplotlib

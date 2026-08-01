@@ -10,6 +10,11 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import shap
+
+# Make project root importable when run directly
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from train.train_AW_ST_CMCmodels.shap_utils import (
     load_features, find_latest_run,
     get_top_features, get_sample_indices,

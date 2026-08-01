@@ -22,6 +22,11 @@ import numpy as np
 import pandas as pd
 
 # Shared featurization
+
+# Make project root importable when run directly
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from train.train_AW_ST_CMCmodels.smiles_to_features_pharmhgt import load_or_compute_features, FEATURE_NAMES
 from train.train_AW_ST_CMCmodels.utils import setup_run, save_metrics, update_index
 

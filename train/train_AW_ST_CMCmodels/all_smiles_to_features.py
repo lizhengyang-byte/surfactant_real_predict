@@ -15,6 +15,10 @@ all_smiles_to_features.py — 特征工程预运算：计算所有 522 维特征
     若数据文件变更导致哈希不匹配，自动触发重算。
 """
 
+# Make project root importable when run directly
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+
 from train.train_AW_ST_CMCmodels.smiles_to_features_pharmhgt import load_or_compute_features
 
 if __name__ == '__main__':
