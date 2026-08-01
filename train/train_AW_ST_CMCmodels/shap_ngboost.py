@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import shap
-from shap_utils import (
+from train.train_AW_ST_CMCmodels.shap_utils import (
     load_features, find_latest_run,
     get_top_features, get_sample_indices,
     feature_name, is_large_ensemble

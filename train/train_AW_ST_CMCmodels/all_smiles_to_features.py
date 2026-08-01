@@ -15,7 +15,7 @@ all_smiles_to_features.py — 特征工程预运算：计算所有 522 维特征
     若数据文件变更导致哈希不匹配，自动触发重算。
 """
 
-from smiles_to_features_pharmhgt import load_or_compute_features
+from train.train_AW_ST_CMCmodels.smiles_to_features_pharmhgt import load_or_compute_features
 
 if __name__ == '__main__':
     print("=" * 60)

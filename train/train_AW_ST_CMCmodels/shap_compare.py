@@ -10,7 +10,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-from shap_utils import RUNS_DIR, FEATURE_DIR, _get_feature_names
+from train.train_AW_ST_CMCmodels.shap_utils import RUNS_DIR, FEATURE_DIR, _get_feature_names
 
 # 模型列表（按 Test R² 降序）
 MODELS = [
@@ -31,7 +31,7 @@ FEATURE_NAMES = _get_feature_names()
 
 def load_shap(model_prefix):
     """加载模型的 shap_values.npy，返回 (shap_values, run_dir)。"""
-    from shap_utils import find_latest_run
+    from train.train_AW_ST_CMCmodels.shap_utils import find_latest_run
     try:
         run_dir = find_latest_run(model_prefix)
     except FileNotFoundError:

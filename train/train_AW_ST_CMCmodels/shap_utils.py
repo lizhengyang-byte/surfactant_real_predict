@@ -24,7 +24,7 @@ _FEATURE_NAMES = None
 def _get_feature_names():
     global _FEATURE_NAMES
     if _FEATURE_NAMES is None:
-        from smiles_to_features_pharmhgt import FEATURE_NAMES as FN
+        from train.train_AW_ST_CMCmodels.smiles_to_features_pharmhgt import FEATURE_NAMES as FN
         _FEATURE_NAMES = FN
     return _FEATURE_NAMES
 

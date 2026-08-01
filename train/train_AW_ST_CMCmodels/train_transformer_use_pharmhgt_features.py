@@ -21,8 +21,8 @@ import numpy as np
 import pandas as pd
 
 # Shared featurization
-from smiles_to_features_pharmhgt import load_or_compute_features
-from utils import setup_run, save_metrics, update_index
+from train.train_AW_ST_CMCmodels.smiles_to_features_pharmhgt import load_or_compute_features
+from train.train_AW_ST_CMCmodels.utils import setup_run, save_metrics, update_index
 
 # PyTorch
 import torch
