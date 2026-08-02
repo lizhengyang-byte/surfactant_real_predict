@@ -1,0 +1,141 @@
+============================================================
+transformer — 运行开始  20260802_174306
+  输出目录:  runs\pCMC\pCMC_transformer_20260802_174306
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for LogCMC (pCMC) Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\pCMC
+  Train features: (1204, 522)
+  Test features:  (140, 522)
+
+Split: Train 1053, Val 151, Test 140
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 0.9652 (best: 0.9652)
+  Epoch  10 — Val RMSE: 0.9319 (best: 0.9319)
+  Epoch  15 — Val RMSE: 0.8406 (best: 0.8406)
+  Epoch  20 — Val RMSE: 0.8898 (best: 0.8406)
+  Epoch  25 — Val RMSE: 0.8863 (best: 0.8406)
+  Epoch  30 — Val RMSE: 0.8261 (best: 0.8261)
+  Epoch  35 — Val RMSE: 0.8442 (best: 0.8261)
+  Epoch  40 — Val RMSE: 0.7359 (best: 0.7359)
+  Epoch  45 — Val RMSE: 0.7364 (best: 0.7359)
+  Epoch  50 — Val RMSE: 0.7241 (best: 0.7241)
+  Epoch  55 — Val RMSE: 0.7931 (best: 0.7241)
+  Epoch  60 — Val RMSE: 0.7532 (best: 0.7241)
+  Epoch  65 — Val RMSE: 0.6742 (best: 0.6742)
+  Epoch  70 — Val RMSE: 0.6996 (best: 0.6742)
+  Epoch  75 — Val RMSE: 0.6353 (best: 0.6353)
+  Epoch  80 — Val RMSE: 0.6630 (best: 0.6353)
+  Epoch  85 — Val RMSE: 0.7099 (best: 0.6353)
+  Epoch  90 — Val RMSE: 0.6419 (best: 0.6353)
+  Epoch  95 — Val RMSE: 0.7302 (best: 0.6353)
+  Epoch 100 — Val RMSE: 0.6633 (best: 0.6353)
+  Epoch 105 — Val RMSE: 0.6813 (best: 0.6353)
+  Epoch 110 — Val RMSE: 0.7069 (best: 0.6353)
+  Epoch 115 — Val RMSE: 0.6463 (best: 0.6353)
+  Epoch 120 — Val RMSE: 0.6553 (best: 0.6353)
+  Epoch 125 — Val RMSE: 0.6501 (best: 0.6353)
+  Epoch 130 — Val RMSE: 0.6766 (best: 0.6353)
+  Epoch 135 — Val RMSE: 0.6980 (best: 0.6353)
+  Epoch 140 — Val RMSE: 0.6540 (best: 0.6353)
+  Epoch 145 — Val RMSE: 0.6528 (best: 0.6353)
+  Epoch 150 — Val RMSE: 0.7207 (best: 0.6353)
+  Epoch 155 — Val RMSE: 0.6368 (best: 0.6353)
+  Epoch 160 — Val RMSE: 0.6112 (best: 0.6112)
+  Epoch 165 — Val RMSE: 0.6543 (best: 0.6112)
+  Epoch 170 — Val RMSE: 0.6551 (best: 0.6112)
+  Epoch 175 — Val RMSE: 0.6526 (best: 0.6112)
+  Epoch 180 — Val RMSE: 0.6417 (best: 0.6112)
+  Epoch 185 — Val RMSE: 0.6800 (best: 0.6112)
+  Epoch 190 — Val RMSE: 0.6193 (best: 0.6112)
+  Epoch 195 — Val RMSE: 0.6267 (best: 0.6112)
+  Epoch 200 — Val RMSE: 0.6330 (best: 0.6112)
+  Epoch 205 — Val RMSE: 0.6616 (best: 0.6112)
+  Epoch 210 — Val RMSE: 0.6232 (best: 0.6112)
+  Epoch 215 — Val RMSE: 0.6119 (best: 0.6112)
+  Epoch 220 — Val RMSE: 0.6871 (best: 0.6112)
+  Epoch 225 — Val RMSE: 0.6401 (best: 0.6112)
+  Epoch 230 — Val RMSE: 0.6187 (best: 0.6112)
+  Epoch 235 — Val RMSE: 0.6526 (best: 0.6112)
+  Epoch 240 — Val RMSE: 0.6779 (best: 0.6112)
+  Epoch 245 — Val RMSE: 0.6424 (best: 0.6112)
+  Epoch 250 — Val RMSE: 0.6084 (best: 0.6084)
+  Epoch 255 — Val RMSE: 0.7009 (best: 0.6084)
+  Epoch 260 — Val RMSE: 0.6670 (best: 0.6084)
+  Epoch 265 — Val RMSE: 0.6480 (best: 0.6084)
+  Epoch 270 — Val RMSE: 0.6209 (best: 0.6084)
+  Epoch 275 — Val RMSE: 0.6910 (best: 0.6084)
+  Epoch 280 — Val RMSE: 0.6952 (best: 0.6084)
+  Epoch 285 — Val RMSE: 0.6376 (best: 0.6084)
+  Epoch 290 — Val RMSE: 0.6031 (best: 0.6031)
+  Epoch 295 — Val RMSE: 0.5858 (best: 0.5858)
+  Epoch 300 — Val RMSE: 0.6441 (best: 0.5858)
+  Epoch 305 — Val RMSE: 0.6269 (best: 0.5858)
+  Epoch 310 — Val RMSE: 0.6381 (best: 0.5858)
+  Epoch 315 — Val RMSE: 0.5664 (best: 0.5664)
+  Epoch 320 — Val RMSE: 0.5896 (best: 0.5664)
+  Epoch 325 — Val RMSE: 0.6225 (best: 0.5664)
+  Epoch 330 — Val RMSE: 0.6221 (best: 0.5664)
+  Epoch 335 — Val RMSE: 0.5661 (best: 0.5661)
+  Epoch 340 — Val RMSE: 0.6232 (best: 0.5661)
+  Epoch 345 — Val RMSE: 0.5681 (best: 0.5661)
+  Epoch 350 — Val RMSE: 0.5919 (best: 0.5661)
+  Epoch 355 — Val RMSE: 0.5999 (best: 0.5661)
+  Epoch 360 — Val RMSE: 0.6305 (best: 0.5661)
+  Epoch 365 — Val RMSE: 0.5970 (best: 0.5661)
+  Epoch 370 — Val RMSE: 0.5989 (best: 0.5661)
+  Epoch 375 — Val RMSE: 0.6036 (best: 0.5661)
+  Epoch 380 — Val RMSE: 0.5675 (best: 0.5661)
+  Epoch 385 — Val RMSE: 0.5800 (best: 0.5661)
+  Epoch 390 — Val RMSE: 0.5790 (best: 0.5661)
+  Epoch 395 — Val RMSE: 0.5501 (best: 0.5501)
+  Epoch 400 — Val RMSE: 0.5994 (best: 0.5501)
+  Epoch 405 — Val RMSE: 0.5939 (best: 0.5501)
+  Epoch 410 — Val RMSE: 0.5778 (best: 0.5501)
+  Epoch 415 — Val RMSE: 0.5673 (best: 0.5501)
+  Epoch 420 — Val RMSE: 0.5755 (best: 0.5501)
+  Epoch 425 — Val RMSE: 0.5724 (best: 0.5501)
+  Epoch 430 — Val RMSE: 0.5593 (best: 0.5501)
+  Epoch 435 — Val RMSE: 0.5646 (best: 0.5501)
+  Epoch 440 — Val RMSE: 0.5637 (best: 0.5501)
+  Epoch 445 — Val RMSE: 0.5793 (best: 0.5501)
+  Epoch 450 — Val RMSE: 0.5765 (best: 0.5501)
+  Epoch 455 — Val RMSE: 0.5792 (best: 0.5501)
+  Epoch 460 — Val RMSE: 0.5702 (best: 0.5501)
+  Epoch 465 — Val RMSE: 0.5633 (best: 0.5501)
+  Epoch 470 — Val RMSE: 0.5667 (best: 0.5501)
+  Epoch 475 — Val RMSE: 0.5660 (best: 0.5501)
+  Epoch 480 — Val RMSE: 0.5659 (best: 0.5501)
+  Epoch 485 — Val RMSE: 0.5660 (best: 0.5501)
+  Epoch 490 — Val RMSE: 0.5662 (best: 0.5501)
+  Epoch 495 — Val RMSE: 0.5663 (best: 0.5501)
+  Epoch 500 — Val RMSE: 0.5663 (best: 0.5501)
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.3765
+  Test RMSE: 0.6136
+  Test MAE:  0.4386
+  Test R²:   0.6951
+Model saved to runs\pCMC\pCMC_transformer_20260802_174306\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     1053 (val 151)
+  Test:      140
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 0.6136
+  Test MAE:  0.4386
+  Test R²:   0.6951
+
+指标已保存: runs\pCMC\pCMC_transformer_20260802_174306\metrics.json
+索引已更新: runs\pCMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

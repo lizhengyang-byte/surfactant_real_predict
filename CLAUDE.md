@@ -19,56 +19,61 @@ Surfactant (表面活性剂) interfacial property prediction from molecular stru
 
 **Key correlations:** pCMC↔pC20 (r=0.76), AW_ST_CMC↔Pi_CMC (r=-0.99, nearly linear), Gamma_max↔Area_min (r=-0.62).
 
+**Gamma_max 特殊处理（README 明确约定）：** 数值极小（~10⁻⁶），训练时自动乘以 `y_scale=1e6`（记录于 `config.json`），预测 API `use_models.py` 已封装自动还原，无需调用方干预。
+
 ## Commands
 
+> **重要：所有训练/特征/SHAP 脚本位于 `train/train_{target}_models/`**（每个 target 一套完整副本，根目录无脚本）。**从项目根目录调用**：Python 会把脚本所在目录加入 `sys.path`（相对导入 `from utils import ...`、`from smiles_to_features_pharmhgt import ...` 依赖这一点），且 `utils.py` 按项目根相对路径写 `runs/`。`target` ∈ {`pCMC`, `pC20`, `AW_ST_CMC`, `Pi_CMC`, `Gamma_max`, `Area_min`}。
+
 ```bash
-# Train any model (pCMC only; change TARGET_COL in script for other targets)
-python train_catboost_use_pharmhgt_features.py
-python train_lightgbm_use_pharmhgt_features.py
-python train_xgboost_use_pharmhgt_features.py
-python train_histgb_use_pharmhgt_features.py
-python train_ngboost_use_pharmhgt_features.py
-python train_randomforest_use_pharmhgt_features.py
-python train_cif_use_pharmhgt_features.py
-python train_mlp_use_pharmhgt_features.py
-python train_rnn_use_pharmhgt_features.py
-python train_transformer_use_pharmhgt_features.py
+# Train any model (pCMC example; 10 个模型脚本名与下面一致)
+python train/train_pCMC_models/train_catboost_use_pharmhgt_features.py
+python train/train_pCMC_models/train_xgboost_use_pharmhgt_features.py
+python train/train_pCMC_models/train_mlp_use_pharmhgt_features.py
+# ... train_lightgbm / train_histgb / train_ngboost / train_randomforest / train_cif / train_rnn / train_transformer
 
-# Pre-compute features once (speeds up all training scripts)
-python all_smiles_to_features.py
+# Pre-compute features once per target (speeds up all training scripts)
+python train/train_pCMC_models/all_smiles_to_features.py
 
-# Single-molecule prediction (uses best trained model)
+# Single-molecule prediction (auto-selects best model from _runs_index.csv)
 python -c "from use.use_models import SmilesPredict; print(SmilesPredict('CCO'))"
 
-# CLI prediction
-python use/use_models.py --smiles "CCCCCCCCCCCCCCOS(=O)(=O)[O-].[Na+]" --model mlp
+# CLI prediction (also --list to show models, -t to pick target)
+python use/use_models.py --smiles "CCCCCCCCCCCCCCOS(=O)(=O)[O-].[Na+]" --model best --target pCMC
 
 # List all trained models
 python -c "from use.use_models import list_models; print(list_models())"
 
-# SHAP analysis for any trained model
-python shap_catboost.py
-python shap_lightgbm.py
-python shap_xgboost.py
-# ... etc
+# SHAP analysis (one script per tree model, inside the target dir)
+python train/train_pCMC_models/shap_catboost.py
 
-# Feature dimension check
+# Feature dimension check (importable from project root)
 python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; print(smiles_to_features_pharmhgt('CCO').shape)"
 ```
+
+**注意：** 训练脚本以 `python train/train_pCMC_models/train_x.py` 从根调用时，CWD 为项目根 → `runs/` 落在根目录。若 `cd` 进 target 目录再运行，`runs/` 会落在该目录下（与现有 runs/ 结构不符），请勿这样做。
 
 ## Code Architecture
 
 ### Directory Layout
 
 ```text
-├── all_smiles_to_features.py          # One-time feature pre-computation & cache
-├── utils.py                           # Run management: timestamped dirs, stdout tee, metrics, index
-├── train_*.py                         # 10 training scripts (one per model, all follow same pattern)
-├── shap_*.py                          # 7 SHAP analysis scripts + 1 cross-model comparison
-├── shap_utils.py                      # Shared SHAP utilities
-├── use/                               # Prediction API package
+├── train/
+│   ├── train_pCMC_models/             # 每个 target 一套完整脚本副本（结构相同）
+│   │   ├── smiles_to_features_pharmhgt.py  # 522-dim 特征提取 + 缓存
+│   │   ├── utils.py                   # 运行管理：时间戳目录、stdout tee、指标、双写索引（TARGET_NAME 硬编码）
+│   │   ├── all_smiles_to_features.py  # 一次性特征预计算
+│   │   ├── train_*.py                 # 10 个训练脚本（模式一致）
+│   │   ├── shap_*.py + shap_utils.py  # 7 个 SHAP 脚本 + 1 个跨模型对比
+│   ├── train_AW_ST_CMCmodels/
+│   ├── train_Gamma_max_models/        # 含 y_scale=1e6 缩放（Gamma_max 数值极小）
+│   ├── train_Area_min_models/
+│   ├── train_Pi_CMC_models/
+│   └── train_pC20_models/
+├── use/                               # 预测 API 包
 │   ├── __init__.py
-│   └── use_models.py                  # SmilesPredictor class, SmilesPredict(), list_models()
+│   ├── use_models.py                  # SmilesPredictor, SmilesPredict(), list_models()
+│   └── use_demo.py                    # 用法示例
 ├── test/
 │   ├── 01.py                          # MLP batch prediction on test CSV
 │   └── 02.py                          # CatBoost single SMILES prediction
@@ -83,18 +88,24 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 │   ├── technical_overview_pharmhgt.md
 │   ├── smiles_to_features_pharmhgt_技术文档.md  # Chinese tech doc
 │   ├── feature_reference_522dim.md             # Complete 522-dim feature index
-│   └── report/                                 # Model training reports + SHAP figures
+│   └── report/
+│       ├── pdf_style_header.html      # PDF 导出样式模板（pandoc -H 注入，见下节）
+│       └── {target}/                  # 模型报告（md + pdf，按 target 分组）
+│           └── {model}_report.md/.pdf # 每模型一份人工撰写的中文报告
 └── runs/
-    ├── _runs_index.csv                # Cross-model comparison (model / target / metrics)
+    ├── _runs_index.csv                # 全局索引（所有 target 混合）
     └── {target}/                      # Organized by target variable
-        └── {model}_{timestamp}/
+        ├── _runs_index.csv            # target 专有索引
+        └── {target}_{model}_{timestamp}/
             ├── config.json            # Reproducible hyperparams + data config
             ├── train.log              # Full stdout (incl. Optuna output)
             ├── metrics.json           # test_rmse / test_mae / test_r2
             ├── model.pkl              # Model weights (joblib or torch.save)
-            ├── pred_vs_true.png       # Prediction vs truth + residual plot
+            ├── pred_vs_true.png       # Prediction vs truth + residual plot（深度模型无此图）
             └── shap_*.png / shap_values.npy  # SHAP analysis (generated by shap_*.py)
 ```
+
+> **图片可用性差异：** 7 个树模型（catboost/cif/histgb/lightgbm/ngboost/rf/xgboost）训练后生成 `pred_vs_true.png`，且 `shap_*.py` 会生成完整 SHAP 图组；**深度模型（MLP/RNN/Transformer）不生成任何图片**——相关报告中需以文字说明代替图引用。
 
 ### Data Flow (all 10 training scripts follow the same 5-step pattern)
 
@@ -123,8 +134,9 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 
 ## Model Details
 
-**Current best model (pCMC): MLP** — Test RMSE=0.342, R²=0.905 (Optuna-tuned: 3×990 GELU, dropout=0.27, lr=0.0067, batch=95).
-**Runner-up:** CIF (ExtraTrees) — Test RMSE=0.393, R²=0.875.
+**Current best model (pCMC): CIF (ExtraTrees)** — Test RMSE=0.3928, R²=0.8751 (Optuna-tuned: n_estimators=1161, max_depth=21, bootstrap=False).
+**Runner-up:** NGBoost — Test RMSE=0.4150, R²=0.8605 (probabilistic, predicts mean+std).
+> **注意：** 上述以 `runs/_runs_index.csv`（2026-08-02 运行）为准。README.md 中"MLP R²=0.905"为更早实验的历史记录，当前 runs 索引中 MLP 实际为 Test RMSE=0.4241, R²=0.8543。写报告或对比时以 `runs/_runs_index.csv` 为准。
 
 | Model | Tuning | Architecture / Key Params |
 |-------|--------|--------------------------|
@@ -152,23 +164,27 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 
 ## Prediction API (`use/` package)
 
+`from use import SmilesPredictor, SmilesPredict, quick_predict, list_models`
+
 ```python
-from use import SmilesPredictor, SmilesPredict, quick_predict, list_models
-
-# Auto-load best model (lowest test_rmse from _runs_index.csv)
-predictor = SmilesPredictor(model_name='best')
+# Auto-load best model for a target (lowest test_rmse from _runs_index.csv)
+predictor = SmilesPredictor(model_name='best', target='pCMC')
 pred = predictor.predict('CCO')
 
-# Specific model
-predictor = SmilesPredictor(model_name='mlp')
+# Specific model / other target
+predictor = SmilesPredictor(model_name='mlp', target='AW_ST_CMC')
 pred = predictor.predict('CCO')
 
-# One-liner (defaults to MLP)
+# One-liner (defaults to best model, target pCMC)
 SmilesPredict('CCO')
+SmilesPredict('CCO', target='Gamma_max')            # 多 target
+SmilesPredict(['CCO', 'CCC(=O)O'], return_features=True)  # 批量 + 特征
 
 # List all trained models with metrics
-list_models()
+list_models(target='pCMC')
 ```
+
+CLI 等价：`python use/use_models.py --smiles "CCO" --target pCMC --model best`，`--list [target]` 列出模型。
 
 ## SHAP Analysis
 
@@ -179,6 +195,32 @@ Each tree model has a corresponding `shap_{model}.py` script that:
 4. All outputs go into the model's run directory
 
 Cross-model comparison: `shap_compare.py` generates `doc/report/shap_cross_model_ranking.png` and `doc/report/shap_feature_agreement.png`.
+
+## Report Generation & PDF Export
+
+`doc/report/{target}/{model}_report.md` 是按模型人工撰写的中文报告（每模型一份），基于该模型运行目录的 `train.log` / `config.json` / `metrics.json` 提炼，统一结构：报告信息 → 概述 → 数据与方法 → 超参数与调优 → 训练过程 → 测试结果 → 特征重要性 → 结论与横向排名。
+
+**生成原则：**
+
+- **逐模型读取日志、逐个撰写**——严禁用脚本批量生成报告正文（用户明确要求保证质量）。
+- 图引用用 `<img src="../../../runs/{target}/{model}_{timestamp}/xxx.png" width="720">`，相对路径从 `doc/report/{target}/` 到项目根 `runs/` 需要 `../../../`。
+- 深度模型（MLP/RNN/Transformer）无图可引，应写文字说明代替失效链接。
+
+**PDF 导出（markdown → HTML → Edge headless 打印）：**
+
+```bash
+# 在 doc/report/{target}/ 目录内执行：
+pandoc pCMC_catboost_report.md -o _tmp.html --standalone \
+       -H ../pdf_style_header.html --metadata title="pCMC CatBoost 模型报告"
+"C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" \
+       --headless=new --disable-gpu --no-pdf-header-footer \
+       --user-data-dir="%TEMP%/edge_pdf_profile" \
+       --print-to-pdf="pCMC_catboost_report.pdf" "file:///<绝对路径>/_tmp.html"
+del _tmp.html
+```
+
+- 样式模板：`doc/report/pdf_style_header.html`（微软雅黑中文字体、A4 页边距、表格样式）。
+- **坑：** 不能 pandoc 直转 LaTeX（`--pdf-engine=xelatex`），`<img>` 标签会被丢弃导致 PDF 无图；必须经 HTML 中间文件，且相对图片路径是相对 HTML 所在目录解析的，故须在报告子目录内生成 HTML。
 
 ## Key Dependencies
 

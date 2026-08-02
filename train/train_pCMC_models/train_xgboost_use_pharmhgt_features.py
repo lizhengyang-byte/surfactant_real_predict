@@ -35,6 +35,19 @@ warnings.filterwarnings('ignore')
 
 
 # ===========================================================================
+# 预调优参数：若非 None，则跳过 Optuna 搜索与 Top-K 筛选，直接用该组参数训练
+# ===========================================================================
+PRETUNED_PARAMS = {
+    'n_estimators': 1636, 'max_depth': 6, 'learning_rate': 0.020331459031715477,
+    'subsample': 0.7662024954079603, 'colsample_bytree': 0.821424275851276,
+    'colsample_bylevel': 0.6764078720752115, 'colsample_bynode': 0.5368595511238561,
+    'min_child_weight': 1.2411232899932865, 'gamma': 0.02270857913826103,
+    'reg_alpha': 0.15369169864694893, 'reg_lambda': 0.0021095519927514703,
+    'max_delta_step': 0.9810519208973468, 'booster': 'dart',
+}
+
+
+# ===========================================================================
 # Main - Load Data, Train XGBoost with Optuna
 # ===========================================================================
 
@@ -89,156 +102,169 @@ def main():
         X_full, y_full, test_size=HOLDOUT_FRAC, random_state=SEED + 1)
     print(f"  CV (Optuna): {len(X_cv)}, Holdout (Top-K filter): {len(X_holdout)}")
 
-    # ======================================================================
-    # Optuna Hyperparameter Optimization (K-Fold CV)
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print(f"Optuna Hyperparameter Tuning ({N_OPTUNA_TRIALS} trials, {N_FOLDS}-Fold CV)")
-    print("=" * 60)
+    # ---- 预调优参数：若非 None，跳过 Optuna + Top-K，直接进入最终训练 ----
+    best_params = None
+    study_best_value = None
+    best_holdout_rmse = None
 
-    FEATURE_NAME = 'pharmhgt_522'
+    if PRETUNED_PARAMS is not None:
+        print("\n" + "=" * 60)
+        print("Using pretuned hyperparameters (skipping Optuna + Top-K)")
+        print("=" * 60)
+        best_params = PRETUNED_PARAMS.copy()
+        print(f"  Params: {best_params}")
+    else:
 
-    def objective(trial):
-        params = {
-            # Core parameters — 精炼范围
-            "n_estimators": trial.suggest_int("n_estimators", 800, 3000),
-            "max_depth": trial.suggest_int("max_depth", 4, 12),
-            "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.2, log=True),
-            # Regularization
-            "subsample": trial.suggest_float("subsample", 0.6, 1.0),
-            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.3, 1.0),
-            "colsample_bylevel": trial.suggest_float("colsample_bylevel", 0.3, 1.0),
-            "colsample_bynode": trial.suggest_float("colsample_bynode", 0.3, 1.0),
-            "min_child_weight": trial.suggest_float("min_child_weight", 1.0, 30.0, log=True),
-            "gamma": trial.suggest_float("gamma", 0.0, 2.0),
-            "reg_alpha": trial.suggest_float("reg_alpha", 1e-8, 10.0, log=True),
-            "reg_lambda": trial.suggest_float("reg_lambda", 1e-8, 10.0, log=True),
-            "max_delta_step": trial.suggest_float("max_delta_step", 0.0, 8.0),
-            "booster": trial.suggest_categorical("booster", ["gbtree", "dart"]),
-        }
+        # ======================================================================
+        # Optuna Hyperparameter Optimization (K-Fold CV)
+        # ======================================================================
+        print("\n" + "=" * 60)
+        print(f"Optuna Hyperparameter Tuning ({N_OPTUNA_TRIALS} trials, {N_FOLDS}-Fold CV)")
+        print("=" * 60)
 
-        cv_scores = []
-        kf = KFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
-        for fold, (train_idx_cv, val_idx_cv) in enumerate(kf.split(X_cv)):
-            X_tr_cv = X_cv[train_idx_cv]
-            y_tr_cv = y_cv[train_idx_cv]
-            X_val_cv = X_cv[val_idx_cv]
-            y_val_cv = y_cv[val_idx_cv]
+        FEATURE_NAME = 'pharmhgt_522'
 
-            model_cv = xgb.XGBRegressor(
-                random_state=SEED,
-                verbosity=0,
-                early_stopping_rounds=100,
+        def objective(trial):
+            params = {
+                # Core parameters — 精炼范围
+                "n_estimators": trial.suggest_int("n_estimators", 800, 3000),
+                "max_depth": trial.suggest_int("max_depth", 4, 12),
+                "learning_rate": trial.suggest_float("learning_rate", 0.01, 0.2, log=True),
+                # Regularization
+                "subsample": trial.suggest_float("subsample", 0.6, 1.0),
+                "colsample_bytree": trial.suggest_float("colsample_bytree", 0.3, 1.0),
+                "colsample_bylevel": trial.suggest_float("colsample_bylevel", 0.3, 1.0),
+                "colsample_bynode": trial.suggest_float("colsample_bynode", 0.3, 1.0),
+                "min_child_weight": trial.suggest_float("min_child_weight", 1.0, 30.0, log=True),
+                "gamma": trial.suggest_float("gamma", 0.0, 2.0),
+                "reg_alpha": trial.suggest_float("reg_alpha", 1e-8, 10.0, log=True),
+                "reg_lambda": trial.suggest_float("reg_lambda", 1e-8, 10.0, log=True),
+                "max_delta_step": trial.suggest_float("max_delta_step", 0.0, 8.0),
+                "booster": trial.suggest_categorical("booster", ["gbtree", "dart"]),
+            }
+
+            cv_scores = []
+            kf = KFold(n_splits=N_FOLDS, shuffle=True, random_state=SEED)
+            for fold, (train_idx_cv, val_idx_cv) in enumerate(kf.split(X_cv)):
+                X_tr_cv = X_cv[train_idx_cv]
+                y_tr_cv = y_cv[train_idx_cv]
+                X_val_cv = X_cv[val_idx_cv]
+                y_val_cv = y_cv[val_idx_cv]
+
+                model_cv = xgb.XGBRegressor(
+                    random_state=SEED,
+                    verbosity=0,
+                    early_stopping_rounds=100,
+                    **params,
+                )
+                model_cv.fit(
+                    X_tr_cv, y_tr_cv,
+                    eval_set=[(X_val_cv, y_val_cv)],
+                    verbose=False,
+                )
+                y_pred_cv = model_cv.predict(X_val_cv)
+                rmse_cv = np.sqrt(mean_squared_error(y_val_cv, y_pred_cv))
+
+                # ---- 计算训练-验证差距，惩罚过拟合 ----
+                y_train_pred_cv = model_cv.predict(X_tr_cv)
+                rmse_train_cv = np.sqrt(mean_squared_error(y_tr_cv, y_train_pred_cv))
+                gap = rmse_train_cv - rmse_cv
+                # 如果 gap > 0.3 说明明显过拟合，轻微调高 score
+                adjusted_rmse = rmse_cv * (1.0 + 0.05 * max(0.0, gap - 0.3))
+                cv_scores.append(adjusted_rmse)
+
+                # Report intermediate mean to pruner after each fold
+                mean_so_far = np.mean(cv_scores)
+                trial.report(mean_so_far, fold)
+                if trial.should_prune():
+                    raise optuna.TrialPruned()
+
+            return np.mean(cv_scores)
+
+        sampler = optuna.samplers.TPESampler(multivariate=True, seed=SEED, n_startup_trials=10)
+        pruner = MedianPruner(n_startup_trials=5, n_warmup_steps=1, n_min_trials=3)
+        study = optuna.create_study(
+            study_name=f'xgboost_{FEATURE_NAME}',
+            direction='minimize',
+            sampler=sampler,
+            pruner=pruner,
+        )
+        study.optimize(objective, n_trials=N_OPTUNA_TRIALS, show_progress_bar=True)
+
+        # ---- Print all trial CV results ----
+        print("\n" + "-" * 60)
+        print("All Trial CV Results:")
+        print(f"{'Trial':>5} {'Mean RMSE':>10} {'Std RMSE':>9}  {'CV Scores'}")
+        print("-" * 60)
+        for t in study.trials:
+            if t.values is not None:
+                print(f"{t.number:>5} {t.values[0]:>10.4f}")
+        print("-" * 60)
+
+        print(f"\n=== Best Trial ===")
+        print(f"  CV RMSE: {study.best_value:.6f}")
+        print(f"  Params:  {study.best_params}")
+
+        # ---- Parameter importance ----
+        try:
+            importances = optuna.importance.get_param_importances(study)
+            print(f"\nParameter Importance:")
+            for param, imp in importances.items():
+                print(f"  {param}: {imp:.4f}")
+        except Exception:
+            pass
+
+        # ======================================================================
+        # Top-K Holdout Validation — 从最佳参数中选泛化最好的
+        # ======================================================================
+        print("\n" + "=" * 60)
+        print(f"Top-{TOP_K_CANDIDATES} Holdout Validation — selecting most generalizable params")
+        print("=" * 60)
+
+        # 按 CV RMSE 排序，取前 TOP_K_CANDIDATES 个 trial
+        sorted_trials = sorted(
+            [t for t in study.trials if t.values is not None],
+            key=lambda t: t.values[0]
+        )
+        top_k = sorted_trials[:TOP_K_CANDIDATES]
+
+        best_holdout_rmse = float('inf')
+        best_holdout_params = None
+
+        print(f"{'Rank':>5} {'CV RMSE':>10} {'Holdout RMSE':>14} {'Holdout R²':>12}")
+        print("-" * 60)
+        for rank, t in enumerate(top_k):
+            params = t.params
+            # 在 holdout 集上评估
+            model_tmp = xgb.XGBRegressor(
+                random_state=SEED, verbosity=0,
                 **params,
             )
-            model_cv.fit(
-                X_tr_cv, y_tr_cv,
-                eval_set=[(X_val_cv, y_val_cv)],
+            model_tmp.fit(
+                X_cv, y_cv,
                 verbose=False,
             )
-            y_pred_cv = model_cv.predict(X_val_cv)
-            rmse_cv = np.sqrt(mean_squared_error(y_val_cv, y_pred_cv))
+            y_pred_ho = model_tmp.predict(X_holdout)
+            ho_rmse = np.sqrt(mean_squared_error(y_holdout, y_pred_ho))
+            ho_r2 = r2_score(y_holdout, y_pred_ho)
+            print(f"{rank+1:>5} {t.values[0]:>10.4f} {ho_rmse:>14.4f} {ho_r2:>12.4f}")
+            if ho_rmse < best_holdout_rmse:
+                best_holdout_rmse = ho_rmse
+                best_holdout_params = params
 
-            # ---- 计算训练-验证差距，惩罚过拟合 ----
-            y_train_pred_cv = model_cv.predict(X_tr_cv)
-            rmse_train_cv = np.sqrt(mean_squared_error(y_tr_cv, y_train_pred_cv))
-            gap = rmse_train_cv - rmse_cv
-            # 如果 gap > 0.3 说明明显过拟合，轻微调高 score
-            adjusted_rmse = rmse_cv * (1.0 + 0.05 * max(0.0, gap - 0.3))
-            cv_scores.append(adjusted_rmse)
+        print(f"\n  → Selected params (holdout RMSE={best_holdout_rmse:.4f}):")
+        for k, v in best_holdout_params.items():
+            print(f"    {k}: {v}")
 
-            # Report intermediate mean to pruner after each fold
-            mean_so_far = np.mean(cv_scores)
-            trial.report(mean_so_far, fold)
-            if trial.should_prune():
-                raise optuna.TrialPruned()
+        # ======================================================================
+        # Final Training with Best Params — 使用 CV 数据（holdout 已排除）
+        # ======================================================================
+        print("\n" + "=" * 60)
+        print(f"Training Final Model with Best Hyperparameters (X_cv: {len(X_cv)} samples)")
+        print("=" * 60)
 
-        return np.mean(cv_scores)
-
-    sampler = optuna.samplers.TPESampler(multivariate=True, seed=SEED, n_startup_trials=10)
-    pruner = MedianPruner(n_startup_trials=5, n_warmup_steps=1, n_min_trials=3)
-    study = optuna.create_study(
-        study_name=f'xgboost_{FEATURE_NAME}',
-        direction='minimize',
-        sampler=sampler,
-        pruner=pruner,
-    )
-    study.optimize(objective, n_trials=N_OPTUNA_TRIALS, show_progress_bar=True)
-
-    # ---- Print all trial CV results ----
-    print("\n" + "-" * 60)
-    print("All Trial CV Results:")
-    print(f"{'Trial':>5} {'Mean RMSE':>10} {'Std RMSE':>9}  {'CV Scores'}")
-    print("-" * 60)
-    for t in study.trials:
-        if t.values is not None:
-            print(f"{t.number:>5} {t.values[0]:>10.4f}")
-    print("-" * 60)
-
-    print(f"\n=== Best Trial ===")
-    print(f"  CV RMSE: {study.best_value:.6f}")
-    print(f"  Params:  {study.best_params}")
-
-    # ---- Parameter importance ----
-    try:
-        importances = optuna.importance.get_param_importances(study)
-        print(f"\nParameter Importance:")
-        for param, imp in importances.items():
-            print(f"  {param}: {imp:.4f}")
-    except Exception:
-        pass
-
-    # ======================================================================
-    # Top-K Holdout Validation — 从最佳参数中选泛化最好的
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print(f"Top-{TOP_K_CANDIDATES} Holdout Validation — selecting most generalizable params")
-    print("=" * 60)
-
-    # 按 CV RMSE 排序，取前 TOP_K_CANDIDATES 个 trial
-    sorted_trials = sorted(
-        [t for t in study.trials if t.values is not None],
-        key=lambda t: t.values[0]
-    )
-    top_k = sorted_trials[:TOP_K_CANDIDATES]
-
-    best_holdout_rmse = float('inf')
-    best_holdout_params = None
-
-    print(f"{'Rank':>5} {'CV RMSE':>10} {'Holdout RMSE':>14} {'Holdout R²':>12}")
-    print("-" * 60)
-    for rank, t in enumerate(top_k):
-        params = t.params
-        # 在 holdout 集上评估
-        model_tmp = xgb.XGBRegressor(
-            random_state=SEED, verbosity=0,
-            early_stopping_rounds=150,
-            **params,
-        )
-        model_tmp.fit(
-            X_cv, y_cv,
-            verbose=False,
-        )
-        y_pred_ho = model_tmp.predict(X_holdout)
-        ho_rmse = np.sqrt(mean_squared_error(y_holdout, y_pred_ho))
-        ho_r2 = r2_score(y_holdout, y_pred_ho)
-        print(f"{rank+1:>5} {t.values[0]:>10.4f} {ho_rmse:>14.4f} {ho_r2:>12.4f}")
-        if ho_rmse < best_holdout_rmse:
-            best_holdout_rmse = ho_rmse
-            best_holdout_params = params
-
-    print(f"\n  → Selected params (holdout RMSE={best_holdout_rmse:.4f}):")
-    for k, v in best_holdout_params.items():
-        print(f"    {k}: {v}")
-
-    # ======================================================================
-    # Final Training with Best Params — 使用 CV 数据（holdout 已排除）
-    # ======================================================================
-    print("\n" + "=" * 60)
-    print(f"Training Final Model with Best Hyperparameters (X_cv: {len(X_cv)} samples)")
-    print("=" * 60)
-
-    best_params = best_holdout_params.copy()
+        best_params = best_holdout_params.copy()
+        study_best_value = study.best_value
 
     # 确保用于最终训练的 n_estimators 足够大 (>= 3000)
     # 这样模型可以充分收敛 (early_stopping_rounds 控制早停)
@@ -332,10 +358,11 @@ def main():
     print(f"  Features:  {X_full.shape[1]}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
     print(f"  Train:     {len(X_cv)} (holdout {len(X_holdout)})")
     print(f"  Test:      {len(X_test)}")
-    print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV, multivariate TPE, gap penalty")
-    print(f"  Top-K:     {TOP_K_CANDIDATES} candidates re-evaluated on holdout ({len(X_holdout)} samples)")
-    print(f"  Best CV RMSE: {study.best_value:.4f}")
-    print(f"  Holdout RMSE: {best_holdout_rmse:.4f}")
+    if study_best_value is not None:
+        print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV, multivariate TPE, gap penalty")
+        print(f"  Top-K:     {TOP_K_CANDIDATES} candidates re-evaluated on holdout ({len(X_holdout)} samples)")
+        print(f"  Best CV RMSE: {study_best_value:.4f}")
+        print(f"  Holdout RMSE: {best_holdout_rmse:.4f}")
     print(f"  Test RMSE: {test_rmse:.4f}")
     print(f"  Test MAE:  {test_mae:.4f}")
     print(f"  Test R²:   {test_r2:.4f}")
@@ -346,9 +373,11 @@ def main():
         'test_rmse': round(test_rmse, 4),
         'test_mae': round(test_mae, 4),
         'test_r2': round(test_r2, 4),
-        'best_cv_rmse': round(study.best_value, 4),
-        'holdout_rmse': round(best_holdout_rmse, 4),
     }
+    if study_best_value is not None:
+        metrics['best_cv_rmse'] = round(study_best_value, 4)
+    if best_holdout_rmse is not None:
+        metrics['holdout_rmse'] = round(best_holdout_rmse, 4)
     save_metrics(run_dir, metrics)
     update_index(run_dir, 'xgboost', metrics)
 

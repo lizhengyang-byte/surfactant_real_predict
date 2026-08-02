@@ -36,7 +36,12 @@ class _StreamTee:
 
     def write(self, data):
         self.log_file.write(data)
-        self.original.write(data)
+        try:
+            self.original.write(data)
+        except UnicodeEncodeError:
+            # 控制台编码（如 GBK）无法表示的字符用替代符写出，避免运行崩溃
+            enc = getattr(self.original, 'encoding', None) or 'utf-8'
+            self.original.write(data.encode(enc, errors='replace').decode(enc))
 
     def flush(self):
         self.log_file.flush()

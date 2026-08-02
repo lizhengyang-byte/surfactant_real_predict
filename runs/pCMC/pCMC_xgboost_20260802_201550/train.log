@@ -1,0 +1,68 @@
+============================================================
+xgboost — 运行开始  20260802_201550
+  输出目录:  runs\pCMC\pCMC_xgboost_20260802_201550
+============================================================
+============================================================
+XGBoost + PharmHGT-style Featurization for LogCMC (pCMC) Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\pCMC
+  Train features: (1204, 522)
+  Test features:  (140, 522)
+
+Split: Train 1053, Val 151, Test 140
+  CV (Optuna): 1083, Holdout (Top-K filter): 121
+
+============================================================
+Using pretuned hyperparameters (skipping Optuna + Top-K)
+============================================================
+  Params: {'n_estimators': 1636, 'max_depth': 6, 'learning_rate': 0.020331459031715477, 'subsample': 0.7662024954079603, 'colsample_bytree': 0.821424275851276, 'colsample_bylevel': 0.6764078720752115, 'colsample_bynode': 0.5368595511238561, 'min_child_weight': 1.2411232899932865, 'gamma': 0.02270857913826103, 'reg_alpha': 0.15369169864694893, 'reg_lambda': 0.0021095519927514703, 'max_delta_step': 0.9810519208973468, 'booster': 'dart'}
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.1763
+  Test RMSE: 0.4199
+  Test MAE:  0.2849
+  Test R虏:   0.8572
+
+============================================================
+Top 20 Feature Importances
+============================================================
+   1. maccs_101                  0.0
+   2. maccs_105                  0.0
+   3. maccs_49                   0.0
+   4. NAtoms                     0.0
+   5. maccs_47                   0.0
+   6. atom_max_16                0.0
+   7. atom_max_22                0.0
+   8. HeavyAtoms                 0.0
+   9. maccs_36                   0.0
+  10. atom_min_54                0.0
+  11. maccs_166                  0.0
+  12. atom_std_46                0.0
+  13. atom_std_22                0.0
+  14. atom_min_22                0.0
+  15. atom_mean_46               0.0
+  16. LogP                       0.0
+  17. maccs_112                  0.0
+  18. atom_std_16                0.0
+  19. AroRings                   0.0
+  20. MolWt                      0.0
+
+Plot saved to runs\pCMC\pCMC_xgboost_20260802_201550\pred_vs_true.png
+Model saved to runs\pCMC\pCMC_xgboost_20260802_201550\model.pkl
+
+============================================================
+SUMMARY - XGBoost + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     1083 (holdout 121)
+  Test:      140
+  Test RMSE: 0.4199
+  Test MAE:  0.2849
+  Test R²:   0.8572
+
+指标已保存: runs\pCMC\pCMC_xgboost_20260802_201550\metrics.json
+索引已更新: runs\pCMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv
+

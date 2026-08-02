@@ -1,0 +1,46 @@
+<!--
+=====================================================================
+ PDF 报告导出样式模板（pandoc HTML header）
+=====================================================================
+ 用途：将 doc/report 下的模型报告 markdown 导出为 PDF，
+       确保中文字体、图片嵌入、表格排版正确。
+
+ 用法（在目标报告所在子目录，如 doc/report/pCMC/ 内执行）：
+   1) Markdown -> HTML（注入本模板）：
+        pandoc pCMC_catboost_report.md -o _tmp.html --standalone \
+               -H ../pdf_style_header.html \
+               --metadata title="pCMC CatBoost 模型报告"
+
+   2) HTML -> PDF（Edge 无头浏览器打印，保留图片）：
+        "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe" \
+               --headless=new --disable-gpu --no-pdf-header-footer \
+               --user-data-dir="%TEMP%/edge_pdf_profile" \
+               --print-to-pdf="pCMC_catboost_report.pdf" \
+               "file:///<绝对路径>/_tmp.html"
+
+   3) 删除临时文件：del _tmp.html
+
+ 注意：
+   - 必须走 HTML 中间文件，不能 pandoc 直转 LaTeX（<img> 标签会被丢弃）
+   - 图片相对路径（../../../runs/...）相对 HTML 所在目录解析，
+     因此请在报告子目录内生成 HTML
+   - 所有生成于 doc/report/<目标>/ 下的 _tmp.html 均可删除
+=====================================================================
+-->
+<style>
+@page { size: A4; margin: 2cm 1.8cm; }
+html { -webkit-print-color-adjust: exact; }
+body { font-family: "Microsoft YaHei", "Noto Sans SC", "SimSun", sans-serif; font-size: 10.5pt; line-height: 1.7; color: #1a1a1a; }
+h1 { font-size: 20pt; color: #1f3864; border-bottom: 2px solid #1f3864; padding-bottom: 8px; margin-bottom: 18px; }
+h2 { font-size: 15pt; color: #2e5395; border-left: 4px solid #2e5395; padding-left: 10px; margin-top: 26px; }
+h3 { font-size: 12.5pt; color: #333; }
+table { border-collapse: collapse; width: 100%; margin: 12px 0; page-break-inside: avoid; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background-color: #eef2f9; font-weight: bold; }
+tr:nth-child(even) { background-color: #f8f9fc; }
+img { max-width: 100%; height: auto; display: block; margin: 10px auto; page-break-inside: avoid; }
+blockquote { border-left: 4px solid #d0d7e5; margin: 10px 0; padding: 4px 14px; color: #444; background: #f7f9fd; }
+code { font-family: Consolas, "Courier New", monospace; background: #f0f0f0; padding: 1px 4px; border-radius: 3px; font-size: 9.5pt; }
+em { color: #555; }
+strong { color: #1f3864; }
+</style>

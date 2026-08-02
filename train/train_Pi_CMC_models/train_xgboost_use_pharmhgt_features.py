@@ -212,7 +212,6 @@ def main():
         # 在 holdout 集上评估
         model_tmp = xgb.XGBRegressor(
             random_state=SEED, verbosity=0,
-            early_stopping_rounds=150,
             **params,
         )
         model_tmp.fit(

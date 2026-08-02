@@ -1,0 +1,7 @@
+{
+  "test_rmse": 0.4241,
+  "test_mae": 0.3163,
+  "test_r2": 0.8543,
+  "best_val_rmse": 0.448,
+  "best_cv_rmse": 0.4313
+}
