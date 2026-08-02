@@ -178,7 +178,7 @@ def main():
 
     final_model = lgb.LGBMRegressor(**best_params, random_state=SEED, n_jobs=-1)
     final_model.fit(
-        X_full, y_full,
+        X_train, y_train,
         eval_set=[(X_val, y_val)],
         eval_metric='rmse',
         callbacks=[lgb.early_stopping(50), lgb.log_evaluation(50)],
@@ -257,7 +257,7 @@ def main():
     print("SUMMARY — LightGBM + PharmHGT Features")
     print(f"{'='*60}")
     print(f"  Features:  {X_full.shape[1]}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
-    print(f"  Train:     {len(X_full)} (split {len(X_train)} train + {len(X_val)} val)")
+    print(f"  Train:     {len(X_train)} (val {len(X_val)})")
     print(f"  Test:      {len(X_test)}")
     print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV")
     print(f"  Best CV RMSE: {study.best_value:.4f}")

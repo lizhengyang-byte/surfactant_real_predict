@@ -183,7 +183,7 @@ def main():
     optimizer = optim.AdamW(final_model.parameters(), lr=lr, weight_decay=weight_decay)
     criterion = nn.MSELoss()
 
-    full_loader = make_loader(X_full, y_full, batch_size)
+    train_loader = make_loader(X_train, y_train, batch_size)
     val_loader = make_loader(X_val, y_val, batch_size, shuffle=False)
 
     n_epochs = 800
@@ -193,7 +193,7 @@ def main():
     best_state = None
 
     for epoch in range(1, n_epochs + 1):
-        train_epoch(final_model, full_loader, optimizer, criterion, DEVICE)
+        train_epoch(final_model, train_loader, optimizer, criterion, DEVICE)
         if epoch % 5 == 0 or epoch == n_epochs:
             _, val_rmse = evaluate(final_model, val_loader, criterion, DEVICE)
             if val_rmse < best_rmse:
@@ -253,7 +253,7 @@ def main():
     print("SUMMARY — RNN (LSTM) + PharmHGT Features")
     print(f"{'='*60}")
     print(f"  Features:  {input_dim}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
-    print(f"  Train:     {len(X_full)} (split {len(X_train)} train + {len(X_val)} val)")
+    print(f"  Train:     {len(X_train)} (val {len(X_val)})")
     print(f"  Test:      {len(X_test)}")
     print(f"  Fixed hyperparams: {n_layers} LSTM layers, {hidden_dim} hidden, lr=1e-3, wd=1e-5, bs=32")
     print(f"  Test RMSE: {test_rmse:.4f}")

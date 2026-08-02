@@ -292,7 +292,7 @@ def main():
 
     n_epochs_full = best_params.pop('n_epochs', 3000)
     train_rmse, best_state = train_and_eval_mlp(
-        X_full, y_full, X_val, y_val, best_params,
+        X_train, y_train, X_val, y_val, best_params,
         n_epochs=n_epochs_full, device=DEVICE, verbose=True,
     )
     best_val_rmse = train_rmse  # 来自 train_and_eval_mlp 的返回值就是 best val RMSE
@@ -348,7 +348,7 @@ def main():
     print("SUMMARY — MLP + PharmHGT Features")
     print(f"{'='*60}")
     print(f"  Features:  {input_dim}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
-    print(f"  Train:     {len(X_full)} (split {len(X_train)} train + {len(X_val)} val)")
+    print(f"  Train:     {len(X_train)} (val {len(X_val)})")
     print(f"  Test:      {len(X_test)}")
     if study_best_value is not None:
         print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV")

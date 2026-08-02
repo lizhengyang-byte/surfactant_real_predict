@@ -216,7 +216,7 @@ def main():
         _ = final_model(dummy)
     print("  Model warmup OK, starting training...")
 
-    full_loader = make_loader(X_full, y_full, batch_size)
+    train_loader = make_loader(X_train, y_train, batch_size)
     val_loader = make_loader(X_val, y_val, batch_size, shuffle=False)
 
     best_rmse = float('inf')
@@ -226,7 +226,7 @@ def main():
     scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=n_epochs)
 
     for epoch in range(1, n_epochs + 1):
-        train_epoch(final_model, full_loader, optimizer, criterion, DEVICE, grad_clip)
+        train_epoch(final_model, train_loader, optimizer, criterion, DEVICE, grad_clip)
         scheduler.step()
         if epoch % 5 == 0 or epoch == n_epochs:
             _, val_rmse = evaluate(final_model, val_loader, criterion, DEVICE)
@@ -289,7 +289,7 @@ def main():
     print("SUMMARY — Transformer Encoder + PharmHGT Features")
     print(f"{'='*60}")
     print(f"  Features:  {input_dim}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
-    print(f"  Train:     {len(X_full)} (split {len(X_train)} train + {len(X_val)} val)")
+    print(f"  Train:     {len(X_train)} (val {len(X_val)})")
     print(f"  Test:      {len(X_test)}")
     print(f"  Fixed hyperparams: d_model={d_model}, {num_layers} layers, {nhead} heads, FFN={dim_feedforward}, GELU, lr=1e-3, wd=1e-5, bs={batch_size}, {n_epochs} epoch, grad_clip={grad_clip}, CosineAnnealingLR")
     print(f"  Test RMSE: {test_rmse:.4f}")

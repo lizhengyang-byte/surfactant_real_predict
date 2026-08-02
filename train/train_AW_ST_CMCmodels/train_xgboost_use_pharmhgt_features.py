@@ -222,7 +222,6 @@ def main():
         )
         model_tmp.fit(
             X_cv, y_cv,
-            eval_set=[(X_cv, y_cv)],
             verbose=False,
         )
         y_pred_ho = model_tmp.predict(X_holdout)
@@ -238,10 +237,10 @@ def main():
         print(f"    {k}: {v}")
 
     # ======================================================================
-    # Final Training with Best Params — 使用全部数据
+    # Final Training with Best Params — 使用 CV 数据（holdout 已排除）
     # ======================================================================
     print("\n" + "=" * 60)
-    print(f"Training Final Model with Best Hyperparameters (X_full: {len(X_full)} samples)")
+    print(f"Training Final Model with Best Hyperparameters (X_cv: {len(X_cv)} samples)")
     print("=" * 60)
 
     best_params = best_holdout_params.copy()
@@ -256,7 +255,7 @@ def main():
         **best_params,
     )
     final_model.fit(
-        X_full, y_full,
+        X_cv, y_cv,
         verbose=False,
     )
 
@@ -336,7 +335,7 @@ def main():
     print("SUMMARY - XGBoost + PharmHGT Features")
     print(f"{'='*60}")
     print(f"  Features:  {X_full.shape[1]}-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)")
-    print(f"  Train:     {len(X_full)} (CV {len(X_cv)} + Holdout {len(X_holdout)})")
+    print(f"  Train:     {len(X_cv)} (holdout {len(X_holdout)})")
     print(f"  Test:      {len(X_test)}")
     print(f"  Optuna:    {N_OPTUNA_TRIALS} trials, {N_FOLDS}-fold CV, multivariate TPE, gap penalty")
     print(f"  Top-K:     {TOP_K_CANDIDATES} candidates re-evaluated on holdout ({len(X_holdout)} samples)")
