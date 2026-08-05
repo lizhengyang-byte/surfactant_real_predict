@@ -1,0 +1,62 @@
+============================================================
+ngboost — 运行开始  20260805_114214
+  输出目录:  runs\AW_ST_CMC\AW_ST_CMC_ngboost_20260805_114214
+============================================================
+============================================================
+NGBoost + PharmHGT-style Featurization for AW_ST_CMC Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\AW_ST_CMC
+  Train features: (843, 522)
+  Test features:  (70, 522)
+
+Split: Train 737, Val 106, Test 70
+
+============================================================
+Using pretuned hyperparameters (skipping Optuna search)
+============================================================
+  Params: {'n_estimators': 637, 'learning_rate': 0.03374093172394316, 'minibatch_frac': 0.7231391767644131, 'max_depth': 5, 'min_samples_leaf': 13, 'score_rule': 'LogScore'}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+[iter 0] loss=3.3721 val_loss=0.0000 scale=1.0000 norm=5.5921
+[iter 100] loss=2.5173 val_loss=0.0000 scale=1.0000 norm=2.8056
+[iter 200] loss=2.0987 val_loss=0.0000 scale=1.0000 norm=2.0787
+[iter 300] loss=1.8349 val_loss=0.0000 scale=1.0000 norm=1.7056
+[iter 400] loss=1.6454 val_loss=0.0000 scale=0.5000 norm=0.7419
+[iter 500] loss=1.5168 val_loss=0.0000 scale=1.0000 norm=1.3565
+[iter 600] loss=1.4049 val_loss=0.0000 scale=1.0000 norm=1.2292
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  17.0787
+  Test RMSE: 4.1326
+  Test MAE:  3.1338
+  Test R²:   0.6663
+  Distribution: Normal (mean ± std)
+  Avg pred std: 1.1513
+
+============================================================
+Feature Importance
+============================================================
+  (unexpected shape (2, 522), skipping)
+
+Plot saved to runs\AW_ST_CMC\AW_ST_CMC_ngboost_20260805_114214\pred_vs_true.png
+Model saved to runs\AW_ST_CMC\AW_ST_CMC_ngboost_20260805_114214\model.pkl
+
+============================================================
+SUMMARY — NGBoost + PharmHGT Features
+============================================================
+  Features:      522-dim
+  Train:         843 (split 737 train + 106 val)
+  Test:          70
+  Params:    pretuned (skipped Optuna)
+  Test RMSE:     4.1326
+  Test MAE:      3.1338
+  Test R²:       0.6663
+  Distribution:  Normal (probabilistic output)
+
+指标已保存: runs\AW_ST_CMC\AW_ST_CMC_ngboost_20260805_114214\metrics.json
+索引已更新: runs\AW_ST_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

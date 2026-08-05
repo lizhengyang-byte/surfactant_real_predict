@@ -1,0 +1,16 @@
+============================================================
+transformer — 运行开始  20260805_151158
+  输出目录:  runs\AW_ST_CMC\AW_ST_CMC_transformer_20260805_151158
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for AW_ST_CMC Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\AW_ST_CMC
+  Train features: (843, 522)
+  Test features:  (70, 522)
+
+Split: Train 737, Val 106, Test 70
+
+============================================================
+Training Final Model
+============================================================

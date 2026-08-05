@@ -47,6 +47,8 @@ def main():
     SEED = 42
     N_OPTUNA_TRIALS = 50
     N_FOLDS = 5
+    # Gamma_max: scale y by 1e6 for numerical stability
+    Y_SCALE = 1_000_000
 
     # ---- 初始化运行日志 ----
     run_dir = setup_run('catboost', {
@@ -77,7 +79,6 @@ def main():
     )
 
     # Gamma_max: scale y by 1e6 for numerical stability
-    Y_SCALE = 1_000_000
     y_full = y_full * Y_SCALE
     y_test = y_test * Y_SCALE
     print(f"  Train features: {X_full.shape}")

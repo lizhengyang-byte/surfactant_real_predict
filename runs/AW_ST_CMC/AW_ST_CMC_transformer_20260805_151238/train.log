@@ -1,0 +1,75 @@
+============================================================
+transformer — 运行开始  20260805_151238
+  输出目录:  runs\AW_ST_CMC\AW_ST_CMC_transformer_20260805_151238
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for AW_ST_CMC Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\AW_ST_CMC
+  Train features: (843, 522)
+  Test features:  (70, 522)
+
+Split: Train 737, Val 106, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 7.0202 (best: 7.0202)
+  Epoch  10 — Val RMSE: 7.2005 (best: 7.0202)
+  Epoch  15 — Val RMSE: 6.9977 (best: 6.9977)
+  Epoch  20 — Val RMSE: 7.0740 (best: 6.9977)
+  Epoch  25 — Val RMSE: 7.0986 (best: 6.9977)
+  Epoch  30 — Val RMSE: 7.0594 (best: 6.9977)
+  Epoch  35 — Val RMSE: 7.0048 (best: 6.9977)
+  Epoch  40 — Val RMSE: 7.0529 (best: 6.9977)
+  Epoch  45 — Val RMSE: 7.0523 (best: 6.9977)
+  Epoch  50 — Val RMSE: 7.1524 (best: 6.9977)
+  Epoch  55 — Val RMSE: 7.0940 (best: 6.9977)
+  Epoch  60 — Val RMSE: 7.0689 (best: 6.9977)
+  Epoch  65 — Val RMSE: 7.0565 (best: 6.9977)
+  Epoch  70 — Val RMSE: 7.1423 (best: 6.9977)
+  Epoch  75 — Val RMSE: 7.0697 (best: 6.9977)
+  Epoch  80 — Val RMSE: 7.0098 (best: 6.9977)
+  Epoch  85 — Val RMSE: 7.2637 (best: 6.9977)
+  Epoch  90 — Val RMSE: 7.0625 (best: 6.9977)
+  Epoch  95 — Val RMSE: 7.2547 (best: 6.9977)
+  Epoch 100 — Val RMSE: 7.1263 (best: 6.9977)
+  Epoch 105 — Val RMSE: 7.0885 (best: 6.9977)
+  Epoch 110 — Val RMSE: 45.6754 (best: 6.9977)
+  Epoch 115 — Val RMSE: 45.5221 (best: 6.9977)
+  Epoch 120 — Val RMSE: 45.5784 (best: 6.9977)
+  Epoch 125 — Val RMSE: 45.7744 (best: 6.9977)
+  Epoch 130 — Val RMSE: 46.0008 (best: 6.9977)
+  Epoch 135 — Val RMSE: 45.9695 (best: 6.9977)
+  Epoch 140 — Val RMSE: 46.0157 (best: 6.9977)
+  Epoch 145 — Val RMSE: 45.9588 (best: 6.9977)
+  Epoch 150 — Val RMSE: 45.9525 (best: 6.9977)
+  Epoch 155 — Val RMSE: 45.9262 (best: 6.9977)
+  Epoch 160 — Val RMSE: 45.9452 (best: 6.9977)
+  Epoch 165 — Val RMSE: 45.9734 (best: 6.9977)
+  Early stopping at epoch 165
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  52.8808
+  Test RMSE: 7.2719
+  Test MAE:  5.7139
+  Test R²:   -0.0332
+Model saved to runs\AW_ST_CMC\AW_ST_CMC_transformer_20260805_151238\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     737 (val 106)
+  Test:      70
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 7.2719
+  Test MAE:  5.7139
+  Test R²:   -0.0332
+
+指标已保存: runs\AW_ST_CMC\AW_ST_CMC_transformer_20260805_151238\metrics.json
+索引已更新: runs\AW_ST_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

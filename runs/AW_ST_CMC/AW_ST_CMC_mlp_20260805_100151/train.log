@@ -1,0 +1,38 @@
+============================================================
+mlp — 运行开始  20260805_100151
+  输出目录:  runs\AW_ST_CMC\AW_ST_CMC_mlp_20260805_100151
+============================================================
+============================================================
+MLP + PharmHGT-style Featurization for AW_ST_CMC Prediction
+============================================================
+
+============================================================
+Training Final Model
+============================================================
+    Early stopping at epoch 205
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  18.6930
+  Test RMSE: 4.3235
+  Test MAE:  3.3005
+  Test R²:   0.6348
+Model saved to runs\AW_ST_CMC\AW_ST_CMC_mlp_20260805_100151\model.pkl
+
+============================================================
+SUMMARY — MLP + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     737 (val 106)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 3.6940
+  Best val RMSE: 3.5588
+  Test RMSE: 4.3235
+  Test MAE:  3.3005
+  Test R²:   0.6348
+
+指标已保存: runs\AW_ST_CMC\AW_ST_CMC_mlp_20260805_100151\metrics.json
+索引已更新: runs\AW_ST_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

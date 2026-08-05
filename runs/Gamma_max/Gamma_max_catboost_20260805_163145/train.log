@@ -1,0 +1,19 @@
+============================================================
+catboost — 运行开始  20260805_163145
+  输出目录:  runs\Gamma_max\Gamma_max_catboost_20260805_163145
+============================================================
+============================================================
+CatBoost + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache MISS] Computing features...
+  628/628 valid molecules
+  70/70 valid molecules
+  Cached to data\features\surfpro\Gamma_max/
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
