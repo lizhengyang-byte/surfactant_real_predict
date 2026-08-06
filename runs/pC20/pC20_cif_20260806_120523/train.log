@@ -1,0 +1,125 @@
+============================================================
+cif — 运行开始  20260806_120523
+  输出目录:  runs\pC20\pC20_cif_20260806_120523
+============================================================
+============================================================
+Conditional Inference Forest + PharmHGT-style Featurization for pC20 Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\pC20
+  Train features: (564, 522)
+  Test features:  (70, 522)
+
+Split: Train 493, Val 71, Test 70
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-06 12:05:27,100][0m Trial 0 finished with value: 1.0221193600386236 and parameters: {'n_estimators': 874, 'max_depth': 29, 'min_samples_split': 37, 'min_samples_leaf': 30, 'max_features': 'sqrt', 'bootstrap': True, 'max_samples': 0.8540362888980227}. Best is trial 0 with value: 1.0221193600386236.[0m
+[32m[I 2026-08-06 12:05:28,433][0m Trial 1 finished with value: 0.85635205382771 and parameters: {'n_estimators': 237, 'max_depth': 30, 'min_samples_split': 42, 'min_samples_leaf': 11, 'max_features': None, 'bootstrap': True, 'max_samples': 0.645614570099021}. Best is trial 1 with value: 0.85635205382771.[0m
+[32m[I 2026-08-06 12:05:32,197][0m Trial 2 finished with value: 0.9950455463791513 and parameters: {'n_estimators': 1301, 'max_depth': 6, 'min_samples_split': 16, 'min_samples_leaf': 19, 'max_features': 'log2', 'bootstrap': False}. Best is trial 1 with value: 0.85635205382771.[0m
+[32m[I 2026-08-06 12:05:33,527][0m Trial 3 finished with value: 0.8813998880326949 and parameters: {'n_estimators': 283, 'max_depth': 20, 'min_samples_split': 10, 'min_samples_leaf': 4, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.8421165132560784}. Best is trial 1 with value: 0.85635205382771.[0m
+[32m[I 2026-08-06 12:05:36,515][0m Trial 4 finished with value: 0.8576819420294246 and parameters: {'n_estimators': 992, 'max_depth': 6, 'min_samples_split': 26, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'bootstrap': False}. Best is trial 1 with value: 0.85635205382771.[0m
+[32m[I 2026-08-06 12:05:38,459][0m Trial 5 pruned. [0m
+[32m[I 2026-08-06 12:05:38,960][0m Trial 6 pruned. [0m
+[32m[I 2026-08-06 12:05:39,376][0m Trial 7 pruned. [0m
+[32m[I 2026-08-06 12:05:39,790][0m Trial 8 pruned. [0m
+[32m[I 2026-08-06 12:05:45,112][0m Trial 9 finished with value: 0.8148818322113552 and parameters: {'n_estimators': 1514, 'max_depth': 20, 'min_samples_split': 45, 'min_samples_leaf': 24, 'max_features': None, 'bootstrap': False}. Best is trial 9 with value: 0.8148818322113552.[0m
+[32m[I 2026-08-06 12:05:51,901][0m Trial 10 finished with value: 0.8217053658036827 and parameters: {'n_estimators': 1942, 'max_depth': 22, 'min_samples_split': 29, 'min_samples_leaf': 26, 'max_features': None, 'bootstrap': False}. Best is trial 9 with value: 0.8148818322113552.[0m
+[32m[I 2026-08-06 12:05:58,804][0m Trial 11 finished with value: 0.8262662463551866 and parameters: {'n_estimators': 1977, 'max_depth': 20, 'min_samples_split': 29, 'min_samples_leaf': 27, 'max_features': None, 'bootstrap': False}. Best is trial 9 with value: 0.8148818322113552.[0m
+[32m[I 2026-08-06 12:06:05,720][0m Trial 12 finished with value: 0.826143691302829 and parameters: {'n_estimators': 1951, 'max_depth': 22, 'min_samples_split': 50, 'min_samples_leaf': 27, 'max_features': None, 'bootstrap': False}. Best is trial 9 with value: 0.8148818322113552.[0m
+[32m[I 2026-08-06 12:06:08,001][0m Trial 13 pruned. [0m
+[32m[I 2026-08-06 12:06:10,039][0m Trial 14 pruned. [0m
+[32m[I 2026-08-06 12:06:16,158][0m Trial 15 finished with value: 0.809909145743036 and parameters: {'n_estimators': 1658, 'max_depth': 26, 'min_samples_split': 34, 'min_samples_leaf': 23, 'max_features': None, 'bootstrap': False}. Best is trial 15 with value: 0.809909145743036.[0m
+[32m[I 2026-08-06 12:06:21,964][0m Trial 16 finished with value: 0.7930817788449703 and parameters: {'n_estimators': 1520, 'max_depth': 26, 'min_samples_split': 34, 'min_samples_leaf': 20, 'max_features': None, 'bootstrap': False}. Best is trial 16 with value: 0.7930817788449703.[0m
+[32m[I 2026-08-06 12:06:28,626][0m Trial 17 finished with value: 0.7930554941571965 and parameters: {'n_estimators': 1736, 'max_depth': 25, 'min_samples_split': 34, 'min_samples_leaf': 20, 'max_features': None, 'bootstrap': False}. Best is trial 17 with value: 0.7930554941571965.[0m
+[32m[I 2026-08-06 12:06:34,104][0m Trial 18 finished with value: 0.769280309330277 and parameters: {'n_estimators': 1359, 'max_depth': 26, 'min_samples_split': 23, 'min_samples_leaf': 17, 'max_features': None, 'bootstrap': False}. Best is trial 18 with value: 0.769280309330277.[0m
+[32m[I 2026-08-06 12:06:37,292][0m Trial 19 finished with value: 0.769838248182225 and parameters: {'n_estimators': 776, 'max_depth': 26, 'min_samples_split': 20, 'min_samples_leaf': 17, 'max_features': None, 'bootstrap': False}. Best is trial 18 with value: 0.769280309330277.[0m
+[32m[I 2026-08-06 12:06:38,116][0m Trial 20 pruned. [0m
+[32m[I 2026-08-06 12:06:40,466][0m Trial 21 finished with value: 0.7697520102376529 and parameters: {'n_estimators': 563, 'max_depth': 24, 'min_samples_split': 21, 'min_samples_leaf': 17, 'max_features': None, 'bootstrap': False}. Best is trial 18 with value: 0.769280309330277.[0m
+[32m[I 2026-08-06 12:06:43,111][0m Trial 22 finished with value: 0.6934021526329835 and parameters: {'n_estimators': 575, 'max_depth': 23, 'min_samples_split': 20, 'min_samples_leaf': 8, 'max_features': None, 'bootstrap': False}. Best is trial 22 with value: 0.6934021526329835.[0m
+[32m[I 2026-08-06 12:06:45,782][0m Trial 23 finished with value: 0.6652113430589157 and parameters: {'n_estimators': 560, 'max_depth': 16, 'min_samples_split': 16, 'min_samples_leaf': 7, 'max_features': None, 'bootstrap': False}. Best is trial 23 with value: 0.6652113430589157.[0m
+[32m[I 2026-08-06 12:06:48,029][0m Trial 24 finished with value: 0.6604392819051117 and parameters: {'n_estimators': 460, 'max_depth': 16, 'min_samples_split': 14, 'min_samples_leaf': 7, 'max_features': None, 'bootstrap': False}. Best is trial 24 with value: 0.6604392819051117.[0m
+[32m[I 2026-08-06 12:06:50,849][0m Trial 25 finished with value: 0.6534215652405923 and parameters: {'n_estimators': 576, 'max_depth': 16, 'min_samples_split': 15, 'min_samples_leaf': 6, 'max_features': None, 'bootstrap': False}. Best is trial 25 with value: 0.6534215652405923.[0m
+[32m[I 2026-08-06 12:06:53,074][0m Trial 26 finished with value: 0.7651555898465766 and parameters: {'n_estimators': 450, 'max_depth': 16, 'min_samples_split': 14, 'min_samples_leaf': 6, 'max_features': None, 'bootstrap': True, 'max_samples': 0.5266320477783109}. Best is trial 25 with value: 0.6534215652405923.[0m
+[32m[I 2026-08-06 12:06:58,799][0m Trial 27 finished with value: 0.6118608284563256 and parameters: {'n_estimators': 974, 'max_depth': 16, 'min_samples_split': 14, 'min_samples_leaf': 1, 'max_features': None, 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:02,083][0m Trial 28 finished with value: 0.7678938785828496 and parameters: {'n_estimators': 1047, 'max_depth': 13, 'min_samples_split': 11, 'min_samples_leaf': 2, 'max_features': 'log2', 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:06,177][0m Trial 29 finished with value: 0.6575533665995699 and parameters: {'n_estimators': 759, 'max_depth': 18, 'min_samples_split': 6, 'min_samples_leaf': 2, 'max_features': None, 'bootstrap': True, 'max_samples': 0.7173742395750812}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:10,031][0m Trial 30 finished with value: 0.7176871024562509 and parameters: {'n_estimators': 869, 'max_depth': 18, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'bootstrap': True, 'max_samples': 0.7557297753485618}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:13,726][0m Trial 31 finished with value: 0.6855686259020048 and parameters: {'n_estimators': 738, 'max_depth': 11, 'min_samples_split': 8, 'min_samples_leaf': 5, 'max_features': None, 'bootstrap': True, 'max_samples': 0.9989589653732276}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:15,418][0m Trial 32 pruned. [0m
+[32m[I 2026-08-06 12:07:17,793][0m Trial 33 finished with value: 0.6638742045766691 and parameters: {'n_estimators': 429, 'max_depth': 14, 'min_samples_split': 12, 'min_samples_leaf': 1, 'max_features': None, 'bootstrap': True, 'max_samples': 0.9954888318934102}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:19,771][0m Trial 34 pruned. [0m
+[32m[I 2026-08-06 12:07:23,073][0m Trial 35 finished with value: 0.7416995923013143 and parameters: {'n_estimators': 673, 'max_depth': 18, 'min_samples_split': 17, 'min_samples_leaf': 5, 'max_features': None, 'bootstrap': True, 'max_samples': 0.7375328039892173}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:23,460][0m Trial 36 pruned. [0m
+[32m[I 2026-08-06 12:07:27,626][0m Trial 37 finished with value: 0.6735513148824406 and parameters: {'n_estimators': 849, 'max_depth': 17, 'min_samples_split': 13, 'min_samples_leaf': 8, 'max_features': None, 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:29,642][0m Trial 38 pruned. [0m
+[32m[I 2026-08-06 12:07:31,198][0m Trial 39 finished with value: 0.6361535604982081 and parameters: {'n_estimators': 462, 'max_depth': 20, 'min_samples_split': 5, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:34,152][0m Trial 40 finished with value: 0.7757165864978308 and parameters: {'n_estimators': 939, 'max_depth': 21, 'min_samples_split': 4, 'min_samples_leaf': 3, 'max_features': 'log2', 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:35,645][0m Trial 41 finished with value: 0.6937829061614019 and parameters: {'n_estimators': 448, 'max_depth': 19, 'min_samples_split': 9, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': False}. Best is trial 27 with value: 0.6118608284563256.[0m
+[32m[I 2026-08-06 12:07:36,498][0m Trial 42 pruned. [0m
+[32m[I 2026-08-06 12:07:37,010][0m Trial 43 pruned. [0m
+[32m[I 2026-08-06 12:07:37,710][0m Trial 44 pruned. [0m
+[32m[I 2026-08-06 12:07:38,699][0m Trial 45 pruned. [0m
+[32m[I 2026-08-06 12:07:40,553][0m Trial 46 finished with value: 0.5814503100608799 and parameters: {'n_estimators': 273, 'max_depth': 21, 'min_samples_split': 9, 'min_samples_leaf': 1, 'max_features': None, 'bootstrap': False}. Best is trial 46 with value: 0.5814503100608799.[0m
+[32m[I 2026-08-06 12:07:42,185][0m Trial 47 finished with value: 0.6621447580511759 and parameters: {'n_estimators': 283, 'max_depth': 21, 'min_samples_split': 10, 'min_samples_leaf': 1, 'max_features': None, 'bootstrap': True, 'max_samples': 0.925131364343401}. Best is trial 46 with value: 0.5814503100608799.[0m
+[32m[I 2026-08-06 12:07:44,215][0m Trial 48 finished with value: 0.6086629787435068 and parameters: {'n_estimators': 351, 'max_depth': 22, 'min_samples_split': 7, 'min_samples_leaf': 4, 'max_features': None, 'bootstrap': False}. Best is trial 46 with value: 0.5814503100608799.[0m
+[32m[I 2026-08-06 12:07:44,711][0m Trial 49 pruned. [0m
+
+=== Best Trial ===
+  CV RMSE: 0.581450
+  Params:  {'n_estimators': 273, 'max_depth': 21, 'min_samples_split': 9, 'min_samples_leaf': 1, 'max_features': None, 'bootstrap': False}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.4124
+  Test RMSE: 0.6422
+  Test MAE:  0.4610
+  Test R²:   0.7108
+
+============================================================
+Top 20 Feature Importances
+============================================================
+   1. maccs_77                   0.2
+   2. NAtoms                     0.0
+   3. MolWt                      0.0
+   4. HeavyAtoms                 0.0
+   5. LogP                       0.0
+   6. atom_mean_54               0.0
+   7. RotBonds                   0.0
+   8. atom_mean_46               0.0
+   9. brics_7                    0.0
+  10. atom_mean_16               0.0
+  11. maccs_104                  0.0
+  12. atom_std_22                0.0
+  13. maccs_140                  0.0
+  14. atom_std_46                0.0
+  15. brics_32                   0.0
+  16. tail_ratio                 0.0
+  17. brics_5                    0.0
+  18. brics_0                    0.0
+  19. atom_std_16                0.0
+  20. TPSA                       0.0
+
+Plot saved to runs\pC20\pC20_cif_20260806_120523\pred_vs_true.png
+Model saved to runs\pC20\pC20_cif_20260806_120523\model.pkl
+
+============================================================
+SUMMARY — Conditional Inference Forest + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     564 (split 493 train + 71 val)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 0.5815
+  Test RMSE: 0.6422
+  Test MAE:  0.4610
+  Test R²:   0.7108
+
+指标已保存: runs\pC20\pC20_cif_20260806_120523\metrics.json
+索引已更新: runs\pC20\_runs_index.csv
+索引已更新: runs\_runs_index.csv

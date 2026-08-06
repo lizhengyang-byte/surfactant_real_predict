@@ -1,0 +1,51 @@
+============================================================
+rnn — 运行开始  20260805_202604
+  输出目录:  runs\Gamma_max\Gamma_max_rnn_20260805_202604
+============================================================
+============================================================
+RNN (LSTM) + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Epoch  50 — Val RMSE: 2.1332 (best: 2.1308)
+  Epoch 100 — Val RMSE: 2.1376 (best: 2.1306)
+  Epoch 150 — Val RMSE: 2.1347 (best: 2.1306)
+  Epoch 200 — Val RMSE: 2.1334 (best: 2.1306)
+  Epoch 250 — Val RMSE: 2.1389 (best: 2.1306)
+  Epoch 300 — Val RMSE: 2.1395 (best: 2.1300)
+  Epoch 350 — Val RMSE: 2.1331 (best: 2.1300)
+  Epoch 400 — Val RMSE: 2.1369 (best: 2.1300)
+  Epoch 450 — Val RMSE: 2.1412 (best: 2.1300)
+  Epoch 500 — Val RMSE: 2.1328 (best: 2.1300)
+  Early stopping at epoch 530
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   -0.0100
+Model saved to runs\Gamma_max\Gamma_max_rnn_20260805_202604\model.pkl
+
+============================================================
+SUMMARY — RNN (LSTM) + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     549 (val 79)
+  Test:      70
+  Fixed hyperparams: 3 LSTM layers, 64 hidden, lr=1e-3, wd=1e-5, bs=32
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   -0.0100
+
+指标已保存: runs\Gamma_max\Gamma_max_rnn_20260805_202604\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

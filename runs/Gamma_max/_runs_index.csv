@@ -1,0 +1,11 @@
+target,model,run_dir,timestamp,test_rmse,test_mae,test_r2,best_cv_rmse
+Gamma_max,catboost,runs\Gamma_max\Gamma_max_catboost_20260805_163145,2026-08-05 17:15:35,0.0,0.0,0.3308,0.0
+Gamma_max,cif,runs\Gamma_max\Gamma_max_cif_20260805_172005,2026-08-05 17:21:43,0.0,0.0,0.5956,1.0325
+Gamma_max,histgb,runs\Gamma_max\Gamma_max_histgb_20260805_172618,2026-08-05 17:52:43,0.0,0.0,0.1851,1.08
+Gamma_max,lightgbm,runs\Gamma_max\Gamma_max_lightgbm_20260805_180756,2026-08-05 18:09:09,0.0,0.0,0.3413,0.0
+Gamma_max,mlp,runs\Gamma_max\Gamma_max_mlp_20260805_184149,2026-08-05 18:41:58,0.0,0.0,0.7515,0.6836,0.0
+Gamma_max,ngboost,runs\Gamma_max\Gamma_max_ngboost_20260805_192211,2026-08-05 20:15:48,0.0,0.0,0.3191,1.1241
+Gamma_max,rf,runs\Gamma_max\Gamma_max_rf_20260805_201928,2026-08-05 20:21:16,0.0,0.0,0.4621,1.108
+Gamma_max,rnn,runs\Gamma_max\Gamma_max_rnn_20260805_202604,2026-08-05 20:27:41,0.0,0.0,-0.01,2.13
+Gamma_max,transformer,runs\Gamma_max\Gamma_max_transformer_20260805_202831,2026-08-05 20:35:56,0.0,0.0,0.1086,2.0996
+Gamma_max,xgboost,runs\Gamma_max\Gamma_max_xgboost_20260805_204250,2026-08-05 21:06:20,0.0,0.0,0.2821,0.0,0.0

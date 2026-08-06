@@ -1,0 +1,74 @@
+============================================================
+transformer — 运行开始  20260805_202831
+  输出目录:  runs\Gamma_max\Gamma_max_transformer_20260805_202831
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 3.5479 (best: 3.5479)
+  Epoch  10 — Val RMSE: 2.0996 (best: 2.0996)
+  Epoch  15 — Val RMSE: 2.1045 (best: 2.0996)
+  Epoch  20 — Val RMSE: 2.1280 (best: 2.0996)
+  Epoch  25 — Val RMSE: 2.1508 (best: 2.0996)
+  Epoch  30 — Val RMSE: 2.1446 (best: 2.0996)
+  Epoch  35 — Val RMSE: 2.1222 (best: 2.0996)
+  Epoch  40 — Val RMSE: 2.1271 (best: 2.0996)
+  Epoch  45 — Val RMSE: 2.1427 (best: 2.0996)
+  Epoch  50 — Val RMSE: 2.1164 (best: 2.0996)
+  Epoch  55 — Val RMSE: 2.1288 (best: 2.0996)
+  Epoch  60 — Val RMSE: 2.1105 (best: 2.0996)
+  Epoch  65 — Val RMSE: 2.1346 (best: 2.0996)
+  Epoch  70 — Val RMSE: 2.1173 (best: 2.0996)
+  Epoch  75 — Val RMSE: 2.1155 (best: 2.0996)
+  Epoch  80 — Val RMSE: 2.1141 (best: 2.0996)
+  Epoch  85 — Val RMSE: 2.1292 (best: 2.0996)
+  Epoch  90 — Val RMSE: 2.1312 (best: 2.0996)
+  Epoch  95 — Val RMSE: 2.1664 (best: 2.0996)
+  Epoch 100 — Val RMSE: 2.1286 (best: 2.0996)
+  Epoch 105 — Val RMSE: 2.1394 (best: 2.0996)
+  Epoch 110 — Val RMSE: 2.1454 (best: 2.0996)
+  Epoch 115 — Val RMSE: 2.1619 (best: 2.0996)
+  Epoch 120 — Val RMSE: 2.1590 (best: 2.0996)
+  Epoch 125 — Val RMSE: 2.1293 (best: 2.0996)
+  Epoch 130 — Val RMSE: 2.1541 (best: 2.0996)
+  Epoch 135 — Val RMSE: 2.1571 (best: 2.0996)
+  Epoch 140 — Val RMSE: 2.1522 (best: 2.0996)
+  Epoch 145 — Val RMSE: 2.1674 (best: 2.0996)
+  Epoch 150 — Val RMSE: 2.1561 (best: 2.0996)
+  Epoch 155 — Val RMSE: 2.2219 (best: 2.0996)
+  Epoch 160 — Val RMSE: 2.2364 (best: 2.0996)
+  Early stopping at epoch 160
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.1086
+Model saved to runs\Gamma_max\Gamma_max_transformer_20260805_202831\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     549 (val 79)
+  Test:      70
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.1086
+
+指标已保存: runs\Gamma_max\Gamma_max_transformer_20260805_202831\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

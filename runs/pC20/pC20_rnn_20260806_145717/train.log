@@ -1,0 +1,56 @@
+============================================================
+rnn — 运行开始  20260806_145717
+  输出目录:  runs\pC20\pC20_rnn_20260806_145717
+============================================================
+============================================================
+RNN (LSTM) + PharmHGT-style Featurization for pC20 Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\pC20
+  Train features: (564, 522)
+  Test features:  (70, 522)
+
+Split: Train 493, Val 71, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Epoch  50 — Val RMSE: 1.1487 (best: 1.1395)
+  Epoch 100 — Val RMSE: 1.1484 (best: 1.1373)
+  Epoch 150 — Val RMSE: 1.1508 (best: 1.1369)
+  Epoch 200 — Val RMSE: 0.9613 (best: 0.9340)
+  Epoch 250 — Val RMSE: 1.0528 (best: 0.9279)
+  Epoch 300 — Val RMSE: 0.9068 (best: 0.9032)
+  Epoch 350 — Val RMSE: 0.9452 (best: 0.8713)
+  Epoch 400 — Val RMSE: 0.8979 (best: 0.8713)
+  Epoch 450 — Val RMSE: 0.8486 (best: 0.8486)
+  Epoch 500 — Val RMSE: 0.8036 (best: 0.8036)
+  Epoch 550 — Val RMSE: 0.8723 (best: 0.8036)
+  Epoch 600 — Val RMSE: 0.8019 (best: 0.8019)
+  Epoch 650 — Val RMSE: 0.7855 (best: 0.7633)
+  Epoch 700 — Val RMSE: 0.8087 (best: 0.7633)
+  Epoch 750 — Val RMSE: 0.7159 (best: 0.7159)
+  Epoch 800 — Val RMSE: 0.6843 (best: 0.6843)
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.7253
+  Test RMSE: 0.8516
+  Test MAE:  0.5886
+  Test R²:   0.4913
+Model saved to runs\pC20\pC20_rnn_20260806_145717\model.pkl
+
+============================================================
+SUMMARY — RNN (LSTM) + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     493 (val 71)
+  Test:      70
+  Fixed hyperparams: 3 LSTM layers, 64 hidden, lr=1e-3, wd=1e-5, bs=32
+  Test RMSE: 0.8516
+  Test MAE:  0.5886
+  Test R²:   0.4913
+
+指标已保存: runs\pC20\pC20_rnn_20260806_145717\metrics.json
+索引已更新: runs\pC20\_runs_index.csv
+索引已更新: runs\_runs_index.csv

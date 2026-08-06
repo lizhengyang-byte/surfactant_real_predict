@@ -46,14 +46,14 @@ warnings.filterwarnings('ignore')
 # ===========================================================================
 PRETUNED_PARAMS = None
 
-PRETUNED_PARAMS = {
-    'n_estimators': 637,
-    'learning_rate': 0.03374093172394316,
-    'minibatch_frac': 0.7231391767644131,
-    'max_depth': 5,          # 会被提取到 base_learner
-    'min_samples_leaf': 13,  # 会被提取到 base_learner
-    'score_rule': 'LogScore',
-}
+# PRETUNED_PARAMS = {
+#     'n_estimators': 637,
+#     'learning_rate': 0.03374093172394316,
+#     'minibatch_frac': 0.7231391767644131,
+#     'max_depth': 5,          # 会被提取到 base_learner
+#     'min_samples_leaf': 13,  # 会被提取到 base_learner
+#     'score_rule': 'LogScore',
+# }
 
 # ===========================================================================
 # Main — Load Data, Featurize, Train NGBoost with Optuna
@@ -68,6 +68,8 @@ def main():
     SEED = 42
     N_OPTUNA_TRIALS = 50
     N_FOLDS = 5
+    # Gamma_max: scale y by 1e6 for numerical stability
+    Y_SCALE = 1_000_000
 
     random.seed(SEED)
     np.random.seed(SEED)
@@ -97,7 +99,6 @@ def main():
     )
 
     # Gamma_max: scale y by 1e6 for numerical stability
-    Y_SCALE = 1_000_000
     y_full = y_full * Y_SCALE
     y_test = y_test * Y_SCALE
     print(f"  Train features: {X_full.shape}")

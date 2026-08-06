@@ -1,0 +1,125 @@
+============================================================
+histgb — 运行开始  20260805_172618
+  输出目录:  runs\Gamma_max\Gamma_max_histgb_20260805_172618
+============================================================
+============================================================
+HistGradientBoosting + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-05 17:27:45,467][0m Trial 0 finished with value: 1.092764407775377 and parameters: {'learning_rate': 0.023171758042400847, 'max_iter': 2877, 'max_depth': 12, 'max_leaf_nodes': 159, 'min_samples_leaf': 19, 'l2_regularization': 2.5348407664333426e-07, 'max_bins': 135}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:28:00,262][0m Trial 1 finished with value: 1.21736789086456 and parameters: {'learning_rate': 0.1734451662584154, 'max_iter': 2003, 'max_depth': 12, 'max_leaf_nodes': 19, 'min_samples_leaf': 98, 'l2_regularization': 0.31044435499483225, 'max_bins': 155}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:28:16,590][0m Trial 2 finished with value: 1.1937464406679392 and parameters: {'learning_rate': 0.010526458851636467, 'max_iter': 958, 'max_depth': 6, 'max_leaf_nodes': 141, 'min_samples_leaf': 46, 'l2_regularization': 4.17890272377219e-06, 'max_bins': 206}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:28:29,802][0m Trial 3 finished with value: 1.2390881273573224 and parameters: {'learning_rate': 0.008851384099881301, 'max_iter': 1230, 'max_depth': 7, 'max_leaf_nodes': 124, 'min_samples_leaf': 80, 'l2_regularization': 6.267062696005991e-07, 'max_bins': 193}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:28:55,843][0m Trial 4 finished with value: 1.1556693952658768 and parameters: {'learning_rate': 0.056542201075504325, 'max_iter': 616, 'max_depth': 10, 'max_leaf_nodes': 56, 'min_samples_leaf': 11, 'l2_regularization': 3.4671276804481113, 'max_bins': 251}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:29:01,490][0m Trial 5 pruned. [0m
+[32m[I 2026-08-05 17:29:49,225][0m Trial 6 finished with value: 1.1478966504162025 and parameters: {'learning_rate': 0.005755963034165359, 'max_iter': 2774, 'max_depth': 6, 'max_leaf_nodes': 174, 'min_samples_leaf': 34, 'l2_regularization': 0.0004793052550782129, 'max_bins': 197}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:30:01,286][0m Trial 7 pruned. [0m
+[32m[I 2026-08-05 17:30:05,353][0m Trial 8 pruned. [0m
+[32m[I 2026-08-05 17:30:10,951][0m Trial 9 pruned. [0m
+[32m[I 2026-08-05 17:30:53,437][0m Trial 10 pruned. [0m
+[32m[I 2026-08-05 17:31:16,379][0m Trial 11 pruned. [0m
+[32m[I 2026-08-05 17:31:43,420][0m Trial 12 pruned. [0m
+[32m[I 2026-08-05 17:32:14,543][0m Trial 13 finished with value: 1.1059940828830623 and parameters: {'learning_rate': 0.018928779299806183, 'max_iter': 2543, 'max_depth': 5, 'max_leaf_nodes': 145, 'min_samples_leaf': 30, 'l2_regularization': 3.7281147411763823e-05, 'max_bins': 133}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:32:23,303][0m Trial 14 pruned. [0m
+[32m[I 2026-08-05 17:33:38,031][0m Trial 15 finished with value: 1.1202549027054407 and parameters: {'learning_rate': 0.07003212813561066, 'max_iter': 2504, 'max_depth': 12, 'max_leaf_nodes': 210, 'min_samples_leaf': 19, 'l2_regularization': 1.9557187993677438e-05, 'max_bins': 146}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:34:09,571][0m Trial 16 finished with value: 1.1516317950676211 and parameters: {'learning_rate': 0.032874249738248935, 'max_iter': 2554, 'max_depth': 5, 'max_leaf_nodes': 148, 'min_samples_leaf': 60, 'l2_regularization': 1.0655157690888893e-08, 'max_bins': 175}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:35:05,135][0m Trial 17 finished with value: 1.0999684441859034 and parameters: {'learning_rate': 0.016167897811539877, 'max_iter': 1703, 'max_depth': 13, 'max_leaf_nodes': 98, 'min_samples_leaf': 20, 'l2_regularization': 7.652828518173337e-07, 'max_bins': 141}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:35:29,477][0m Trial 18 pruned. [0m
+[32m[I 2026-08-05 17:36:00,167][0m Trial 19 pruned. [0m
+[32m[I 2026-08-05 17:36:32,289][0m Trial 20 pruned. [0m
+[32m[I 2026-08-05 17:36:48,050][0m Trial 21 pruned. [0m
+[32m[I 2026-08-05 17:37:12,358][0m Trial 22 pruned. [0m
+[32m[I 2026-08-05 17:38:36,114][0m Trial 23 finished with value: 1.144908119709092 and parameters: {'learning_rate': 0.01332894924122167, 'max_iter': 2311, 'max_depth': 14, 'max_leaf_nodes': 212, 'min_samples_leaf': 18, 'l2_regularization': 9.462627248142897e-07, 'max_bins': 156}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:38:41,762][0m Trial 24 pruned. [0m
+[32m[I 2026-08-05 17:39:01,089][0m Trial 25 pruned. [0m
+[32m[I 2026-08-05 17:39:24,214][0m Trial 26 pruned. [0m
+[32m[I 2026-08-05 17:40:00,869][0m Trial 27 pruned. [0m
+[32m[I 2026-08-05 17:40:08,166][0m Trial 28 pruned. [0m
+[32m[I 2026-08-05 17:40:31,192][0m Trial 29 pruned. [0m
+[32m[I 2026-08-05 17:40:33,623][0m Trial 30 pruned. [0m
+[32m[I 2026-08-05 17:41:06,496][0m Trial 31 pruned. [0m
+[32m[I 2026-08-05 17:41:31,755][0m Trial 32 pruned. [0m
+[32m[I 2026-08-05 17:41:54,713][0m Trial 33 pruned. [0m
+[32m[I 2026-08-05 17:42:17,189][0m Trial 34 pruned. [0m
+[32m[I 2026-08-05 17:42:39,491][0m Trial 35 pruned. [0m
+[32m[I 2026-08-05 17:43:32,831][0m Trial 36 pruned. [0m
+[32m[I 2026-08-05 17:43:57,458][0m Trial 37 pruned. [0m
+[32m[I 2026-08-05 17:44:27,502][0m Trial 38 finished with value: 1.1632923784760718 and parameters: {'learning_rate': 0.00870093832609942, 'max_iter': 764, 'max_depth': 11, 'max_leaf_nodes': 223, 'min_samples_leaf': 20, 'l2_regularization': 1.1108945162139346e-05, 'max_bins': 152}. Best is trial 0 with value: 1.092764407775377.[0m
+[32m[I 2026-08-05 17:44:46,056][0m Trial 39 pruned. [0m
+[32m[I 2026-08-05 17:45:11,436][0m Trial 40 pruned. [0m
+[32m[I 2026-08-05 17:45:18,756][0m Trial 41 pruned. [0m
+[32m[I 2026-08-05 17:47:04,575][0m Trial 42 finished with value: 1.0799936779851802 and parameters: {'learning_rate': 0.01100709282737194, 'max_iter': 2723, 'max_depth': 14, 'max_leaf_nodes': 215, 'min_samples_leaf': 19, 'l2_regularization': 8.96389809882759e-07, 'max_bins': 134}. Best is trial 42 with value: 1.0799936779851802.[0m
+[32m[I 2026-08-05 17:47:54,275][0m Trial 43 pruned. [0m
+[32m[I 2026-08-05 17:49:21,546][0m Trial 44 pruned. [0m
+[32m[I 2026-08-05 17:49:32,726][0m Trial 45 pruned. [0m
+[32m[I 2026-08-05 17:50:11,529][0m Trial 46 pruned. [0m
+[32m[I 2026-08-05 17:50:25,708][0m Trial 47 pruned. [0m
+[32m[I 2026-08-05 17:50:51,915][0m Trial 48 pruned. [0m
+[32m[I 2026-08-05 17:52:10,076][0m Trial 49 finished with value: 1.1007999306682683 and parameters: {'learning_rate': 0.008416008421533878, 'max_iter': 2108, 'max_depth': 13, 'max_leaf_nodes': 177, 'min_samples_leaf': 20, 'l2_regularization': 8.826039604157934e-08, 'max_bins': 150}. Best is trial 42 with value: 1.0799936779851802.[0m
+
+=== Best Trial ===
+  CV RMSE: 0.000001
+  Params:  {'learning_rate': 0.01100709282737194, 'max_iter': 2723, 'max_depth': 14, 'max_leaf_nodes': 215, 'min_samples_leaf': 19, 'l2_regularization': 8.96389809882759e-07, 'max_bins': 134}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.1851
+
+============================================================
+Top 20 Feature Importances (permutation-based)
+============================================================
+   1. atom_mean_33               0.4495 ± 0.0221
+   2. atom_std_17                0.2972 ± 0.0330
+   3. atom_mean_20               0.2014 ± 0.0615
+   4. atom_mean_16               0.1661 ± 0.0176
+   5. atom_std_40                0.1544 ± 0.0063
+   6. atom_std_25                0.1414 ± 0.0073
+   7. brics_10                   0.0981 ± 0.0501
+   8. atom_mean_54               0.0705 ± 0.0093
+   9. atom_mean_38               0.0602 ± 0.0085
+  10. atom_mean_17               0.0568 ± 0.0060
+  11. head_ratio                 0.0541 ± 0.0055
+  12. atom_std_35                0.0475 ± 0.0077
+  13. atom_mean_24               0.0399 ± 0.0056
+  14. HeavyAtoms                 0.0328 ± 0.0099
+  15. atom_std_54                0.0307 ± 0.0090
+  16. FracSP3                    0.0269 ± 0.0012
+  17. atom_mean_26               0.0243 ± 0.0033
+  18. atom_std_18                0.0232 ± 0.0147
+  19. MolWt                      0.0219 ± 0.0029
+  20. atom_mean_40               0.0179 ± 0.0069
+
+Plot saved to runs\Gamma_max\Gamma_max_histgb_20260805_172618\pred_vs_true.png
+Model saved to runs\Gamma_max\Gamma_max_histgb_20260805_172618\model.pkl
+
+============================================================
+SUMMARY — HistGradientBoosting + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     628 (split 549 train + 79 val)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 1.0800
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.1851
+
+指标已保存: runs\Gamma_max\Gamma_max_histgb_20260805_172618\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

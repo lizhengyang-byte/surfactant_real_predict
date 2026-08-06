@@ -1,0 +1,84 @@
+============================================================
+transformer — 运行开始  20260806_150057
+  输出目录:  runs\pC20\pC20_transformer_20260806_150057
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for pC20 Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\pC20
+  Train features: (564, 522)
+  Test features:  (70, 522)
+
+Split: Train 493, Val 71, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 1.1565 (best: 1.1565)
+  Epoch  10 — Val RMSE: 1.0144 (best: 1.0144)
+  Epoch  15 — Val RMSE: 1.0970 (best: 1.0144)
+  Epoch  20 — Val RMSE: 1.0178 (best: 1.0144)
+  Epoch  25 — Val RMSE: 1.0024 (best: 1.0024)
+  Epoch  30 — Val RMSE: 0.9690 (best: 0.9690)
+  Epoch  35 — Val RMSE: 0.9832 (best: 0.9690)
+  Epoch  40 — Val RMSE: 0.9632 (best: 0.9632)
+  Epoch  45 — Val RMSE: 1.0889 (best: 0.9632)
+  Epoch  50 — Val RMSE: 0.9706 (best: 0.9632)
+  Epoch  55 — Val RMSE: 1.0932 (best: 0.9632)
+  Epoch  60 — Val RMSE: 0.9600 (best: 0.9600)
+  Epoch  65 — Val RMSE: 1.2426 (best: 0.9600)
+  Epoch  70 — Val RMSE: 1.0751 (best: 0.9600)
+  Epoch  75 — Val RMSE: 0.9822 (best: 0.9600)
+  Epoch  80 — Val RMSE: 1.0364 (best: 0.9600)
+  Epoch  85 — Val RMSE: 1.1421 (best: 0.9600)
+  Epoch  90 — Val RMSE: 1.1346 (best: 0.9600)
+  Epoch  95 — Val RMSE: 1.1348 (best: 0.9600)
+  Epoch 100 — Val RMSE: 1.1933 (best: 0.9600)
+  Epoch 105 — Val RMSE: 1.1253 (best: 0.9600)
+  Epoch 110 — Val RMSE: 1.0759 (best: 0.9600)
+  Epoch 115 — Val RMSE: 1.1026 (best: 0.9600)
+  Epoch 120 — Val RMSE: 1.1461 (best: 0.9600)
+  Epoch 125 — Val RMSE: 1.1809 (best: 0.9600)
+  Epoch 130 — Val RMSE: 1.2738 (best: 0.9600)
+  Epoch 135 — Val RMSE: 1.1291 (best: 0.9600)
+  Epoch 140 — Val RMSE: 1.1504 (best: 0.9600)
+  Epoch 145 — Val RMSE: 1.1309 (best: 0.9600)
+  Epoch 150 — Val RMSE: 1.5133 (best: 0.9600)
+  Epoch 155 — Val RMSE: 1.6024 (best: 0.9600)
+  Epoch 160 — Val RMSE: 1.4133 (best: 0.9600)
+  Epoch 165 — Val RMSE: 1.2727 (best: 0.9600)
+  Epoch 170 — Val RMSE: 1.4055 (best: 0.9600)
+  Epoch 175 — Val RMSE: 1.2104 (best: 0.9600)
+  Epoch 180 — Val RMSE: 1.0216 (best: 0.9600)
+  Epoch 185 — Val RMSE: 1.0738 (best: 0.9600)
+  Epoch 190 — Val RMSE: 1.0879 (best: 0.9600)
+  Epoch 195 — Val RMSE: 1.1090 (best: 0.9600)
+  Epoch 200 — Val RMSE: 1.0635 (best: 0.9600)
+  Epoch 205 — Val RMSE: 1.5226 (best: 0.9600)
+  Epoch 210 — Val RMSE: 1.2492 (best: 0.9600)
+  Early stopping at epoch 210
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  1.0982
+  Test RMSE: 1.0480
+  Test MAE:  0.8417
+  Test R²:   0.2297
+Model saved to runs\pC20\pC20_transformer_20260806_150057\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     493 (val 71)
+  Test:      70
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 1.0480
+  Test MAE:  0.8417
+  Test R²:   0.2297
+
+指标已保存: runs\pC20\pC20_transformer_20260806_150057\metrics.json
+索引已更新: runs\pC20\_runs_index.csv
+索引已更新: runs\_runs_index.csv

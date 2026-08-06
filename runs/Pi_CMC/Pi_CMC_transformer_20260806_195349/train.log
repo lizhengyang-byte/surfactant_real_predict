@@ -1,0 +1,16 @@
+============================================================
+transformer — 运行开始  20260806_195349
+  输出目录:  runs\Pi_CMC\Pi_CMC_transformer_20260806_195349
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Pi_CMC Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Pi_CMC
+  Train features: (631, 522)
+  Test features:  (70, 522)
+
+Split: Train 552, Val 79, Test 70
+
+============================================================
+Training Final Model
+============================================================

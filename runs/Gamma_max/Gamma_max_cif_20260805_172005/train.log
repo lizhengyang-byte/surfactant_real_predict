@@ -1,0 +1,125 @@
+============================================================
+cif — 运行开始  20260805_172005
+  输出目录:  runs\Gamma_max\Gamma_max_cif_20260805_172005
+============================================================
+============================================================
+Conditional Inference Forest + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-05 17:20:09,683][0m Trial 0 finished with value: 1.4028709313758991 and parameters: {'n_estimators': 874, 'max_depth': 29, 'min_samples_split': 37, 'min_samples_leaf': 30, 'max_features': 'sqrt', 'bootstrap': True, 'max_samples': 0.8540362888980227}. Best is trial 0 with value: 1.4028709313758991.[0m
+[32m[I 2026-08-05 17:20:10,971][0m Trial 1 finished with value: 1.3152838630972723 and parameters: {'n_estimators': 237, 'max_depth': 30, 'min_samples_split': 42, 'min_samples_leaf': 11, 'max_features': None, 'bootstrap': True, 'max_samples': 0.645614570099021}. Best is trial 1 with value: 1.3152838630972723.[0m
+[32m[I 2026-08-05 17:20:14,796][0m Trial 2 finished with value: 1.3814411876138895 and parameters: {'n_estimators': 1301, 'max_depth': 6, 'min_samples_split': 16, 'min_samples_leaf': 19, 'max_features': 'log2', 'bootstrap': False}. Best is trial 1 with value: 1.3152838630972723.[0m
+[32m[I 2026-08-05 17:20:16,200][0m Trial 3 finished with value: 1.2741322774169812 and parameters: {'n_estimators': 283, 'max_depth': 20, 'min_samples_split': 10, 'min_samples_leaf': 4, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.8421165132560784}. Best is trial 3 with value: 1.2741322774169812.[0m
+[32m[I 2026-08-05 17:20:19,228][0m Trial 4 finished with value: 1.2383046476907325 and parameters: {'n_estimators': 992, 'max_depth': 6, 'min_samples_split': 26, 'min_samples_leaf': 2, 'max_features': 'sqrt', 'bootstrap': False}. Best is trial 4 with value: 1.2383046476907325.[0m
+[32m[I 2026-08-05 17:20:21,346][0m Trial 5 pruned. [0m
+[32m[I 2026-08-05 17:20:21,907][0m Trial 6 pruned. [0m
+[32m[I 2026-08-05 17:20:22,368][0m Trial 7 pruned. [0m
+[32m[I 2026-08-05 17:20:22,790][0m Trial 8 pruned. [0m
+[32m[I 2026-08-05 17:20:26,048][0m Trial 9 pruned. [0m
+[32m[I 2026-08-05 17:20:28,274][0m Trial 10 pruned. [0m
+[32m[I 2026-08-05 17:20:31,531][0m Trial 11 finished with value: 1.0628915768525555 and parameters: {'n_estimators': 680, 'max_depth': 20, 'min_samples_split': 3, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.7516400374040881}. Best is trial 11 with value: 1.0628915768525555.[0m
+[32m[I 2026-08-05 17:20:35,147][0m Trial 12 finished with value: 1.0437435040745584 and parameters: {'n_estimators': 759, 'max_depth': 22, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.7157007399204262}. Best is trial 12 with value: 1.0437435040745584.[0m
+[32m[I 2026-08-05 17:20:36,402][0m Trial 13 pruned. [0m
+[32m[I 2026-08-05 17:20:39,354][0m Trial 14 finished with value: 1.044467737758594 and parameters: {'n_estimators': 609, 'max_depth': 25, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.7409994019071536}. Best is trial 12 with value: 1.0437435040745584.[0m
+[32m[I 2026-08-05 17:20:40,517][0m Trial 15 pruned. [0m
+[32m[I 2026-08-05 17:20:41,594][0m Trial 16 pruned. [0m
+[32m[I 2026-08-05 17:20:43,268][0m Trial 17 pruned. [0m
+[32m[I 2026-08-05 17:20:44,306][0m Trial 18 pruned. [0m
+[32m[I 2026-08-05 17:20:46,388][0m Trial 19 pruned. [0m
+[32m[I 2026-08-05 17:20:47,811][0m Trial 20 pruned. [0m
+[32m[I 2026-08-05 17:20:50,381][0m Trial 21 finished with value: 1.1689979746125292 and parameters: {'n_estimators': 526, 'max_depth': 17, 'min_samples_split': 2, 'min_samples_leaf': 2, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.7523594782378045}. Best is trial 12 with value: 1.0437435040745584.[0m
+[32m[I 2026-08-05 17:20:51,910][0m Trial 22 pruned. [0m
+[32m[I 2026-08-05 17:20:56,740][0m Trial 23 finished with value: 1.1343586312833265 and parameters: {'n_estimators': 1034, 'max_depth': 22, 'min_samples_split': 6, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.6757582228467287}. Best is trial 12 with value: 1.0437435040745584.[0m
+[32m[I 2026-08-05 17:20:57,590][0m Trial 24 pruned. [0m
+[32m[I 2026-08-05 17:20:59,083][0m Trial 25 pruned. [0m
+[32m[I 2026-08-05 17:21:01,735][0m Trial 26 pruned. [0m
+[32m[I 2026-08-05 17:21:04,003][0m Trial 27 finished with value: 1.0339305952081517 and parameters: {'n_estimators': 451, 'max_depth': 23, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.9074136202529426}. Best is trial 27 with value: 1.0339305952081517.[0m
+[32m[I 2026-08-05 17:21:04,855][0m Trial 28 pruned. [0m
+[32m[I 2026-08-05 17:21:06,535][0m Trial 29 pruned. [0m
+[32m[I 2026-08-05 17:21:07,340][0m Trial 30 pruned. [0m
+[32m[I 2026-08-05 17:21:08,648][0m Trial 31 pruned. [0m
+[32m[I 2026-08-05 17:21:12,133][0m Trial 32 finished with value: 1.0376726769788336 and parameters: {'n_estimators': 715, 'max_depth': 21, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.8149265624063259}. Best is trial 27 with value: 1.0339305952081517.[0m
+[32m[I 2026-08-05 17:21:12,568][0m Trial 33 pruned. [0m
+[32m[I 2026-08-05 17:21:14,221][0m Trial 34 pruned. [0m
+[32m[I 2026-08-05 17:21:16,161][0m Trial 35 pruned. [0m
+[32m[I 2026-08-05 17:21:16,922][0m Trial 36 pruned. [0m
+[32m[I 2026-08-05 17:21:18,421][0m Trial 37 pruned. [0m
+[32m[I 2026-08-05 17:21:20,185][0m Trial 38 pruned. [0m
+[32m[I 2026-08-05 17:21:20,738][0m Trial 39 pruned. [0m
+[32m[I 2026-08-05 17:21:21,677][0m Trial 40 pruned. [0m
+[32m[I 2026-08-05 17:21:23,032][0m Trial 41 pruned. [0m
+[32m[I 2026-08-05 17:21:26,016][0m Trial 42 finished with value: 1.0440981679631978 and parameters: {'n_estimators': 610, 'max_depth': 24, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.7396036725164276}. Best is trial 27 with value: 1.0339305952081517.[0m
+[32m[I 2026-08-05 17:21:28,905][0m Trial 43 finished with value: 1.0566594753269425 and parameters: {'n_estimators': 596, 'max_depth': 24, 'min_samples_split': 2, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': True, 'max_samples': 0.6946915760137313}. Best is trial 27 with value: 1.0339305952081517.[0m
+[32m[I 2026-08-05 17:21:29,363][0m Trial 44 pruned. [0m
+[32m[I 2026-08-05 17:21:30,082][0m Trial 45 pruned. [0m
+[32m[I 2026-08-05 17:21:31,635][0m Trial 46 pruned. [0m
+[32m[I 2026-08-05 17:21:32,877][0m Trial 47 pruned. [0m
+[32m[I 2026-08-05 17:21:38,710][0m Trial 48 finished with value: 1.0324633049921732 and parameters: {'n_estimators': 1827, 'max_depth': 21, 'min_samples_split': 7, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': False}. Best is trial 48 with value: 1.0324633049921732.[0m
+[32m[I 2026-08-05 17:21:40,886][0m Trial 49 pruned. [0m
+
+=== Best Trial ===
+  CV RMSE: 0.000001
+  Params:  {'n_estimators': 1827, 'max_depth': 21, 'min_samples_split': 7, 'min_samples_leaf': 1, 'max_features': 'log2', 'bootstrap': False}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.5956
+
+============================================================
+Top 20 Feature Importances
+============================================================
+   1. AroRings                   0.0
+   2. atom_max_20                0.0
+   3. NumRings                   0.0
+   4. brics_10                   0.0
+   5. maccs_112                  0.0
+   6. maccs_77                   0.0
+   7. maccs_30                   0.0
+   8. maccs_166                  0.0
+   9. atom_max_16                0.0
+  10. atom_mean_54               0.0
+  11. maccs_83                   0.0
+  12. atom_std_16                0.0
+  13. atom_min_54                0.0
+  14. atom_mean_40               0.0
+  15. atom_max_54                0.0
+  16. maccs_96                   0.0
+  17. atom_std_44                0.0
+  18. atom_std_22                0.0
+  19. maccs_113                  0.0
+  20. maccs_141                  0.0
+
+Plot saved to runs\Gamma_max\Gamma_max_cif_20260805_172005\pred_vs_true.png
+Model saved to runs\Gamma_max\Gamma_max_cif_20260805_172005\model.pkl
+
+============================================================
+SUMMARY — Conditional Inference Forest + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     628 (split 549 train + 79 val)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 1.0325
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.5956
+
+指标已保存: runs\Gamma_max\Gamma_max_cif_20260805_172005\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

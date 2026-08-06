@@ -1,0 +1,16 @@
+============================================================
+transformer — 运行开始  20260805_202759
+  输出目录:  runs\Gamma_max\Gamma_max_transformer_20260805_202759
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Training Final Model
+============================================================

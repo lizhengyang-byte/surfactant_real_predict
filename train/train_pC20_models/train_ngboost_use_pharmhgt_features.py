@@ -46,14 +46,14 @@ warnings.filterwarnings('ignore')
 # ===========================================================================
 PRETUNED_PARAMS = None
 
-PRETUNED_PARAMS = {
-    'n_estimators': 637,
-    'learning_rate': 0.03374093172394316,
-    'minibatch_frac': 0.7231391767644131,
-    'max_depth': 5,          # 会被提取到 base_learner
-    'min_samples_leaf': 13,  # 会被提取到 base_learner
-    'score_rule': 'LogScore',
-}
+# PRETUNED_PARAMS = {
+#     'n_estimators': 637,
+#     'learning_rate': 0.03374093172394316,
+#     'minibatch_frac': 0.7231391767644131,
+#     'max_depth': 5,          # 会被提取到 base_learner
+#     'min_samples_leaf': 13,  # 会被提取到 base_learner
+#     'score_rule': 'LogScore',
+# }
 
 # ===========================================================================
 # Main — Load Data, Featurize, Train NGBoost with Optuna

@@ -1,0 +1,6 @@
+{
+  "test_rmse": 0.0,
+  "test_mae": 0.0,
+  "test_r2": 0.3308,
+  "best_cv_rmse": 0.0
+}

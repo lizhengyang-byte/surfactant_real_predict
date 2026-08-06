@@ -1,0 +1,14 @@
+{
+  "model": "mlp",
+  "optuna_trials": 50,
+  "n_folds": 5,
+  "y_scale": 1000000,
+  "n_layers": 5,
+  "hidden_dim": 488,
+  "dropout": 0.04900093016107991,
+  "activation": "relu",
+  "lr": 0.0003119810055308916,
+  "weight_decay": 1.118882659005071e-07,
+  "batch_size": 95,
+  "best_cv_rmse": 0.0
+}

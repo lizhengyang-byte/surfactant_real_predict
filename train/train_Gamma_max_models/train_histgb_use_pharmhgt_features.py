@@ -66,6 +66,8 @@ def main():
     SEED = 42
     N_OPTUNA_TRIALS = 50
     N_FOLDS = 5
+    # Gamma_max: scale y by 1e6 for numerical stability
+    Y_SCALE = 1_000_000
 
     random.seed(SEED)
     np.random.seed(SEED)
@@ -95,7 +97,6 @@ def main():
     )
 
     # Gamma_max: scale y by 1e6 for numerical stability
-    Y_SCALE = 1_000_000
     y_full = y_full * Y_SCALE
     y_test = y_test * Y_SCALE
     print(f"  Train features: {X_full.shape}")

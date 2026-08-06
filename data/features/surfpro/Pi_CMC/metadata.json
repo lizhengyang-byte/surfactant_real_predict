@@ -1,0 +1,8 @@
+{
+  "train_smiles_hash": "8d7884eb4f1a8fd64b28d4213554140f",
+  "test_smiles_hash": "4d1b53094439e6037198545ef64b04ea",
+  "train_csv": "surfpro_train.csv",
+  "test_csv": "surfpro_test.csv",
+  "target_col": "Pi_CMC",
+  "feature_dim": 522
+}

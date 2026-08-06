@@ -1,0 +1,19 @@
+{
+  "model": "transformer",
+  "feature_type": "pharmhgt_522",
+  "feature_dim": 522,
+  "data_train": "./data/surfpro/surfpro_train.csv",
+  "data_test": "./data/surfpro/surfpro_test.csv",
+  "target_col": "pC20",
+  "val_frac": 0.125,
+  "seed": 42,
+  "d_model": 128,
+  "nhead": 4,
+  "num_layers": 3,
+  "dim_feedforward": 256,
+  "dropout": 0.1,
+  "activation": "gelu",
+  "lr": 0.001,
+  "weight_decay": 1e-05,
+  "batch_size": 16
+}

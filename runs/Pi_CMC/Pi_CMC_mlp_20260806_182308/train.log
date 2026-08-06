@@ -1,0 +1,38 @@
+============================================================
+mlp — 运行开始  20260806_182308
+  输出目录:  runs\Pi_CMC\Pi_CMC_mlp_20260806_182308
+============================================================
+============================================================
+MLP + PharmHGT-style Featurization for Pi_CMC Prediction
+============================================================
+
+============================================================
+Training Final Model
+============================================================
+    Early stopping at epoch 280
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  23.8501
+  Test RMSE: 4.8837
+  Test MAE:  3.3190
+  Test R²:   0.5402
+Model saved to runs\Pi_CMC\Pi_CMC_mlp_20260806_182308\model.pkl
+
+============================================================
+SUMMARY — MLP + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     552 (val 79)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 3.6857
+  Best val RMSE: 4.1786
+  Test RMSE: 4.8837
+  Test MAE:  3.3190
+  Test R²:   0.5402
+
+指标已保存: runs\Pi_CMC\Pi_CMC_mlp_20260806_182308\metrics.json
+索引已更新: runs\Pi_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

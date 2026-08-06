@@ -1,0 +1,8 @@
+{
+  "train_smiles_hash": "8820aaee838dc8773771da1c191c606f",
+  "test_smiles_hash": "4d1b53094439e6037198545ef64b04ea",
+  "train_csv": "surfpro_train.csv",
+  "test_csv": "surfpro_test.csv",
+  "target_col": "pC20",
+  "feature_dim": 522
+}

@@ -1,5 +1,5 @@
 """
-train_catboost_use_pharmhgt_features.py 鈥?CatBoost with PharmHGT-style Featurization
+train_catboost_use_pharmhgt_features.py ?CatBoost with PharmHGT-style Featurization
 ===================================================================================
 
 Uses shared featurization from smiles_to_features_pharmhgt.py (522-dim).

@@ -1,0 +1,12 @@
+{
+  "model": "HistGradientBoosting",
+  "feature_type": "pharmhgt_522",
+  "feature_dim": 522,
+  "data_train": "./data/surfpro/surfpro_train.csv",
+  "data_test": "./data/surfpro/surfpro_test.csv",
+  "target_col": "Pi_CMC",
+  "val_frac": 0.125,
+  "seed": 42,
+  "n_optuna_trials": 50,
+  "n_folds": 5
+}

@@ -1,0 +1,101 @@
+============================================================
+mlp_tuning — 运行开始  20260805_181240
+  输出目录:  runs\Gamma_max\Gamma_max_mlp_tuning_20260805_181240
+============================================================
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-05 18:13:23,525][0m Trial 0 finished with value: 1.3506949756106619 and parameters: {'n_layers': 3, 'hidden_dim': 980, 'dropout': 0.36599697090570255, 'activation': 'relu', 'lr': 1.493656855461762e-05, 'weight_decay': 0.00021423021757741048, 'batch_size': 83}. Best is trial 0 with value: 1.3506949756106619.[0m
+[32m[I 2026-08-05 18:14:17,917][0m Trial 1 finished with value: 2.1195391009727547 and parameters: {'n_layers': 5, 'hidden_dim': 146, 'dropout': 0.48495492608099716, 'activation': 'relu', 'lr': 3.5498788321965036e-05, 'weight_decay': 3.3205591037519537e-07, 'batch_size': 75}. Best is trial 0 with value: 1.3506949756106619.[0m
+[32m[I 2026-08-05 18:15:17,169][0m Trial 2 finished with value: 1.0563735125677203 and parameters: {'n_layers': 4, 'hidden_dim': 389, 'dropout': 0.30592644736118974, 'activation': 'leaky_relu', 'lr': 0.00023345864076016249, 'weight_decay': 8.431013932082453e-05, 'batch_size': 38}. Best is trial 2 with value: 1.0563735125677203.[0m
+[32m[I 2026-08-05 18:15:44,344][0m Trial 3 finished with value: 0.8678611702005694 and parameters: {'n_layers': 4, 'hidden_dim': 659, 'dropout': 0.023225206359998862, 'activation': 'relu', 'lr': 0.007025166339242158, 'weight_decay': 0.0006732248920775337, 'batch_size': 107}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:16:54,004][0m Trial 4 finished with value: 1.4059921297175517 and parameters: {'n_layers': 3, 'hidden_dim': 215, 'dropout': 0.34211651325607845, 'activation': 'leaky_relu', 'lr': 1.2681352169084594e-05, 'weight_decay': 0.000352048104552604, 'batch_size': 45}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:17:22,798][0m Trial 5 finished with value: 0.9869337308405222 and parameters: {'n_layers': 5, 'hidden_dim': 407, 'dropout': 0.2600340105889054, 'activation': 'leaky_relu', 'lr': 0.002115429079726122, 'weight_decay': 0.0004983043837494911, 'batch_size': 117}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:17:55,450][0m Trial 6 finished with value: 0.8863129292918155 and parameters: {'n_layers': 4, 'hidden_dim': 954, 'dropout': 0.04424625102595975, 'activation': 'leaky_relu', 'lr': 0.00014656553886225324, 'weight_decay': 2.2737628102536842e-07, 'batch_size': 109}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:18:54,939][0m Trial 7 finished with value: 0.9074900756072306 and parameters: {'n_layers': 3, 'hidden_dim': 379, 'dropout': 0.27134804157912423, 'activation': 'gelu', 'lr': 0.009133995846860976, 'weight_decay': 7.26480307482672e-05, 'batch_size': 38}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:19:01,661][0m Trial 8 pruned. [0m
+[32m[I 2026-08-05 18:19:44,513][0m Trial 9 finished with value: 0.8914874175245915 and parameters: {'n_layers': 5, 'hidden_dim': 424, 'dropout': 0.03177917514301182, 'activation': 'leaky_relu', 'lr': 0.0008178476574339542, 'weight_decay': 0.0002729378165037473, 'batch_size': 69}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:24:31,183][0m Trial 10 finished with value: 0.9076690189544319 and parameters: {'n_layers': 6, 'hidden_dim': 699, 'dropout': 0.14694873683867093, 'activation': 'relu', 'lr': 0.008512630861866367, 'weight_decay': 6.962392513640999e-06, 'batch_size': 17}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:24:59,790][0m Trial 11 finished with value: 0.8772880009329652 and parameters: {'n_layers': 4, 'hidden_dim': 690, 'dropout': 0.0024089890189428753, 'activation': 'relu', 'lr': 0.0012344334884639753, 'weight_decay': 2.6521882957137457e-06, 'batch_size': 100}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:25:17,701][0m Trial 12 pruned. [0m
+[32m[I 2026-08-05 18:25:39,810][0m Trial 13 finished with value: 0.896806560931784 and parameters: {'n_layers': 4, 'hidden_dim': 654, 'dropout': 0.013807429299865013, 'activation': 'relu', 'lr': 0.0020233435446609807, 'weight_decay': 5.683654344171312e-06, 'batch_size': 128}. Best is trial 3 with value: 0.8678611702005694.[0m
+[32m[I 2026-08-05 18:25:46,858][0m Trial 14 pruned. [0m
+[32m[I 2026-08-05 18:26:43,955][0m Trial 15 finished with value: 0.850270616269472 and parameters: {'n_layers': 6, 'hidden_dim': 808, 'dropout': 0.06983912100739127, 'activation': 'relu', 'lr': 0.004353532392496804, 'weight_decay': 2.8589133869915723e-05, 'batch_size': 98}. Best is trial 15 with value: 0.850270616269472.[0m
+[32m[I 2026-08-05 18:27:30,073][0m Trial 16 pruned. [0m
+[32m[I 2026-08-05 18:27:46,334][0m Trial 17 pruned. [0m
+[32m[I 2026-08-05 18:27:59,429][0m Trial 18 pruned. [0m
+[32m[I 2026-08-05 18:28:12,775][0m Trial 19 pruned. [0m
+[32m[I 2026-08-05 18:28:54,677][0m Trial 20 finished with value: 0.915198367227678 and parameters: {'n_layers': 5, 'hidden_dim': 560, 'dropout': 0.20447698123040897, 'activation': 'gelu', 'lr': 0.003554624788804439, 'weight_decay': 9.532518793278034e-05, 'batch_size': 90}. Best is trial 15 with value: 0.850270616269472.[0m
+[32m[I 2026-08-05 18:29:02,180][0m Trial 21 pruned. [0m
+[32m[I 2026-08-05 18:29:13,438][0m Trial 22 pruned. [0m
+[32m[I 2026-08-05 18:29:30,265][0m Trial 23 pruned. [0m
+[32m[I 2026-08-05 18:29:46,277][0m Trial 24 pruned. [0m
+[32m[I 2026-08-05 18:30:28,396][0m Trial 25 finished with value: 0.9252099929237602 and parameters: {'n_layers': 5, 'hidden_dim': 746, 'dropout': 0.10844945231987742, 'activation': 'relu', 'lr': 0.001149491962632727, 'weight_decay': 0.0009947197702807574, 'batch_size': 89}. Best is trial 15 with value: 0.850270616269472.[0m
+[32m[I 2026-08-05 18:30:34,560][0m Trial 26 pruned. [0m
+[32m[I 2026-08-05 18:30:44,405][0m Trial 27 pruned. [0m
+[32m[I 2026-08-05 18:31:54,800][0m Trial 28 finished with value: 0.9365594001593525 and parameters: {'n_layers': 6, 'hidden_dim': 628, 'dropout': 0.0877258355601369, 'activation': 'gelu', 'lr': 0.001430642671667533, 'weight_decay': 0.00011911787792618412, 'batch_size': 57}. Best is trial 15 with value: 0.850270616269472.[0m
+[32m[I 2026-08-05 18:32:32,237][0m Trial 29 finished with value: 0.9604071742990727 and parameters: {'n_layers': 3, 'hidden_dim': 721, 'dropout': 0.48959102061084725, 'activation': 'relu', 'lr': 0.002990256725327396, 'weight_decay': 4.2429036257473515e-05, 'batch_size': 80}. Best is trial 15 with value: 0.850270616269472.[0m
+[32m[I 2026-08-05 18:33:09,024][0m Trial 30 finished with value: 0.8214959712572497 and parameters: {'n_layers': 5, 'hidden_dim': 488, 'dropout': 0.04900093016107991, 'activation': 'relu', 'lr': 0.0003119810055308916, 'weight_decay': 1.118882659005071e-07, 'batch_size': 95}. Best is trial 30 with value: 0.8214959712572497.[0m
+[32m[I 2026-08-05 18:33:21,787][0m Trial 31 pruned. [0m
+[32m[I 2026-08-05 18:33:40,397][0m Trial 32 pruned. [0m
+[32m[I 2026-08-05 18:34:04,147][0m Trial 33 pruned. [0m
+[32m[I 2026-08-05 18:34:47,925][0m Trial 34 finished with value: 0.8443397389344861 and parameters: {'n_layers': 5, 'hidden_dim': 300, 'dropout': 0.06418744434547756, 'activation': 'relu', 'lr': 0.0006343820279617543, 'weight_decay': 1.8389013770280864e-08, 'batch_size': 69}. Best is trial 30 with value: 0.8214959712572497.[0m
+[32m[I 2026-08-05 18:35:04,644][0m Trial 35 pruned. [0m
+[32m[I 2026-08-05 18:35:31,246][0m Trial 36 pruned. [0m
+[32m[I 2026-08-05 18:35:59,884][0m Trial 37 pruned. [0m
+[32m[I 2026-08-05 18:36:10,879][0m Trial 38 pruned. [0m
+[32m[I 2026-08-05 18:36:35,672][0m Trial 39 pruned. [0m
+[32m[I 2026-08-05 18:37:05,178][0m Trial 40 pruned. [0m
+[32m[I 2026-08-05 18:37:29,587][0m Trial 41 finished with value: 0.8227772096410157 and parameters: {'n_layers': 4, 'hidden_dim': 693, 'dropout': 0.029644300414983248, 'activation': 'relu', 'lr': 0.000790102479106892, 'weight_decay': 9.14651964435849e-08, 'batch_size': 113}. Best is trial 30 with value: 0.8214959712572497.[0m
+[32m[I 2026-08-05 18:37:38,450][0m Trial 42 pruned. [0m
+[32m[I 2026-08-05 18:37:51,561][0m Trial 43 pruned. [0m
+[32m[I 2026-08-05 18:38:01,259][0m Trial 44 pruned. [0m
+[32m[I 2026-08-05 18:39:21,666][0m Trial 45 finished with value: 0.8221593045791298 and parameters: {'n_layers': 3, 'hidden_dim': 393, 'dropout': 0.029684711429613913, 'activation': 'gelu', 'lr': 0.0003851452790584715, 'weight_decay': 1.6995791974460545e-07, 'batch_size': 24}. Best is trial 30 with value: 0.8214959712572497.[0m
+[32m[I 2026-08-05 18:39:45,241][0m Trial 46 pruned. [0m
+[32m[I 2026-08-05 18:40:30,047][0m Trial 47 pruned. [0m
+[32m[I 2026-08-05 18:40:48,120][0m Trial 48 pruned. [0m
+[32m[I 2026-08-05 18:41:49,499][0m Trial 49 finished with value: 0.9444420962768509 and parameters: {'n_layers': 5, 'hidden_dim': 440, 'dropout': 0.049833903669362176, 'activation': 'gelu', 'lr': 0.0008084890078014903, 'weight_decay': 2.303136482619639e-08, 'batch_size': 44}. Best is trial 30 with value: 0.8214959712572497.[0m
+
+=== Best Trial ===
+  CV RMSE: 0.000001
+  Params:  {'n_layers': 5, 'hidden_dim': 488, 'dropout': 0.04900093016107991, 'activation': 'relu', 'lr': 0.0003119810055308916, 'weight_decay': 1.118882659005071e-07, 'batch_size': 95}
+============================================================
+mlp — 运行开始  20260805_184149
+  输出目录:  runs\Gamma_max\Gamma_max_mlp_20260805_184149
+============================================================
+============================================================
+MLP + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+
+============================================================
+Training Final Model
+============================================================
+    Epoch 300/3000 — Val RMSE: 1.2153 (best: 0.6836)
+    Early stopping at epoch 335
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.7515
+Model saved to runs\Gamma_max\Gamma_max_mlp_20260805_184149\model.pkl
+
+============================================================
+SUMMARY — MLP + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     549 (val 79)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 0.0000
+  Best val RMSE: 0.6836
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.7515
+
+指标已保存: runs\Gamma_max\Gamma_max_mlp_20260805_184149\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

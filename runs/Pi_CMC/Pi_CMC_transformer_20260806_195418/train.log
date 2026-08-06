@@ -1,0 +1,105 @@
+============================================================
+transformer — 运行开始  20260806_195418
+  输出目录:  runs\Pi_CMC\Pi_CMC_transformer_20260806_195418
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Pi_CMC Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Pi_CMC
+  Train features: (631, 522)
+  Test features:  (70, 522)
+
+Split: Train 552, Val 79, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 7.2036 (best: 7.2036)
+  Epoch  10 — Val RMSE: 7.2117 (best: 7.2036)
+  Epoch  15 — Val RMSE: 7.2659 (best: 7.2036)
+  Epoch  20 — Val RMSE: 7.2031 (best: 7.2031)
+  Epoch  25 — Val RMSE: 7.2441 (best: 7.2031)
+  Epoch  30 — Val RMSE: 7.2763 (best: 7.2031)
+  Epoch  35 — Val RMSE: 7.2205 (best: 7.2031)
+  Epoch  40 — Val RMSE: 7.2311 (best: 7.2031)
+  Epoch  45 — Val RMSE: 7.2369 (best: 7.2031)
+  Epoch  50 — Val RMSE: 7.2301 (best: 7.2031)
+  Epoch  55 — Val RMSE: 7.2033 (best: 7.2031)
+  Epoch  60 — Val RMSE: 7.2491 (best: 7.2031)
+  Epoch  65 — Val RMSE: 7.2046 (best: 7.2031)
+  Epoch  70 — Val RMSE: 7.2589 (best: 7.2031)
+  Epoch  75 — Val RMSE: 7.2221 (best: 7.2031)
+  Epoch  80 — Val RMSE: 7.2297 (best: 7.2031)
+  Epoch  85 — Val RMSE: 7.2362 (best: 7.2031)
+  Epoch  90 — Val RMSE: 7.2269 (best: 7.2031)
+  Epoch  95 — Val RMSE: 7.2099 (best: 7.2031)
+  Epoch 100 — Val RMSE: 7.3216 (best: 7.2031)
+  Epoch 105 — Val RMSE: 7.2510 (best: 7.2031)
+  Epoch 110 — Val RMSE: 7.3078 (best: 7.2031)
+  Epoch 115 — Val RMSE: 7.2204 (best: 7.2031)
+  Epoch 120 — Val RMSE: 7.2702 (best: 7.2031)
+  Epoch 125 — Val RMSE: 7.2249 (best: 7.2031)
+  Epoch 130 — Val RMSE: 7.2643 (best: 7.2031)
+  Epoch 135 — Val RMSE: 7.2078 (best: 7.2031)
+  Epoch 140 — Val RMSE: 7.2494 (best: 7.2031)
+  Epoch 145 — Val RMSE: 7.2414 (best: 7.2031)
+  Epoch 150 — Val RMSE: 7.2046 (best: 7.2031)
+  Epoch 155 — Val RMSE: 7.2440 (best: 7.2031)
+  Epoch 160 — Val RMSE: 7.2221 (best: 7.2031)
+  Epoch 165 — Val RMSE: 7.2027 (best: 7.2027)
+  Epoch 170 — Val RMSE: 7.2567 (best: 7.2027)
+  Epoch 175 — Val RMSE: 7.2121 (best: 7.2027)
+  Epoch 180 — Val RMSE: 7.2076 (best: 7.2027)
+  Epoch 185 — Val RMSE: 7.2166 (best: 7.2027)
+  Epoch 190 — Val RMSE: 7.3035 (best: 7.2027)
+  Epoch 195 — Val RMSE: 7.3110 (best: 7.2027)
+  Epoch 200 — Val RMSE: 7.3210 (best: 7.2027)
+  Epoch 205 — Val RMSE: 7.2078 (best: 7.2027)
+  Epoch 210 — Val RMSE: 7.2547 (best: 7.2027)
+  Epoch 215 — Val RMSE: 7.2368 (best: 7.2027)
+  Epoch 220 — Val RMSE: 7.2341 (best: 7.2027)
+  Epoch 225 — Val RMSE: 7.3281 (best: 7.2027)
+  Epoch 230 — Val RMSE: 7.2624 (best: 7.2027)
+  Epoch 235 — Val RMSE: 7.2687 (best: 7.2027)
+  Epoch 240 — Val RMSE: 7.2883 (best: 7.2027)
+  Epoch 245 — Val RMSE: 7.2238 (best: 7.2027)
+  Epoch 250 — Val RMSE: 7.2589 (best: 7.2027)
+  Epoch 255 — Val RMSE: 7.2604 (best: 7.2027)
+  Epoch 260 — Val RMSE: 7.2476 (best: 7.2027)
+  Epoch 265 — Val RMSE: 7.2324 (best: 7.2027)
+  Epoch 270 — Val RMSE: 7.2318 (best: 7.2027)
+  Epoch 275 — Val RMSE: 7.2215 (best: 7.2027)
+  Epoch 280 — Val RMSE: 7.2390 (best: 7.2027)
+  Epoch 285 — Val RMSE: 7.2618 (best: 7.2027)
+  Epoch 290 — Val RMSE: 7.2438 (best: 7.2027)
+  Epoch 295 — Val RMSE: 7.2445 (best: 7.2027)
+  Epoch 300 — Val RMSE: 7.2871 (best: 7.2027)
+  Epoch 305 — Val RMSE: 7.2338 (best: 7.2027)
+  Epoch 310 — Val RMSE: 7.2417 (best: 7.2027)
+  Epoch 315 — Val RMSE: 7.2727 (best: 7.2027)
+  Early stopping at epoch 315
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  55.3081
+  Test RMSE: 7.4369
+  Test MAE:  5.8167
+  Test R²:   -0.0663
+Model saved to runs\Pi_CMC\Pi_CMC_transformer_20260806_195418\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     552 (val 79)
+  Test:      70
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 7.4369
+  Test MAE:  5.8167
+  Test R²:   -0.0663
+
+指标已保存: runs\Pi_CMC\Pi_CMC_transformer_20260806_195418\metrics.json
+索引已更新: runs\Pi_CMC\_runs_index.csv
+索引已更新: runs\_runs_index.csv

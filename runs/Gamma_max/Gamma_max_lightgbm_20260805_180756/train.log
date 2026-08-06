@@ -1,0 +1,627 @@
+============================================================
+lightgbm — 运行开始  20260805_180756
+  输出目录:  runs\Gamma_max\Gamma_max_lightgbm_20260805_180756
+============================================================
+============================================================
+LightGBM + PharmHGT-style Featurization for Gamma_max Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Gamma_max
+  Train features: (628, 522)
+  Test features:  (70, 522)
+
+Split: Train 549, Val 79, Test 70
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-05 18:07:58,397][0m Trial 0 finished with value: 2.009971272597043 and parameters: {'boosting_type': 'dart', 'max_depth': 12, 'num_leaves': 159, 'learning_rate': 0.009470976192691145, 'n_estimators': 890, 'subsample': 0.5290418060840998, 'subsample_freq': 9, 'colsample_bytree': 0.7207805082202461, 'reg_alpha': 0.023585940584142682, 'reg_lambda': 1.5320059381854043e-08, 'min_child_samples': 98, 'min_child_weight': 0.021368329072358756, 'min_split_gain': 0.21233911067827616, 'cat_smooth': 9.091248360355031, 'cat_l2': 9.17022549267169, 'drop_rate': 0.09823025045826593, 'max_drop': 27, 'skip_drop': 0.13526405540621358}. Best is trial 0 with value: 2.009971272597043.[0m
+[32m[I 2026-08-05 18:08:04,416][0m Trial 1 finished with value: 1.4151086003695774 and parameters: {'boosting_type': 'dart', 'max_depth': 4, 'num_leaves': 85, 'learning_rate': 0.02240870575939826, 'n_estimators': 1640, 'subsample': 0.8925879806965068, 'subsample_freq': 2, 'colsample_bytree': 0.6599641068895281, 'reg_alpha': 0.0021465011216654484, 'reg_lambda': 2.6185068507773707e-08, 'min_child_samples': 63, 'min_child_weight': 4.809461967501571e-05, 'min_split_gain': 0.06505159298527952, 'cat_smooth': 47.44427686266666, 'cat_l2': 48.28160165372797, 'drop_rate': 0.24443523095377373, 'max_drop': 16, 'skip_drop': 0.03832491306185132}. Best is trial 1 with value: 1.4151086003695774.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[1085]	valid_0's rmse: 1.42358	valid_0's l2: 2.02659
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[785]	valid_0's rmse: 0.889356	valid_0's l2: 0.790955
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[283]	valid_0's rmse: 0.852184	valid_0's l2: 0.726217
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[379]	valid_0's rmse: 1.16875	valid_0's l2: 1.36597
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[1056]	valid_0's rmse: 1.78427	valid_0's l2: 3.18362
+[32m[I 2026-08-05 18:08:06,173][0m Trial 2 finished with value: 1.223628279228481 and parameters: {'boosting_type': 'gbdt', 'max_depth': 4, 'num_leaves': 134, 'learning_rate': 0.005755963034165359, 'n_estimators': 2774, 'subsample': 0.6293899908000085, 'subsample_freq': 7, 'colsample_bytree': 0.5181977532625877, 'reg_alpha': 0.0004793052550782129, 'reg_lambda': 0.0008325158565947976, 'min_child_samples': 22, 'min_child_weight': 0.07556810141274425, 'min_split_gain': 0.7751328233611146, 'cat_smooth': 46.97494707820945, 'cat_l2': 44.74136752138244}. Best is trial 2 with value: 1.223628279228481.[0m
+[32m[I 2026-08-05 18:08:09,434][0m Trial 3 finished with value: 1.947906327567291 and parameters: {'boosting_type': 'dart', 'max_depth': 4, 'num_leaves': 62, 'learning_rate': 0.006017151754328819, 'n_estimators': 1313, 'subsample': 0.6943386448447411, 'subsample_freq': 3, 'colsample_bytree': 0.8801162564063505, 'reg_alpha': 1.6247252885719427e-05, 'reg_lambda': 3.376063348877853e-06, 'min_child_samples': 57, 'min_child_weight': 3.661819220392426e-05, 'min_split_gain': 0.8021969807540397, 'cat_smooth': 3.727532183988541, 'cat_l2': 49.34434683002586, 'drop_rate': 0.23395098309603066, 'max_drop': 10, 'skip_drop': 0.011601413965844696}. Best is trial 2 with value: 1.223628279228481.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[531]	valid_0's rmse: 1.5935	valid_0's l2: 2.53925
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[261]	valid_0's rmse: 1.00441	valid_0's l2: 1.00884
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[198]	valid_0's rmse: 0.873464	valid_0's l2: 0.762939
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[434]	valid_0's rmse: 1.12747	valid_0's l2: 1.27119
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[504]	valid_0's rmse: 1.96926	valid_0's l2: 3.87799
+[32m[I 2026-08-05 18:08:10,318][0m Trial 4 finished with value: 1.3136212435626438 and parameters: {'boosting_type': 'gbdt', 'max_depth': 12, 'num_leaves': 200, 'learning_rate': 0.006770684770701556, 'n_estimators': 1396, 'subsample': 0.5579345297625649, 'subsample_freq': 9, 'colsample_bytree': 0.7363086887792905, 'reg_alpha': 9.507847858536042e-06, 'reg_lambda': 3.732717755563729e-08, 'min_child_samples': 34, 'min_child_weight': 0.00019986340778528852, 'min_split_gain': 0.7296061783380641, 'cat_smooth': 31.877873567760656, 'cat_l2': 44.36063712881633}. Best is trial 2 with value: 1.223628279228481.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[126]	valid_0's rmse: 1.32978	valid_0's l2: 1.76831
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[23]	valid_0's rmse: 0.999103	valid_0's l2: 0.998208
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[86]	valid_0's rmse: 0.788055	valid_0's l2: 0.62103
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[102]	valid_0's rmse: 1.01999	valid_0's l2: 1.04039
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[184]	valid_0's rmse: 1.50773	valid_0's l2: 2.27323
+[32m[I 2026-08-05 18:08:11,012][0m Trial 5 finished with value: 1.1289308020366535 and parameters: {'boosting_type': 'gbdt', 'max_depth': 12, 'num_leaves': 198, 'learning_rate': 0.04977436807314311, 'n_estimators': 2428, 'subsample': 0.7468977981821954, 'subsample_freq': 6, 'colsample_bytree': 0.5992787128509847, 'reg_alpha': 1.6934490731313353e-08, 'reg_lambda': 9.354548757337708e-08, 'min_child_samples': 8, 'min_child_weight': 0.003512704726270845, 'min_split_gain': 0.3143559810763267, 'cat_smooth': 25.42853455823514, 'cat_l2': 45.37832369630465}. Best is trial 5 with value: 1.1289308020366535.[0m
+[32m[I 2026-08-05 18:08:12,007][0m Trial 6 pruned. [0m
+[32m[I 2026-08-05 18:08:14,465][0m Trial 7 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[70]	valid_0's rmse: 1.76165	valid_0's l2: 3.10339
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[192]	valid_0's rmse: 1.06469	valid_0's l2: 1.13356
+[32m[I 2026-08-05 18:08:14,602][0m Trial 8 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Did not meet early stopping. Best iteration is:
+[725]	valid_0's rmse: 1.30038	valid_0's l2: 1.691
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[286]	valid_0's rmse: 0.930495	valid_0's l2: 0.865821
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[88]	valid_0's rmse: 0.827737	valid_0's l2: 0.685149
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[440]	valid_0's rmse: 1.04496	valid_0's l2: 1.09195
+Training until validation scores don't improve for 30 rounds
+Did not meet early stopping. Best iteration is:
+[725]	valid_0's rmse: 1.70993	valid_0's l2: 2.92385
+[32m[I 2026-08-05 18:08:15,508][0m Trial 9 finished with value: 1.1627009717577952 and parameters: {'boosting_type': 'gbdt', 'max_depth': 11, 'num_leaves': 167, 'learning_rate': 0.044839259184207204, 'n_estimators': 725, 'subsample': 0.917651247794619, 'subsample_freq': 4, 'colsample_bytree': 0.4305629572798979, 'reg_alpha': 2.3279640748356466e-08, 'reg_lambda': 0.0020798714270728416, 'min_child_samples': 70, 'min_child_weight': 1.1650681118986128e-05, 'min_split_gain': 0.512093058299281, 'cat_smooth': 11.324788759896897, 'cat_l2': 32.25863952047249}. Best is trial 5 with value: 1.1289308020366535.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[77]	valid_0's rmse: 1.33032	valid_0's l2: 1.76974
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[36]	valid_0's rmse: 0.960506	valid_0's l2: 0.922572
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[5]	valid_0's rmse: 0.860045	valid_0's l2: 0.739678
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[32]	valid_0's rmse: 1.09901	valid_0's l2: 1.20783
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[29]	valid_0's rmse: 1.63031	valid_0's l2: 2.65791
+[32m[I 2026-08-05 18:08:15,813][0m Trial 10 finished with value: 1.1760381281748766 and parameters: {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 16, 'learning_rate': 0.227364806419381, 'n_estimators': 2938, 'subsample': 0.8139601740123973, 'subsample_freq': 6, 'colsample_bytree': 0.31464890149101077, 'reg_alpha': 3.331630946893803, 'reg_lambda': 0.04422317327084487, 'min_child_samples': 7, 'min_child_weight': 0.002949971987301989, 'min_split_gain': 0.34052523698531706, 'cat_smooth': 21.71781358782057, 'cat_l2': 23.63570033289743}. Best is trial 5 with value: 1.1289308020366535.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[913]	valid_0's rmse: 1.27431	valid_0's l2: 1.62386
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[99]	valid_0's rmse: 0.93182	valid_0's l2: 0.868289
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[83]	valid_0's rmse: 0.80195	valid_0's l2: 0.643124
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[191]	valid_0's rmse: 1.05119	valid_0's l2: 1.105
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[491]	valid_0's rmse: 1.70453	valid_0's l2: 2.90543
+[32m[I 2026-08-05 18:08:16,623][0m Trial 11 finished with value: 1.1527597941771677 and parameters: {'boosting_type': 'gbdt', 'max_depth': 15, 'num_leaves': 254, 'learning_rate': 0.0669365638060914, 'n_estimators': 2131, 'subsample': 0.9604928097340352, 'subsample_freq': 6, 'colsample_bytree': 0.5207027051636285, 'reg_alpha': 1.7078320824761015e-08, 'reg_lambda': 1.344933695762981e-05, 'min_child_samples': 53, 'min_child_weight': 1.0656069868777885e-05, 'min_split_gain': 0.46411592902568627, 'cat_smooth': 13.489280199192706, 'cat_l2': 33.04278626461432}. Best is trial 5 with value: 1.1289308020366535.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[356]	valid_0's rmse: 1.25952	valid_0's l2: 1.58639
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[129]	valid_0's rmse: 0.908504	valid_0's l2: 0.82538
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[85]	valid_0's rmse: 0.852083	valid_0's l2: 0.726046
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[240]	valid_0's rmse: 1.06067	valid_0's l2: 1.12503
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[235]	valid_0's rmse: 1.67803	valid_0's l2: 2.81579
+[32m[I 2026-08-05 18:08:17,189][0m Trial 12 finished with value: 1.151780672380728 and parameters: {'boosting_type': 'gbdt', 'max_depth': 15, 'num_leaves': 245, 'learning_rate': 0.1080375976904851, 'n_estimators': 2307, 'subsample': 0.998996888200635, 'subsample_freq': 6, 'colsample_bytree': 0.6092013066027581, 'reg_alpha': 1.355606026860332e-08, 'reg_lambda': 2.1848726848077133e-06, 'min_child_samples': 46, 'min_child_weight': 0.0007498857860465357, 'min_split_gain': 0.44650767394664004, 'cat_smooth': 16.578428387640336, 'cat_l2': 32.89807306389363}. Best is trial 5 with value: 1.1289308020366535.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[38]	valid_0's rmse: 1.34477	valid_0's l2: 1.80841
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[86]	valid_0's rmse: 0.890315	valid_0's l2: 0.792662
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[71]	valid_0's rmse: 0.793759	valid_0's l2: 0.630053
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[46]	valid_0's rmse: 1.04484	valid_0's l2: 1.09169
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[81]	valid_0's rmse: 1.46039	valid_0's l2: 2.13273
+[32m[I 2026-08-05 18:08:17,639][0m Trial 13 finished with value: 1.106814117635032 and parameters: {'boosting_type': 'gbdt', 'max_depth': 15, 'num_leaves': 248, 'learning_rate': 0.13204410541008788, 'n_estimators': 2341, 'subsample': 0.7939852208855429, 'subsample_freq': 5, 'colsample_bytree': 0.6744218832163392, 'reg_alpha': 4.1410674388289514e-07, 'reg_lambda': 1.218856151345206e-06, 'min_child_samples': 5, 'min_child_weight': 0.002512261296443226, 'min_split_gain': 0.316810411084425, 'cat_smooth': 24.082818508135386, 'cat_l2': 34.034852522690116}. Best is trial 13 with value: 1.106814117635032.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[21]	valid_0's rmse: 1.47807	valid_0's l2: 2.18468
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[7]	valid_0's rmse: 1.07967	valid_0's l2: 1.16569
+[32m[I 2026-08-05 18:08:17,784][0m Trial 14 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[255]	valid_0's rmse: 1.25138	valid_0's l2: 1.56596
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[28]	valid_0's rmse: 0.857568	valid_0's l2: 0.735424
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[34]	valid_0's rmse: 0.861761	valid_0's l2: 0.742632
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[145]	valid_0's rmse: 1.03769	valid_0's l2: 1.07679
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[413]	valid_0's rmse: 1.47994	valid_0's l2: 2.19021
+[32m[I 2026-08-05 18:08:18,603][0m Trial 15 finished with value: 1.0976665845906308 and parameters: {'boosting_type': 'gbdt', 'max_depth': 9, 'num_leaves': 214, 'learning_rate': 0.11768646761723055, 'n_estimators': 2540, 'subsample': 0.7883815452729152, 'subsample_freq': 1, 'colsample_bytree': 0.6003195309450419, 'reg_alpha': 6.490416817830982e-07, 'reg_lambda': 3.984531156188375e-05, 'min_child_samples': 21, 'min_child_weight': 0.009182380300848954, 'min_split_gain': 0.04641537155386216, 'cat_smooth': 25.54788203195316, 'cat_l2': 38.85836400379442}. Best is trial 15 with value: 1.0976665845906308.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[184]	valid_0's rmse: 1.27401	valid_0's l2: 1.62311
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[28]	valid_0's rmse: 0.894653	valid_0's l2: 0.800403
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[65]	valid_0's rmse: 0.848192	valid_0's l2: 0.719429
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[226]	valid_0's rmse: 1.00847	valid_0's l2: 1.017
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[449]	valid_0's rmse: 1.45705	valid_0's l2: 2.123
+[32m[I 2026-08-05 18:08:19,350][0m Trial 16 finished with value: 1.096474735387548 and parameters: {'boosting_type': 'gbdt', 'max_depth': 9, 'num_leaves': 222, 'learning_rate': 0.12608852159459644, 'n_estimators': 2722, 'subsample': 0.8199212859905153, 'subsample_freq': 1, 'colsample_bytree': 0.9869191607308052, 'reg_alpha': 7.018523265563109e-07, 'reg_lambda': 4.949215004078341e-05, 'min_child_samples': 23, 'min_child_weight': 0.015712332090527314, 'min_split_gain': 0.052325323692680115, 'cat_smooth': 41.57276842014331, 'cat_l2': 26.558613140800777}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[197]	valid_0's rmse: 1.26082	valid_0's l2: 1.58967
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[58]	valid_0's rmse: 0.842722	valid_0's l2: 0.71018
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[40]	valid_0's rmse: 0.854465	valid_0's l2: 0.73011
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[209]	valid_0's rmse: 1.06114	valid_0's l2: 1.12601
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[583]	valid_0's rmse: 1.47158	valid_0's l2: 2.16555
+[32m[I 2026-08-05 18:08:20,183][0m Trial 17 finished with value: 1.0981444843999677 and parameters: {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 128, 'learning_rate': 0.10127831702728052, 'n_estimators': 2760, 'subsample': 0.7689086107869237, 'subsample_freq': 1, 'colsample_bytree': 0.9884288829283739, 'reg_alpha': 0.00011606078277570822, 'reg_lambda': 4.891971998318658e-05, 'min_child_samples': 23, 'min_child_weight': 0.019672338595629956, 'min_split_gain': 0.02873721860276618, 'cat_smooth': 42.99349295192011, 'cat_l2': 22.79184656887043}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[96]	valid_0's rmse: 1.21119	valid_0's l2: 1.46698
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[7]	valid_0's rmse: 0.948907	valid_0's l2: 0.900424
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[47]	valid_0's rmse: 0.875267	valid_0's l2: 0.766092
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[25]	valid_0's rmse: 1.09463	valid_0's l2: 1.19822
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[146]	valid_0's rmse: 1.50967	valid_0's l2: 2.27911
+[32m[I 2026-08-05 18:08:20,586][0m Trial 18 finished with value: 1.1279337856319835 and parameters: {'boosting_type': 'gbdt', 'max_depth': 10, 'num_leaves': 210, 'learning_rate': 0.288927388760013, 'n_estimators': 1924, 'subsample': 0.8679182226497293, 'subsample_freq': 1, 'colsample_bytree': 0.9995894458613797, 'reg_alpha': 3.0683488003551443e-06, 'reg_lambda': 0.00763752363614158, 'min_child_samples': 22, 'min_child_weight': 0.07446735313978974, 'min_split_gain': 0.1320108215872673, 'cat_smooth': 39.62283414269845, 'cat_l2': 2.2102917393250863}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[837]	valid_0's rmse: 1.26646	valid_0's l2: 1.60393
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[281]	valid_0's rmse: 0.868164	valid_0's l2: 0.753709
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[74]	valid_0's rmse: 0.862847	valid_0's l2: 0.744504
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[636]	valid_0's rmse: 1.03834	valid_0's l2: 1.07815
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[926]	valid_0's rmse: 1.66045	valid_0's l2: 2.75711
+[32m[I 2026-08-05 18:08:21,932][0m Trial 19 finished with value: 1.1392537759435315 and parameters: {'boosting_type': 'gbdt', 'max_depth': 6, 'num_leaves': 226, 'learning_rate': 0.021066700551865273, 'n_estimators': 2656, 'subsample': 0.8364173367413743, 'subsample_freq': 2, 'colsample_bytree': 0.8984097291415221, 'reg_alpha': 0.00012689638644289332, 'reg_lambda': 5.2595155496259844e-05, 'min_child_samples': 34, 'min_child_weight': 0.016658229736046408, 'min_split_gain': 0.003416854595539802, 'cat_smooth': 33.25873147129732, 'cat_l2': 27.03133490972184}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[252]	valid_0's rmse: 1.22539	valid_0's l2: 1.50158
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[37]	valid_0's rmse: 0.916882	valid_0's l2: 0.840673
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[164]	valid_0's rmse: 0.750258	valid_0's l2: 0.562887
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[94]	valid_0's rmse: 1.09059	valid_0's l2: 1.18938
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[271]	valid_0's rmse: 1.52448	valid_0's l2: 2.32405
+[32m[I 2026-08-05 18:08:22,486][0m Trial 20 finished with value: 1.1015200272732728 and parameters: {'boosting_type': 'gbdt', 'max_depth': 9, 'num_leaves': 187, 'learning_rate': 0.13995420670982156, 'n_estimators': 2051, 'subsample': 0.7244278109981884, 'subsample_freq': 1, 'colsample_bytree': 0.8096177712966243, 'reg_alpha': 1.8382256948277592e-07, 'reg_lambda': 0.018488016147772388, 'min_child_samples': 19, 'min_child_weight': 0.011025275373538774, 'min_split_gain': 0.1512967559959651, 'cat_smooth': 0.7390602587342983, 'cat_l2': 16.497209182929307}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[405]	valid_0's rmse: 1.24958	valid_0's l2: 1.56146
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[134]	valid_0's rmse: 0.854113	valid_0's l2: 0.729509
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[186]	valid_0's rmse: 0.824172	valid_0's l2: 0.67926
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[324]	valid_0's rmse: 1.01358	valid_0's l2: 1.02735
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[582]	valid_0's rmse: 1.54597	valid_0's l2: 2.39004
+[32m[I 2026-08-05 18:08:23,528][0m Trial 21 finished with value: 1.0974850163991074 and parameters: {'boosting_type': 'gbdt', 'max_depth': 7, 'num_leaves': 117, 'learning_rate': 0.08845224907987494, 'n_estimators': 2966, 'subsample': 0.7615436458378084, 'subsample_freq': 1, 'colsample_bytree': 0.9942730338963112, 'reg_alpha': 8.949149514717717e-05, 'reg_lambda': 6.340641853085031e-05, 'min_child_samples': 28, 'min_child_weight': 0.03770358266944567, 'min_split_gain': 0.005079886983433701, 'cat_smooth': 41.99192280908066, 'cat_l2': 19.625059318650298}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[547]	valid_0's rmse: 1.27457	valid_0's l2: 1.62454
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[125]	valid_0's rmse: 0.904934	valid_0's l2: 0.818905
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[65]	valid_0's rmse: 0.866243	valid_0's l2: 0.750376
+[32m[I 2026-08-05 18:08:23,921][0m Trial 22 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[249]	valid_0's rmse: 1.26436	valid_0's l2: 1.59862
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[150]	valid_0's rmse: 0.865842	valid_0's l2: 0.749683
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[37]	valid_0's rmse: 0.829676	valid_0's l2: 0.688362
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[175]	valid_0's rmse: 1.07492	valid_0's l2: 1.15544
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[651]	valid_0's rmse: 1.60476	valid_0's l2: 2.57526
+[32m[I 2026-08-05 18:08:24,534][0m Trial 23 finished with value: 1.1279117928644322 and parameters: {'boosting_type': 'gbdt', 'max_depth': 6, 'num_leaves': 26, 'learning_rate': 0.07933027011216644, 'n_estimators': 2850, 'subsample': 0.6681903311418118, 'subsample_freq': 1, 'colsample_bytree': 0.9415252716162845, 'reg_alpha': 1.613284781580433e-06, 'reg_lambda': 1.4923658090892365e-05, 'min_child_samples': 28, 'min_child_weight': 0.00773802956639431, 'min_split_gain': 0.20634701620186813, 'cat_smooth': 49.59456895412946, 'cat_l2': 15.5236453483252}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[214]	valid_0's rmse: 1.20758	valid_0's l2: 1.45826
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[12]	valid_0's rmse: 0.932271	valid_0's l2: 0.86913
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[11]	valid_0's rmse: 0.844986	valid_0's l2: 0.714002
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[102]	valid_0's rmse: 1.05877	valid_0's l2: 1.121
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[138]	valid_0's rmse: 1.49036	valid_0's l2: 2.22116
+[32m[I 2026-08-05 18:08:25,033][0m Trial 24 finished with value: 1.1067934672093231 and parameters: {'boosting_type': 'gbdt', 'max_depth': 7, 'num_leaves': 182, 'learning_rate': 0.17362595401762906, 'n_estimators': 2998, 'subsample': 0.7834253193294518, 'subsample_freq': 3, 'colsample_bytree': 0.836579867861458, 'reg_alpha': 7.861376060648176e-05, 'reg_lambda': 0.0009248221213693971, 'min_child_samples': 14, 'min_child_weight': 0.03564193855915256, 'min_split_gain': 0.02061848614014045, 'cat_smooth': 29.33151808939193, 'cat_l2': 27.724585308949905}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[862]	valid_0's rmse: 1.25819	valid_0's l2: 1.58303
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[204]	valid_0's rmse: 0.865016	valid_0's l2: 0.748252
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[77]	valid_0's rmse: 0.84159	valid_0's l2: 0.708274
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[333]	valid_0's rmse: 1.06585	valid_0's l2: 1.13604
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[672]	valid_0's rmse: 1.66785	valid_0's l2: 2.78172
+[32m[I 2026-08-05 18:08:26,193][0m Trial 25 finished with value: 1.1396993101235737 and parameters: {'boosting_type': 'gbdt', 'max_depth': 10, 'num_leaves': 140, 'learning_rate': 0.029141193458984947, 'n_estimators': 2579, 'subsample': 0.7568564231857045, 'subsample_freq': 2, 'colsample_bytree': 0.9422871495529225, 'reg_alpha': 7.65321888916174e-08, 'reg_lambda': 8.272767057938339e-06, 'min_child_samples': 29, 'min_child_weight': 0.00541388110726104, 'min_split_gain': 0.12753624075025333, 'cat_smooth': 40.46161604120251, 'cat_l2': 17.335263513565263}. Best is trial 16 with value: 1.096474735387548.[0m
+[32m[I 2026-08-05 18:08:31,997][0m Trial 26 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[325]	valid_0's rmse: 1.24716	valid_0's l2: 1.55541
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[24]	valid_0's rmse: 0.941603	valid_0's l2: 0.886617
+[32m[I 2026-08-05 18:08:32,285][0m Trial 27 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[529]	valid_0's rmse: 1.25043	valid_0's l2: 1.56357
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[188]	valid_0's rmse: 0.883271	valid_0's l2: 0.780168
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[73]	valid_0's rmse: 0.804567	valid_0's l2: 0.647328
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[293]	valid_0's rmse: 1.04182	valid_0's l2: 1.08539
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[574]	valid_0's rmse: 1.58715	valid_0's l2: 2.51904
+[32m[I 2026-08-05 18:08:33,128][0m Trial 28 finished with value: 1.1134466981315974 and parameters: {'boosting_type': 'gbdt', 'max_depth': 10, 'num_leaves': 43, 'learning_rate': 0.06004198330684274, 'n_estimators': 2758, 'subsample': 0.7297941645661415, 'subsample_freq': 2, 'colsample_bytree': 0.920874004540803, 'reg_alpha': 0.0013876673459018675, 'reg_lambda': 0.004769934911591878, 'min_child_samples': 27, 'min_child_weight': 0.01264726882157363, 'min_split_gain': 0.1588355137064109, 'cat_smooth': 35.07612540371271, 'cat_l2': 28.3903905308147}. Best is trial 16 with value: 1.096474735387548.[0m
+[32m[I 2026-08-05 18:08:48,649][0m Trial 29 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[337]	valid_0's rmse: 1.23369	valid_0's l2: 1.52198
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[68]	valid_0's rmse: 0.91662	valid_0's l2: 0.840192
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[33]	valid_0's rmse: 0.825876	valid_0's l2: 0.68207
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[119]	valid_0's rmse: 1.07293	valid_0's l2: 1.15119
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[204]	valid_0's rmse: 1.68168	valid_0's l2: 2.82805
+[32m[I 2026-08-05 18:08:49,177][0m Trial 30 finished with value: 1.146159751206898 and parameters: {'boosting_type': 'gbdt', 'max_depth': 7, 'num_leaves': 175, 'learning_rate': 0.24385313592137722, 'n_estimators': 2473, 'subsample': 0.8138161130402685, 'subsample_freq': 1, 'colsample_bytree': 0.9900616150760317, 'reg_alpha': 1.089412821525953e-06, 'reg_lambda': 0.0005761355802400696, 'min_child_samples': 50, 'min_child_weight': 0.09417352111885059, 'min_split_gain': 0.06965579644672344, 'cat_smooth': 21.130747969930628, 'cat_l2': 10.230904196213706}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[255]	valid_0's rmse: 1.27038	valid_0's l2: 1.61388
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[90]	valid_0's rmse: 0.849606	valid_0's l2: 0.72183
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[37]	valid_0's rmse: 0.83942	valid_0's l2: 0.704627
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[255]	valid_0's rmse: 1.00856	valid_0's l2: 1.01718
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[463]	valid_0's rmse: 1.52776	valid_0's l2: 2.33404
+[32m[I 2026-08-05 18:08:50,178][0m Trial 31 finished with value: 1.0991447296195287 and parameters: {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 120, 'learning_rate': 0.10323653209180646, 'n_estimators': 2728, 'subsample': 0.7677623478824881, 'subsample_freq': 1, 'colsample_bytree': 0.9975373331636674, 'reg_alpha': 0.0001988494718526918, 'reg_lambda': 2.908779058824801e-05, 'min_child_samples': 28, 'min_child_weight': 0.023325316933187932, 'min_split_gain': 0.023670203871090114, 'cat_smooth': 47.05377578781035, 'cat_l2': 21.533527592707404}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[216]	valid_0's rmse: 1.24301	valid_0's l2: 1.54507
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[38]	valid_0's rmse: 0.875676	valid_0's l2: 0.766808
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[28]	valid_0's rmse: 0.816981	valid_0's l2: 0.667458
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[96]	valid_0's rmse: 1.1171	valid_0's l2: 1.24792
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[292]	valid_0's rmse: 1.55644	valid_0's l2: 2.42252
+[32m[I 2026-08-05 18:08:50,903][0m Trial 32 finished with value: 1.1218421352854464 and parameters: {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 91, 'learning_rate': 0.0909773808823306, 'n_estimators': 2804, 'subsample': 0.7601823164087086, 'subsample_freq': 2, 'colsample_bytree': 0.8662034362731029, 'reg_alpha': 0.000505939226793796, 'reg_lambda': 7.865949881679479e-05, 'min_child_samples': 22, 'min_child_weight': 0.02827468374445778, 'min_split_gain': 0.05538231933812554, 'cat_smooth': 43.56976690324331, 'cat_l2': 24.7386374209403}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[288]	valid_0's rmse: 1.26625	valid_0's l2: 1.60338
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[95]	valid_0's rmse: 0.899798	valid_0's l2: 0.809637
+[32m[I 2026-08-05 18:08:51,229][0m Trial 33 pruned. [0m
+[32m[I 2026-08-05 18:08:53,302][0m Trial 34 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[378]	valid_0's rmse: 1.25639	valid_0's l2: 1.5785
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[85]	valid_0's rmse: 0.868365	valid_0's l2: 0.754057
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[152]	valid_0's rmse: 0.808212	valid_0's l2: 0.653207
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[234]	valid_0's rmse: 1.04961	valid_0's l2: 1.10169
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[723]	valid_0's rmse: 1.51999	valid_0's l2: 2.31036
+[32m[I 2026-08-05 18:08:54,338][0m Trial 35 finished with value: 1.1005120057258089 and parameters: {'boosting_type': 'gbdt', 'max_depth': 11, 'num_leaves': 145, 'learning_rate': 0.0645062380035791, 'n_estimators': 2998, 'subsample': 0.8896612351944133, 'subsample_freq': 3, 'colsample_bytree': 0.842804923282351, 'reg_alpha': 5.130330374321736e-06, 'reg_lambda': 4.812875019260239e-07, 'min_child_samples': 32, 'min_child_weight': 0.005433796267558423, 'min_split_gain': 0.07188179304815222, 'cat_smooth': 41.0546015428838, 'cat_l2': 26.093631987307322}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[400]	valid_0's rmse: 1.25141	valid_0's l2: 1.56602
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[119]	valid_0's rmse: 0.902395	valid_0's l2: 0.814317
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[80]	valid_0's rmse: 0.84607	valid_0's l2: 0.715835
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[30]	valid_0's rmse: 1.17252	valid_0's l2: 1.37481
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[601]	valid_0's rmse: 1.51641	valid_0's l2: 2.29949
+[32m[I 2026-08-05 18:08:55,177][0m Trial 36 finished with value: 1.1377607622303472 and parameters: {'boosting_type': 'gbdt', 'max_depth': 5, 'num_leaves': 111, 'learning_rate': 0.05175504007352375, 'n_estimators': 2501, 'subsample': 0.7336214248768923, 'subsample_freq': 1, 'colsample_bytree': 0.6652958486186767, 'reg_alpha': 6.267799441529853e-08, 'reg_lambda': 2.095599468900248e-05, 'min_child_samples': 15, 'min_child_weight': 0.01773607060770097, 'min_split_gain': 0.07560104121207105, 'cat_smooth': 49.52867367412647, 'cat_l2': 14.033733793650791}. Best is trial 16 with value: 1.096474735387548.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[657]	valid_0's rmse: 1.34487	valid_0's l2: 1.80869
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[309]	valid_0's rmse: 0.965001	valid_0's l2: 0.931227
+[32m[I 2026-08-05 18:08:55,653][0m Trial 37 pruned. [0m
+[32m[I 2026-08-05 18:09:00,333][0m Trial 38 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[174]	valid_0's rmse: 1.23956	valid_0's l2: 1.53651
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[55]	valid_0's rmse: 0.89727	valid_0's l2: 0.805094
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[21]	valid_0's rmse: 0.827387	valid_0's l2: 0.684569
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[105]	valid_0's rmse: 1.04754	valid_0's l2: 1.09734
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[95]	valid_0's rmse: 1.70594	valid_0's l2: 2.91022
+[32m[I 2026-08-05 18:09:00,876][0m Trial 39 finished with value: 1.143538421137726 and parameters: {'boosting_type': 'gbdt', 'max_depth': 13, 'num_leaves': 239, 'learning_rate': 0.17886610313362292, 'n_estimators': 2855, 'subsample': 0.6212818029183123, 'subsample_freq': 3, 'colsample_bytree': 0.7139253655976486, 'reg_alpha': 0.01568577164097, 'reg_lambda': 1.0552414539585036e-08, 'min_child_samples': 26, 'min_child_weight': 0.05301473667620194, 'min_split_gain': 0.11279909182754688, 'cat_smooth': 29.498439217147617, 'cat_l2': 19.49840791072143}. Best is trial 16 with value: 1.096474735387548.[0m
+[32m[I 2026-08-05 18:09:04,230][0m Trial 40 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[255]	valid_0's rmse: 1.25444	valid_0's l2: 1.57363
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[56]	valid_0's rmse: 0.83599	valid_0's l2: 0.698879
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[40]	valid_0's rmse: 0.791479	valid_0's l2: 0.626439
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[268]	valid_0's rmse: 1.05154	valid_0's l2: 1.10574
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[463]	valid_0's rmse: 1.49888	valid_0's l2: 2.24664
+[32m[I 2026-08-05 18:09:05,185][0m Trial 41 finished with value: 1.0864663909464547 and parameters: {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 126, 'learning_rate': 0.09445940046890143, 'n_estimators': 2736, 'subsample': 0.7720438365825305, 'subsample_freq': 1, 'colsample_bytree': 0.9812723909363967, 'reg_alpha': 0.0003334442223559278, 'reg_lambda': 2.9234418208278888e-05, 'min_child_samples': 25, 'min_child_weight': 0.02378328694617151, 'min_split_gain': 0.048300856136155035, 'cat_smooth': 47.28237971898103, 'cat_l2': 21.699865130582026}. Best is trial 41 with value: 1.0864663909464547.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[312]	valid_0's rmse: 1.26441	valid_0's l2: 1.59873
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[32]	valid_0's rmse: 0.984234	valid_0's l2: 0.968717
+[32m[I 2026-08-05 18:09:05,621][0m Trial 42 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[176]	valid_0's rmse: 1.3025	valid_0's l2: 1.69651
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[64]	valid_0's rmse: 0.898711	valid_0's l2: 0.807681
+[32m[I 2026-08-05 18:09:05,936][0m Trial 43 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[219]	valid_0's rmse: 1.26782	valid_0's l2: 1.60737
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[49]	valid_0's rmse: 0.873937	valid_0's l2: 0.763766
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[28]	valid_0's rmse: 0.785233	valid_0's l2: 0.616591
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[218]	valid_0's rmse: 1.04255	valid_0's l2: 1.0869
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[448]	valid_0's rmse: 1.51033	valid_0's l2: 2.28109
+[32m[I 2026-08-05 18:09:06,698][0m Trial 44 finished with value: 1.0959735571800882 and parameters: {'boosting_type': 'gbdt', 'max_depth': 9, 'num_leaves': 151, 'learning_rate': 0.1231681948357338, 'n_estimators': 2392, 'subsample': 0.7718047492375901, 'subsample_freq': 2, 'colsample_bytree': 0.9751987358609565, 'reg_alpha': 0.004590871310633516, 'reg_lambda': 4.4829902770213e-05, 'min_child_samples': 25, 'min_child_weight': 0.06398083087818034, 'min_split_gain': 0.06174922676564267, 'cat_smooth': 48.1583731565419, 'cat_l2': 25.103867979702304}. Best is trial 41 with value: 1.0864663909464547.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[175]	valid_0's rmse: 1.23197	valid_0's l2: 1.51776
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[93]	valid_0's rmse: 0.893953	valid_0's l2: 0.799152
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[53]	valid_0's rmse: 0.826758	valid_0's l2: 0.683529
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[144]	valid_0's rmse: 1.06614	valid_0's l2: 1.13665
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[280]	valid_0's rmse: 1.55478	valid_0's l2: 2.41735
+[32m[I 2026-08-05 18:09:07,280][0m Trial 45 finished with value: 1.1147215438298967 and parameters: {'boosting_type': 'gbdt', 'max_depth': 9, 'num_leaves': 151, 'learning_rate': 0.13333714783530803, 'n_estimators': 2383, 'subsample': 0.8773836043416899, 'subsample_freq': 4, 'colsample_bytree': 0.6225945160251977, 'reg_alpha': 0.39389753294526314, 'reg_lambda': 1.705940071997028e-05, 'min_child_samples': 32, 'min_child_weight': 0.06899579334491525, 'min_split_gain': 0.27146635247594475, 'cat_smooth': 47.58578605402118, 'cat_l2': 42.67069285377991}. Best is trial 41 with value: 1.0864663909464547.[0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[111]	valid_0's rmse: 1.30463	valid_0's l2: 1.70207
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[20]	valid_0's rmse: 0.907787	valid_0's l2: 0.824077
+[32m[I 2026-08-05 18:09:07,481][0m Trial 46 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[67]	valid_0's rmse: 1.34624	valid_0's l2: 1.81237
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[9]	valid_0's rmse: 0.971241	valid_0's l2: 0.943309
+[32m[I 2026-08-05 18:09:07,684][0m Trial 47 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[147]	valid_0's rmse: 1.23802	valid_0's l2: 1.5327
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[52]	valid_0's rmse: 0.907523	valid_0's l2: 0.823599
+[32m[I 2026-08-05 18:09:07,964][0m Trial 48 pruned. [0m
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[313]	valid_0's rmse: 1.25567	valid_0's l2: 1.57672
+Training until validation scores don't improve for 30 rounds
+Early stopping, best iteration is:
+[44]	valid_0's rmse: 0.887514	valid_0's l2: 0.787682
+[32m[I 2026-08-05 18:09:08,335][0m Trial 49 pruned. [0m
+
+=== Best Trial ===
+  CV RMSE: 0.000001
+  Params:  {'boosting_type': 'gbdt', 'max_depth': 8, 'num_leaves': 126, 'learning_rate': 0.09445940046890143, 'n_estimators': 2736, 'subsample': 0.7720438365825305, 'subsample_freq': 1, 'colsample_bytree': 0.9812723909363967, 'reg_alpha': 0.0003334442223559278, 'reg_lambda': 2.9234418208278888e-05, 'min_child_samples': 25, 'min_child_weight': 0.02378328694617151, 'min_split_gain': 0.048300856136155035, 'cat_smooth': 47.28237971898103, 'cat_l2': 21.699865130582026}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+Training until validation scores don't improve for 50 rounds
+[50]	valid_0's rmse: 1.69366	valid_0's l2: 2.86848
+[100]	valid_0's rmse: 1.55795	valid_0's l2: 2.42722
+[150]	valid_0's rmse: 1.48869	valid_0's l2: 2.21621
+[200]	valid_0's rmse: 1.48281	valid_0's l2: 2.19871
+Early stopping, best iteration is:
+[158]	valid_0's rmse: 1.4654	valid_0's l2: 2.1474
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.3413
+
+============================================================
+Top 20 Feature Importances
+============================================================
+   1. atom_std_25                92.0
+   2. head_ratio                 82.0
+   3. atom_mean_35               69.0
+   4. LogP                       55.0
+   5. atom_mean_17               53.0
+   6. MolWt                      50.0
+   7. tail_ratio                 48.0
+   8. atom_mean_26               43.0
+   9. atom_std_35                41.0
+  10. atom_std_39                39.0
+  11. atom_mean_40               39.0
+  12. TPSA                       39.0
+  13. atom_mean_54               29.0
+  14. atom_mean_18               28.0
+  15. RotBonds                   28.0
+  16. brics_3                    28.0
+  17. atom_std_38                28.0
+  18. atom_mean_51               27.0
+  19. atom_mean_4                27.0
+  20. atom_mean_23               27.0
+
+Plot saved to runs\Gamma_max\Gamma_max_lightgbm_20260805_180756\pred_vs_true.png
+Model saved to runs\Gamma_max\Gamma_max_lightgbm_20260805_180756\model.pkl
+
+============================================================
+SUMMARY — LightGBM + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     549 (val 79)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 0.0000
+  Test RMSE: 0.0000
+  Test MAE:  0.0000
+  Test R²:   0.3413
+
+指标已保存: runs\Gamma_max\Gamma_max_lightgbm_20260805_180756\metrics.json
+索引已更新: runs\Gamma_max\_runs_index.csv
+索引已更新: runs\_runs_index.csv

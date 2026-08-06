@@ -104,9 +104,15 @@ def main():
     else:
         try:
             top8_idx = get_top_features(shap_values, n=8)
-            X_test_top8 = X_test[:, top8_idx]
-            shap_interaction = explainer.shap_interaction_values(X_test)
+            # 522 维上全样本交互矩阵过慢（实测约 1.8s/样本），采样至多 25 个测试样本
+            n_interaction = min(len(X_test), 25)
+            rng = np.random.default_rng(42)
+            sample_idx = rng.choice(len(X_test), n_interaction, replace=False)
+            X_test_inter = X_test[sample_idx]
+            print(f'[SHAP] 计算交互矩阵（{n_interaction}/{len(X_test)} 个测试样本，请稍候）...')
+            shap_interaction = explainer.shap_interaction_values(X_test_inter)
             interaction_sub = shap_interaction[:, top8_idx, :][:, :, top8_idx]
+            X_test_top8 = X_test_inter[:, top8_idx]
             shap.summary_plot(
                 interaction_sub, X_test_top8,
                 feature_names=[feature_name(i) for i in top8_idx],
