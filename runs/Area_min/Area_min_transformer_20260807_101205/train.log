@@ -1,0 +1,16 @@
+============================================================
+transformer — 运行开始  20260807_101205
+  输出目录:  runs\Area_min\Area_min_transformer_20260807_101205
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Area_min Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Area_min
+  Train features: (607, 522)
+  Test features:  (70, 522)
+
+Split: Train 531, Val 76, Test 70
+
+============================================================
+Training Final Model
+============================================================

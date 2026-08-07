@@ -1,0 +1,4 @@
+{
+  "model": "mlp",
+  "phase": "optuna_search"
+}

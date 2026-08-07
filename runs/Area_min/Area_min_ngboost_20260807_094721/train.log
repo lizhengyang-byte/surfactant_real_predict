@@ -1,0 +1,62 @@
+============================================================
+ngboost — 运行开始  20260807_094721
+  输出目录:  runs\Area_min\Area_min_ngboost_20260807_094721
+============================================================
+============================================================
+NGBoost + PharmHGT-style Featurization for Area_min Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Area_min
+  Train features: (607, 522)
+  Test features:  (70, 522)
+
+Split: Train 531, Val 76, Test 70
+
+============================================================
+Using pretuned hyperparameters (skipping Optuna search)
+============================================================
+  Params: {'n_estimators': 637, 'learning_rate': 0.03374093172394316, 'minibatch_frac': 0.7231391767644131, 'max_depth': 5, 'min_samples_leaf': 13, 'score_rule': 'LogScore'}
+
+============================================================
+Training Final Model with Best Hyperparameters
+============================================================
+[iter 0] loss=1.1685 val_loss=0.0000 scale=1.0000 norm=0.8461
+[iter 100] loss=0.0163 val_loss=0.0000 scale=1.0000 norm=0.4930
+[iter 200] loss=-0.3567 val_loss=0.0000 scale=0.5000 norm=0.2224
+[iter 300] loss=-0.5308 val_loss=0.0000 scale=0.5000 norm=0.2106
+[iter 400] loss=-0.7237 val_loss=0.0000 scale=0.2500 norm=0.0984
+[iter 500] loss=-0.8590 val_loss=0.0000 scale=0.5000 norm=0.1849
+[iter 600] loss=-0.9270 val_loss=0.0000 scale=0.5000 norm=0.1789
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.2746
+  Test RMSE: 0.5240
+  Test MAE:  0.2964
+  Test R²:   0.5786
+  Distribution: Normal (mean ± std)
+  Avg pred std: 0.1264
+
+============================================================
+Feature Importance
+============================================================
+  (unexpected shape (2, 522), skipping)
+
+Plot saved to runs\Area_min\Area_min_ngboost_20260807_094721\pred_vs_true.png
+Model saved to runs\Area_min\Area_min_ngboost_20260807_094721\model.pkl
+
+============================================================
+SUMMARY — NGBoost + PharmHGT Features
+============================================================
+  Features:      522-dim
+  Train:         607 (split 531 train + 76 val)
+  Test:          70
+  Params:    pretuned (skipped Optuna)
+  Test RMSE:     0.5240
+  Test MAE:      0.2964
+  Test R²:       0.5786
+  Distribution:  Normal (probabilistic output)
+
+指标已保存: runs\Area_min\Area_min_ngboost_20260807_094721\metrics.json
+索引已更新: runs\Area_min\_runs_index.csv
+索引已更新: runs\_runs_index.csv

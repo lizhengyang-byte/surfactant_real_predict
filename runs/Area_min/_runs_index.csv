@@ -1,0 +1,10 @@
+target,model,run_dir,timestamp,test_rmse,test_mae,test_r2,best_cv_rmse
+Area_min,catboost,runs\Area_min\Area_min_catboost_20260806_205305,2026-08-06 22:46:18,0.5315,0.2908,0.5664,0.4033
+Area_min,cif,runs\Area_min\Area_min_cif_20260807_075623,2026-08-07 07:58:40,0.4859,0.2926,0.6377,0.4367
+Area_min,histgb,runs\Area_min\Area_min_histgb_20260807_075850,2026-08-07 09:03:09,0.4833,0.2689,0.6416,0.4512
+Area_min,lightgbm,runs\Area_min\Area_min_lightgbm_20260807_090524,2026-08-07 09:06:36,0.5157,0.3206,0.5919,0.4651
+Area_min,mlp,runs\Area_min\Area_min_mlp_20260807_094659,2026-08-07 09:47:04,0.5547,0.3594,0.5278,0.3677,0.3687
+Area_min,ngboost,runs\Area_min\Area_min_ngboost_20260807_094721,2026-08-07 09:47:37,0.524,0.2964,0.5786
+Area_min,rf,runs\Area_min\Area_min_rf_20260807_100009,2026-08-07 10:02:39,0.5179,0.3115,0.5884,0.4576
+Area_min,rnn,runs\Area_min\Area_min_rnn_20260807_100527,2026-08-07 10:07:03,0.7203,0.4872,0.2037,0.6212
+Area_min,xgboost,runs\Area_min\Area_min_xgboost_20260807_101507,2026-08-07 10:36:01,0.5495,0.301,0.5366,0.482,0.4585

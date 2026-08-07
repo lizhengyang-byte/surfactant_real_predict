@@ -1,0 +1,100 @@
+============================================================
+mlp_tuning — 运行开始  20260807_090916
+  输出目录:  runs\Area_min\Area_min_mlp_tuning_20260807_090916
+============================================================
+
+============================================================
+Optuna Hyperparameter Tuning (50 trials, 5-Fold CV)
+============================================================
+[32m[I 2026-08-07 09:09:50,623][0m Trial 0 finished with value: 0.5326359107660259 and parameters: {'n_layers': 3, 'hidden_dim': 980, 'dropout': 0.36599697090570255, 'activation': 'relu', 'lr': 1.493656855461762e-05, 'weight_decay': 0.00021423021757741048, 'batch_size': 83}. Best is trial 0 with value: 0.5326359107660259.[0m
+[32m[I 2026-08-07 09:10:33,342][0m Trial 1 finished with value: 0.7945455799833832 and parameters: {'n_layers': 5, 'hidden_dim': 146, 'dropout': 0.48495492608099716, 'activation': 'relu', 'lr': 3.5498788321965036e-05, 'weight_decay': 3.3205591037519537e-07, 'batch_size': 75}. Best is trial 0 with value: 0.5326359107660259.[0m
+[32m[I 2026-08-07 09:11:40,769][0m Trial 2 finished with value: 0.39681500670975584 and parameters: {'n_layers': 4, 'hidden_dim': 389, 'dropout': 0.30592644736118974, 'activation': 'leaky_relu', 'lr': 0.00023345864076016249, 'weight_decay': 8.431013932082453e-05, 'batch_size': 38}. Best is trial 2 with value: 0.39681500670975584.[0m
+[32m[I 2026-08-07 09:12:04,940][0m Trial 3 finished with value: 0.4027566294812487 and parameters: {'n_layers': 4, 'hidden_dim': 659, 'dropout': 0.023225206359998862, 'activation': 'relu', 'lr': 0.007025166339242158, 'weight_decay': 0.0006732248920775337, 'batch_size': 107}. Best is trial 2 with value: 0.39681500670975584.[0m
+[32m[I 2026-08-07 09:13:05,957][0m Trial 4 finished with value: 0.5598983891904952 and parameters: {'n_layers': 3, 'hidden_dim': 215, 'dropout': 0.34211651325607845, 'activation': 'leaky_relu', 'lr': 1.2681352169084594e-05, 'weight_decay': 0.000352048104552604, 'batch_size': 45}. Best is trial 2 with value: 0.39681500670975584.[0m
+[32m[I 2026-08-07 09:13:29,016][0m Trial 5 finished with value: 0.38515831729017425 and parameters: {'n_layers': 5, 'hidden_dim': 407, 'dropout': 0.2600340105889054, 'activation': 'leaky_relu', 'lr': 0.002115429079726122, 'weight_decay': 0.0004983043837494911, 'batch_size': 117}. Best is trial 5 with value: 0.38515831729017425.[0m
+[32m[I 2026-08-07 09:14:06,120][0m Trial 6 finished with value: 0.38941111811652906 and parameters: {'n_layers': 4, 'hidden_dim': 954, 'dropout': 0.04424625102595975, 'activation': 'leaky_relu', 'lr': 0.00014656553886225324, 'weight_decay': 2.2737628102536842e-07, 'batch_size': 109}. Best is trial 5 with value: 0.38515831729017425.[0m
+[32m[I 2026-08-07 09:15:00,985][0m Trial 7 finished with value: 0.3850240445583584 and parameters: {'n_layers': 3, 'hidden_dim': 379, 'dropout': 0.27134804157912423, 'activation': 'gelu', 'lr': 0.009133995846860976, 'weight_decay': 7.26480307482672e-05, 'batch_size': 38}. Best is trial 7 with value: 0.3850240445583584.[0m
+[32m[I 2026-08-07 09:15:10,148][0m Trial 8 pruned. [0m
+[32m[I 2026-08-07 09:15:52,434][0m Trial 9 finished with value: 0.3732148098113145 and parameters: {'n_layers': 5, 'hidden_dim': 424, 'dropout': 0.03177917514301182, 'activation': 'leaky_relu', 'lr': 0.0008178476574339542, 'weight_decay': 0.0002729378165037473, 'batch_size': 69}. Best is trial 9 with value: 0.3732148098113145.[0m
+[32m[I 2026-08-07 09:20:02,297][0m Trial 10 finished with value: 0.3938276981158507 and parameters: {'n_layers': 6, 'hidden_dim': 654, 'dropout': 0.14074522333096337, 'activation': 'leaky_relu', 'lr': 0.0009028168422346204, 'weight_decay': 6.835946806260833e-06, 'batch_size': 17}. Best is trial 9 with value: 0.3732148098113145.[0m
+[32m[I 2026-08-07 09:20:59,480][0m Trial 11 finished with value: 0.3850574192752367 and parameters: {'n_layers': 6, 'hidden_dim': 419, 'dropout': 0.17364881637119495, 'activation': 'gelu', 'lr': 0.006877477209765817, 'weight_decay': 2.1073872945437015e-05, 'batch_size': 60}. Best is trial 9 with value: 0.3732148098113145.[0m
+[32m[I 2026-08-07 09:22:07,269][0m Trial 12 finished with value: 0.39816164448417923 and parameters: {'n_layers': 2, 'hidden_dim': 586, 'dropout': 0.16720426429290686, 'activation': 'gelu', 'lr': 0.0011677740618778146, 'weight_decay': 1.695439134883412e-05, 'batch_size': 25}. Best is trial 9 with value: 0.3732148098113145.[0m
+[32m[I 2026-08-07 09:22:43,029][0m Trial 13 finished with value: 0.38950479540032795 and parameters: {'n_layers': 3, 'hidden_dim': 281, 'dropout': 0.4359103949481631, 'activation': 'gelu', 'lr': 0.0030225259043248627, 'weight_decay': 2.5494263183846314e-06, 'batch_size': 63}. Best is trial 9 with value: 0.3732148098113145.[0m
+[32m[I 2026-08-07 09:23:26,564][0m Trial 14 finished with value: 0.37199523432700204 and parameters: {'n_layers': 5, 'hidden_dim': 525, 'dropout': 0.10397826283162816, 'activation': 'gelu', 'lr': 0.00045147618982897787, 'weight_decay': 6.219666727200352e-05, 'batch_size': 93}. Best is trial 14 with value: 0.37199523432700204.[0m
+[32m[I 2026-08-07 09:24:06,646][0m Trial 15 finished with value: 0.3686831498061217 and parameters: {'n_layers': 5, 'hidden_dim': 526, 'dropout': 0.08449498878574682, 'activation': 'leaky_relu', 'lr': 0.0005373138767529722, 'weight_decay': 6.158931081221492e-05, 'batch_size': 89}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:24:47,287][0m Trial 16 finished with value: 0.37790491207549237 and parameters: {'n_layers': 5, 'hidden_dim': 551, 'dropout': 0.09010234671199224, 'activation': 'gelu', 'lr': 0.000544105537695677, 'weight_decay': 3.7071588695931755e-06, 'batch_size': 90}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:25:06,391][0m Trial 17 pruned. [0m
+[32m[I 2026-08-07 09:25:21,542][0m Trial 18 pruned. [0m
+[32m[I 2026-08-07 09:25:56,047][0m Trial 19 pruned. [0m
+[32m[I 2026-08-07 09:26:29,381][0m Trial 20 pruned. [0m
+[32m[I 2026-08-07 09:27:13,804][0m Trial 21 finished with value: 0.3710820006521118 and parameters: {'n_layers': 5, 'hidden_dim': 511, 'dropout': 0.04508702647371396, 'activation': 'leaky_relu', 'lr': 0.000798390559834621, 'weight_decay': 0.00014553443135709813, 'batch_size': 75}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:27:33,698][0m Trial 22 finished with value: 0.38820796358922216 and parameters: {'n_layers': 5, 'hidden_dim': 495, 'dropout': 0.004611712573906954, 'activation': 'leaky_relu', 'lr': 0.0017197696667832906, 'weight_decay': 0.00012653985993222447, 'batch_size': 123}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:28:07,786][0m Trial 23 finished with value: 0.3836753588678773 and parameters: {'n_layers': 5, 'hidden_dim': 485, 'dropout': 0.12321590884371383, 'activation': 'leaky_relu', 'lr': 0.00048343194444875823, 'weight_decay': 3.0937356370246625e-05, 'batch_size': 92}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:28:17,016][0m Trial 24 pruned. [0m
+[32m[I 2026-08-07 09:28:36,559][0m Trial 25 pruned. [0m
+[32m[I 2026-08-07 09:29:12,318][0m Trial 26 finished with value: 0.37502444095856696 and parameters: {'n_layers': 5, 'hidden_dim': 317, 'dropout': 0.14037712755778142, 'activation': 'leaky_relu', 'lr': 0.0007311456031072411, 'weight_decay': 7.987251539896717e-06, 'batch_size': 72}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:29:20,861][0m Trial 27 pruned. [0m
+[32m[I 2026-08-07 09:29:56,599][0m Trial 28 pruned. [0m
+[32m[I 2026-08-07 09:30:20,074][0m Trial 29 pruned. [0m
+[32m[I 2026-08-07 09:30:41,184][0m Trial 30 pruned. [0m
+[32m[I 2026-08-07 09:31:05,992][0m Trial 31 pruned. [0m
+[32m[I 2026-08-07 09:31:53,092][0m Trial 32 finished with value: 0.3802186770046035 and parameters: {'n_layers': 5, 'hidden_dim': 530, 'dropout': 0.03519190770081529, 'activation': 'leaky_relu', 'lr': 0.00036495274391008646, 'weight_decay': 0.0002504925963086649, 'batch_size': 66}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:32:30,762][0m Trial 33 finished with value: 0.383171193742875 and parameters: {'n_layers': 5, 'hidden_dim': 349, 'dropout': 0.0734808466333374, 'activation': 'leaky_relu', 'lr': 0.0005978669363629622, 'weight_decay': 4.0869610644455273e-05, 'batch_size': 75}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:33:06,711][0m Trial 34 finished with value: 0.3829377084523896 and parameters: {'n_layers': 4, 'hidden_dim': 226, 'dropout': 0.14794027039463944, 'activation': 'leaky_relu', 'lr': 0.0010516930094169414, 'weight_decay': 0.0008680648311701073, 'batch_size': 69}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:33:23,712][0m Trial 35 pruned. [0m
+[32m[I 2026-08-07 09:34:41,151][0m Trial 36 finished with value: 0.3744298042653435 and parameters: {'n_layers': 5, 'hidden_dim': 686, 'dropout': 0.10185344131807672, 'activation': 'relu', 'lr': 0.00035988178957508814, 'weight_decay': 0.0004401267085467465, 'batch_size': 48}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:35:23,772][0m Trial 37 finished with value: 0.3885987266989022 and parameters: {'n_layers': 6, 'hidden_dim': 614, 'dropout': 0.04956728735669921, 'activation': 'leaky_relu', 'lr': 0.002308273385268399, 'weight_decay': 0.0002586969148463221, 'batch_size': 78}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:35:32,652][0m Trial 38 pruned. [0m
+[32m[I 2026-08-07 09:36:01,342][0m Trial 39 finished with value: 0.3926147056538973 and parameters: {'n_layers': 4, 'hidden_dim': 526, 'dropout': 0.39797390209119055, 'activation': 'leaky_relu', 'lr': 0.0013378399311081408, 'weight_decay': 5.9657257393328393e-05, 'batch_size': 92}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:36:37,680][0m Trial 40 finished with value: 0.385540430716879 and parameters: {'n_layers': 5, 'hidden_dim': 367, 'dropout': 0.4870220906435186, 'activation': 'gelu', 'lr': 0.005090066780727245, 'weight_decay': 0.00047708140801131036, 'batch_size': 84}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:37:49,672][0m Trial 41 finished with value: 0.39147820799124056 and parameters: {'n_layers': 5, 'hidden_dim': 694, 'dropout': 0.09376250759945348, 'activation': 'relu', 'lr': 0.00024590008842220913, 'weight_decay': 0.0003664376496895166, 'batch_size': 47}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:38:30,107][0m Trial 42 pruned. [0m
+[32m[I 2026-08-07 09:39:23,624][0m Trial 43 finished with value: 0.38026760511137814 and parameters: {'n_layers': 5, 'hidden_dim': 440, 'dropout': 0.16500145787332415, 'activation': 'relu', 'lr': 0.0006883735054785845, 'weight_decay': 0.0002006312058075445, 'batch_size': 45}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:39:55,095][0m Trial 44 pruned. [0m
+[32m[I 2026-08-07 09:41:26,616][0m Trial 45 finished with value: 0.3691046136172928 and parameters: {'n_layers': 5, 'hidden_dim': 555, 'dropout': 0.025152193374706616, 'activation': 'relu', 'lr': 0.0008586436960562335, 'weight_decay': 9.054925181001528e-05, 'batch_size': 30}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:42:50,165][0m Trial 46 pruned. [0m
+[32m[I 2026-08-07 09:45:23,969][0m Trial 47 finished with value: 0.3840313090264238 and parameters: {'n_layers': 6, 'hidden_dim': 397, 'dropout': 0.047542299093498996, 'activation': 'relu', 'lr': 0.001786529555391232, 'weight_decay': 9.670112593445741e-05, 'batch_size': 17}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:46:50,856][0m Trial 48 finished with value: 0.38207076263119666 and parameters: {'n_layers': 5, 'hidden_dim': 493, 'dropout': 0.02460265609622174, 'activation': 'leaky_relu', 'lr': 0.0005473775259928826, 'weight_decay': 4.535570020499305e-05, 'batch_size': 30}. Best is trial 15 with value: 0.3686831498061217.[0m
+[32m[I 2026-08-07 09:46:59,187][0m Trial 49 pruned. [0m
+
+=== Best Trial ===
+  CV RMSE: 0.368683
+  Params:  {'n_layers': 5, 'hidden_dim': 526, 'dropout': 0.08449498878574682, 'activation': 'leaky_relu', 'lr': 0.0005373138767529722, 'weight_decay': 6.158931081221492e-05, 'batch_size': 89}
+============================================================
+mlp — 运行开始  20260807_094659
+  输出目录:  runs\Area_min\Area_min_mlp_20260807_094659
+============================================================
+============================================================
+MLP + PharmHGT-style Featurization for Area_min Prediction
+============================================================
+
+============================================================
+Training Final Model
+============================================================
+    Early stopping at epoch 190
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.3077
+  Test RMSE: 0.5547
+  Test MAE:  0.3594
+  Test R²:   0.5278
+Model saved to runs\Area_min\Area_min_mlp_20260807_094659\model.pkl
+
+============================================================
+SUMMARY — MLP + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     531 (val 76)
+  Test:      70
+  Optuna:    50 trials, 5-fold CV
+  Best CV RMSE: 0.3687
+  Best val RMSE: 0.3677
+  Test RMSE: 0.5547
+  Test MAE:  0.3594
+  Test R²:   0.5278
+
+指标已保存: runs\Area_min\Area_min_mlp_20260807_094659\metrics.json
+索引已更新: runs\Area_min\_runs_index.csv
+索引已更新: runs\_runs_index.csv
