@@ -1,0 +1,8 @@
+{
+  "train_smiles_hash": "56c88815fe0d194e8964e6d6e35fcf37",
+  "test_smiles_hash": "4d1b53094439e6037198545ef64b04ea",
+  "train_csv": "surfpro_train.csv",
+  "test_csv": "surfpro_test.csv",
+  "target_col": "Area_min",
+  "feature_dim": 522
+}
