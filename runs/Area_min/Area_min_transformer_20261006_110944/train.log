@@ -1,0 +1,84 @@
+============================================================
+transformer — 运行开始  20261006_110944
+  输出目录:  runs\Area_min\Area_min_transformer_20261006_110944
+============================================================
+============================================================
+Transformer Encoder + PharmHGT-style Featurization for Area_min Prediction
+============================================================
+[Cache HIT] Loading features from data\features\surfpro\Area_min
+  Train features: (607, 522)
+  Test features:  (70, 522)
+
+Split: Train 531, Val 76, Test 70
+
+============================================================
+Training Final Model
+============================================================
+  Model warmup OK, starting training...
+  Epoch   5 — Val RMSE: 0.7921 (best: 0.7921)
+  Epoch  10 — Val RMSE: 0.7934 (best: 0.7921)
+  Epoch  15 — Val RMSE: 0.8092 (best: 0.7921)
+  Epoch  20 — Val RMSE: 0.7271 (best: 0.7271)
+  Epoch  25 — Val RMSE: 0.7818 (best: 0.7271)
+  Epoch  30 — Val RMSE: 0.7367 (best: 0.7271)
+  Epoch  35 — Val RMSE: 0.7203 (best: 0.7203)
+  Epoch  40 — Val RMSE: 0.7630 (best: 0.7203)
+  Epoch  45 — Val RMSE: 0.7255 (best: 0.7203)
+  Epoch  50 — Val RMSE: 0.8251 (best: 0.7203)
+  Epoch  55 — Val RMSE: 0.6789 (best: 0.6789)
+  Epoch  60 — Val RMSE: 0.5493 (best: 0.5493)
+  Epoch  65 — Val RMSE: 1.5803 (best: 0.5493)
+  Epoch  70 — Val RMSE: 0.7512 (best: 0.5493)
+  Epoch  75 — Val RMSE: 0.7309 (best: 0.5493)
+  Epoch  80 — Val RMSE: 0.6381 (best: 0.5493)
+  Epoch  85 — Val RMSE: 0.7034 (best: 0.5493)
+  Epoch  90 — Val RMSE: 0.7706 (best: 0.5493)
+  Epoch  95 — Val RMSE: 0.7368 (best: 0.5493)
+  Epoch 100 — Val RMSE: 0.8117 (best: 0.5493)
+  Epoch 105 — Val RMSE: 0.8427 (best: 0.5493)
+  Epoch 110 — Val RMSE: 0.6678 (best: 0.5493)
+  Epoch 115 — Val RMSE: 0.6939 (best: 0.5493)
+  Epoch 120 — Val RMSE: 0.8220 (best: 0.5493)
+  Epoch 125 — Val RMSE: 0.8057 (best: 0.5493)
+  Epoch 130 — Val RMSE: 0.8469 (best: 0.5493)
+  Epoch 135 — Val RMSE: 1.4455 (best: 0.5493)
+  Epoch 140 — Val RMSE: 0.7354 (best: 0.5493)
+  Epoch 145 — Val RMSE: 0.8867 (best: 0.5493)
+  Epoch 150 — Val RMSE: 0.9612 (best: 0.5493)
+  Epoch 155 — Val RMSE: 1.1402 (best: 0.5493)
+  Epoch 160 — Val RMSE: 0.8998 (best: 0.5493)
+  Epoch 165 — Val RMSE: 0.7909 (best: 0.5493)
+  Epoch 170 — Val RMSE: 0.8035 (best: 0.5493)
+  Epoch 175 — Val RMSE: 0.8209 (best: 0.5493)
+  Epoch 180 — Val RMSE: 0.9703 (best: 0.5493)
+  Epoch 185 — Val RMSE: 0.9559 (best: 0.5493)
+  Epoch 190 — Val RMSE: 0.9113 (best: 0.5493)
+  Epoch 195 — Val RMSE: 0.9724 (best: 0.5493)
+  Epoch 200 — Val RMSE: 0.9779 (best: 0.5493)
+  Epoch 205 — Val RMSE: 0.9541 (best: 0.5493)
+  Epoch 210 — Val RMSE: 0.9997 (best: 0.5493)
+  Early stopping at epoch 210
+
+============================================================
+Test Evaluation
+============================================================
+  Test MSE:  0.6598
+  Test RMSE: 0.8123
+  Test MAE:  0.5761
+  Test R²:   -0.0125
+Model saved to runs\Area_min\Area_min_transformer_20261006_110944\model.pkl
+
+============================================================
+SUMMARY — Transformer Encoder + PharmHGT Features
+============================================================
+  Features:  522-dim (atom_agg + bond_agg + MACCS + BRICS + surfactant + descriptors)
+  Train:     531 (val 76)
+  Test:      70
+  Fixed hyperparams: d_model=128, 3 layers, 4 heads, FFN=256, GELU, lr=1e-3, wd=1e-5, bs=16, 500 epoch, grad_clip=5.0, CosineAnnealingLR
+  Test RMSE: 0.8123
+  Test MAE:  0.5761
+  Test R²:   -0.0125
+
+指标已保存: runs\Area_min\Area_min_transformer_20261006_110944\metrics.json
+索引已更新: runs\Area_min\_runs_index.csv
+索引已更新: runs\_runs_index.csv

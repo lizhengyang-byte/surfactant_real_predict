@@ -59,3 +59,4 @@ Area_min,ngboost,runs\Area_min\Area_min_ngboost_20260807_094721,2026-08-07 09:47
 Area_min,rf,runs\Area_min\Area_min_rf_20260807_100009,2026-08-07 10:02:39,0.5179,0.3115,0.5884,0.4576,,
 Area_min,rnn,runs\Area_min\Area_min_rnn_20260807_100527,2026-08-07 10:07:03,0.7203,0.4872,0.2037,,0.6212,
 Area_min,xgboost,runs\Area_min\Area_min_xgboost_20260807_101507,2026-08-07 10:36:01,0.5495,0.301,0.5366,0.482,,0.4585
+Area_min,transformer,runs\Area_min\Area_min_transformer_20261006_110944,2026-10-06 11:20:33,0.8123,0.5761,-0.0125,,0.5493,

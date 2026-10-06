@@ -88,6 +88,7 @@ python -c "from smiles_to_features_pharmhgt import smiles_to_features_pharmhgt; 
 │   ├── technical_overview_pharmhgt.md
 │   ├── smiles_to_features_pharmhgt_技术文档.md  # Chinese tech doc
 │   ├── feature_reference_522dim.md             # Complete 522-dim feature index
+│   ├── architecture_reuse_guide.md             # 可复用架构分层指南（L1–L5）；换数据集/加模型/上线照此骨架
 │   └── report/
 │       ├── pdf_style_header.html      # PDF 导出样式模板（pandoc -H 注入，见下节）
 │       └── {target}/                  # 模型报告（md + pdf，按 target 分组）

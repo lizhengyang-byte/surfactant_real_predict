@@ -111,7 +111,7 @@ if TORCH_AVAILABLE:
             pe = torch.zeros(max_len, d_model)
             position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
             div_term = torch.exp(
-                torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model)
+                torch.arange(0, d_model, 2).float() * (-np.log(10000.0) / d_model)
             )
             pe[:, 0::2] = torch.sin(position * div_term)
             pe[:, 1::2] = torch.cos(position * div_term)
@@ -611,7 +611,12 @@ def list_models(target: Optional[str] = None) -> pd.DataFrame:
         return pd.DataFrame()
 
     result = pd.DataFrame(valid)
-    if 'test_rmse' in result.columns:
+    if 'test_rmse' in result.columns and 'test_r2' in result.columns:
+        # test_rmse 升序；同 RMSE（如 Gamma_max 因 y_scale=1e6 舍入后全为 0.0）时按 test_r2 降序决胜，
+        # 使 'best' 选择与论文"首选模型"一致（Gamma_max → MLP 0.7515），而非退化为任意平局
+        result = result.sort_values(['test_rmse', 'test_r2'],
+                                    ascending=[True, False]).reset_index(drop=True)
+    elif 'test_rmse' in result.columns:
         result = result.sort_values('test_rmse', ascending=True).reset_index(drop=True)
     return result
 

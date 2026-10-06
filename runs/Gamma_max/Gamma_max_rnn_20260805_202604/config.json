@@ -13,5 +13,6 @@
   "activation": "relu",
   "lr": 0.001,
   "weight_decay": 1e-05,
-  "batch_size": 32
+  "batch_size": 32,
+  "y_scale": 1000000
 }
