@@ -1,0 +1,49 @@
+[
+ {
+  "key": "v2:82eae05555f9a292e2bee307dd7a7cf70ce171a7041e6b5d8c9c983bbb6b7d56",
+  "value": {
+   "completed": false,
+   "metrics": {
+    "test_rmse": null,
+    "test_mae": null,
+    "test_r2": null,
+    "units_note": "No test metrics exist because the Area_min x Transformer run never completed. Per-target convention: Area_min is bounded target; completed gamma/area runs use the raw units of the target column (Å² per molecule). No metrics.json was produced, so nothing to report."
+   },
+   "artifacts": {
+    "config_json": true,
+    "metrics_json": false,
+    "model_pkl": false,
+    "model_pkl_loads": false,
+    "plot_png": false,
+    "train_log": true
+   },
+   "log_evidence": "runs/Area_min/Area_min_transformer_20260807_101205/train.log is exactly 750 bytes and stops immediately after the banner. Its final content (hexdump): a line 'Training Final Model' printed between two '='*60 separators, with the file ending in the closing separator followed by CRLF. There is NO 'Model warmup OK, starting training...' line, NO 'Epoch N — Val RMSE' line, NO 'Test Evaluation' block, NO traceback, and NO metrics. NOTE: utils.py _StreamTee tees STDOUT only (not stderr), so an uncaught exception on stderr would NOT appear in train.log; therefore 'no traceback' cannot rule out an error, it only proves the process stopped after printing the banner and before completing the first epoch. Split line captured: 'Split: Train 531, Val 76, Test 70'. Cache line: '[Cache HIT] Loading features from data\\features\\surfpro\\Area_min' with Train (607,522), Test (70,522). Timing: dir mtime 10:12; prior completed run RNN at 10:05, next run xgboost at 10:15 (which completed) — the transformer process was stopped within ~2-3 minutes of launch.",
+   "refutation_attempted": "Searched the entire repo for any completed Area_min transformer attempt. (1) Listed runs/Area_min/ — only ONE transformer dir exists (Area_min_transformer_20260807_101205); grep -r for 'Area_min.*transformer' over the whole repo returned only that dir's train.log, the training script, and its .pyc. (2) Search for any transformer metrics.json: only 5 targets have one (pCMC, AW_ST_CMC, Gamma_max, pC20, Pi_CMC) — Area_min has none. Every other Area_min run dir has metrics.json; the transformer dir is the sole one without. (3) all *.pkl / *.pt in repo enumerated: 9 completed Area_min model.pkl files exist; Area_min transformer has none, while other targets' completed transformers (AW_ST_CMC_20260805_151238, Gamma_max_20260805_202831, pC20_20260806_150057, pCMC_20260802_174306, Pi_CMC_20260806_195418) all have model.pkl. (4) doc/report/Area_min/, doc/PDF汇总/Area_min/ and doc/PDF汇总.zip each contain exactly 9 report PDFs/MDs (catboost, cif, histgb, lightgbm, mlp, ngboost, rf, rnn, xgboost) — no transformer report, and no Area_min report mentions 'transformer' (grep -i returned nothing). (5) Both _runs_index.csv files checked: Area_min per-target index and global index have 9 Area_min rows, no transformer; global index has transformer rows only for the other 5 targets. (6) Feature cache data/features/surfpro/Area_min/ EXISTS (607x522 X_train, 70x522 X_test, y files, metadata.json, dated 2026-08-06 20:54) so a future rerun would Cache HIT, as the log already shows. (7) git: git ls-files for Area_min transformer = only config.json + train.log (committed, no model); no git-history reference to a deleted Area_min transformer artifact. Refutation FAILED to find any completed attempt.",
+   "verdict": "CONFIRMED NON-COMPLETION: Area_min x Transformer training never completed. The run dir contains only config.json and a train.log that stops right after the 'Training Final Model' banner (before the first epoch). No model.pkl, no metrics.json, no report (.md/.pdf), no index row in either _runs_index.csv, and no entry in doc/PDF汇总.zip. Feature cache for Area_min exists and the log shows [Cache HIT], so a rerun of train/train_Area_min_models/train_transformer_use_pharmhgt_features.py (from REPO ROOT, per CLAUDE.md) would resume from cache. Recommendation per the third data reviewer: mark Area_min x Transformer as '该组合未纳入评测' ('this combination not included in evaluation') in the paper and state the reason: the training run was interrupted before completion and no transformer model/metrics/report was ever produced for Area_min."
+  }
+ },
+ {
+  "key": "v2:d28b6e890f88d6151fd3e6e4317c9a8802625ec77b2e6dded5041bd150fac707",
+  "value": {
+   "artifacts": {
+    "config_json": true,
+    "metrics_json": true,
+    "model_pkl": true,
+    "model_pkl_loads": true,
+    "train_log": true,
+    "plot_png": false
+   },
+   "completed": true,
+   "log_evidence": "train.log is complete and error-free. Key lines: 'Split: Train 549, Val 79, Test 70'; 'Epoch  50 — Val RMSE: 2.1332 (best: 2.1308)' ... 'Epoch 500 — Val RMSE: 2.1328 (best: 2.1300)'; 'Early stopping at epoch 530'; 'Test Evaluation'; '  Test MSE:  0.0000 / Test RMSE: 0.0000 / Test MAE:  0.0000 / Test R²:   -0.0100'; 'SUMMARY — RNN (LSTM)... Test RMSE: 0.0000 Test MAE: 0.0000 Test R²: -0.0100'; '指标已保存: ...metrics.json'; '索引已更新: runs\\Gamma_max\\_runs_index.csv' and 'runs\\_runs_index.csv' (double-write to both indexes). No traceback/error/exception/nan/inf matched. metrics.json = {\"test_rmse\":0.0,\"test_mae\":0.0,\"test_r2\":-0.01,\"best_val_rmse\":2.13}.",
+   "metrics": {
+    "test_rmse": 1.415703e-06,
+    "test_mae": 1.048719e-06,
+    "test_r2": -0.01,
+    "best_val_rmse": 2.13,
+    "units_note": "Gamma_max trained with internal y_scale=1e6. metrics.json/_runs_index record test_rmse & test_mae as 0.0 because ROUNDED TO 4 DECIMALS IN RAW units (mol/m2, ~1e-6 -> 0.0000) — a rounding artifact, NOT a perfect fit. Independent recomputation from the saved model on the cached 70-sample test set yields raw test RMSE=1.4157e-6 mol/m2, MAE=1.0487e-6 mol/m2, R2=-0.01 (exact match). best_val_rmse=2.13 is in SCALED units (x1e6) == ~2.1e-6 mol/m2 raw; early stopping at epoch 530 (best val epoch ~300). R2=-0.01 is genuine and unitless; the model collapsed to an essentially constant prediction (~2.334e-6 mol/m2, std~8e-11), explaining nothing beyond the mean baseline. The paper table should cite R2 = -0.01, and RMSE ~1.4e-6 mol/m2 (or ~2.3 in scaled units) with a footnote that the recorded 0.0 is the 4-dp rounding of raw values."
+   },
+   "refutation_attempted": "Attempted adversarial refutation with 5 checks: (1) listed run dir -> all 4 artifacts present; (2) read metrics.json + full train.log -> complete SUMMARY block, early-stop epoch 530, zero tracebacks/errors; (3) actually LOADED model.pkl: plain pickle/joblib fail (it is a torch.save dict with persistent-id numpy refs) so used torch.load(weights_only=False) -> valid 3-layer LSTM state_dict (14 tensors), forward pass on cached X_test yields predictions, model is a genuine degenerate constant predictor; (4) confirmed the Gamma_max,rnn row in BOTH runs/Gamma_max/_runs_index.csv and runs/_runs_index.csv; (5) explained the 0.0 vs -0.01 vs 2.13 inconsistency: test RMSE/MAE are computed in RAW mol/m2 units (~1e-6) and round(.,4)->0.0, best_val_rmse=2.13 is in SCALED (x1e6) units, R2=-0.01 is unitless/genuine. Attempted to show incompleteness/error and could not: the run fully completed. Only caveats: model is scientifically degenerate (R2<0), and the RNN config.json omits the y_scale key (hardcoded in script) unlike tree configs which record 'y_scale': 1000000.",
+   "verdict": "CONFIRMED COMPLETE. The Gamma_max RNN training run (runs/Gamma_max/Gamma_max_rnn_20260805_202604) genuinely executed and finished cleanly: loadable model.pkl (torch state_dict, forward pass works), complete train.log with SUMMARY block and early stopping at epoch 530, metrics.json + double-written _runs_index.csv rows, no tracebacks. test_rmse/test_mae=0.0 in metrics/index is a 4-decimal rounding artifact of raw mol/m2 units (~1.4e-6), NOT a perfect fit; test_r2=-0.01 is genuine (model collapsed to a constant predictor, explains nothing). NUMBERS FOR THE PAPER TABLE: Test R2 = -0.01; Test RMSE = 1.4157e-6 mol/m2 (raw; recorded as 0.0); Test MAE = 1.0487e-6 mol/m2 (raw; recorded as 0.0); best_val_rmse = 2.13 (scaled x1e6, i.e. ~2.1e-6 mol/m2); early stop epoch 530. Since the run executed, the Gamma_max RNN report should be completed (not marked 'not evaluated'), with R2=-0.01 making it a clearly poor/negative performer vs the mean baseline."
+  }
+ }
+]
