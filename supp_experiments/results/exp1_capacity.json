@@ -1,0 +1,220 @@
+{
+  "capacity_report": {
+    "MLP-original_params": 975513,
+    "RNN-original_params": 83777,
+    "Transformer-original_params": 150145,
+    "RNN-large": {
+      "num_layers": 2,
+      "hidden_size": 288,
+      "params": 1001377,
+      "ratio": 1.027,
+      "best_fit": 0.027,
+      "tolerance": 0.15
+    },
+    "Transformer-large": {
+      "num_layers": 5,
+      "d_model": 128,
+      "dim_feedforward": 512,
+      "params": 991745,
+      "ratio": 1.017,
+      "best_fit": 0.017,
+      "tolerance": 0.15
+    },
+    "MLP/RNN-original_ratio": 11.64,
+    "MLP/Transformer-original_ratio": 6.5
+  },
+  "results": {
+    "MLP-original": {
+      "Gamma_max": {
+        "R2": 0.6726,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "A_min": {
+        "R2": 0.5685,
+        "RMSE": 0.5303,
+        "MAE": 0.2966
+      },
+      "pCMC": {
+        "R2": 0.8919,
+        "RMSE": 0.3654,
+        "MAE": 0.2457
+      },
+      "gamma_CMC": {
+        "R2": 0.6382,
+        "RMSE": 4.3033,
+        "MAE": 3.2589
+      },
+      "Pi_CMC": {
+        "R2": 0.6035,
+        "RMSE": 4.535,
+        "MAE": 3.0516
+      },
+      "pC20": {
+        "R2": 0.8434,
+        "RMSE": 0.4725,
+        "MAE": 0.3281
+      }
+    },
+    "MLP-small": {
+      "Gamma_max": {
+        "R2": 0.734,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "A_min": {
+        "R2": 0.6092,
+        "RMSE": 0.5047,
+        "MAE": 0.2813
+      },
+      "pCMC": {
+        "R2": 0.8713,
+        "RMSE": 0.3987,
+        "MAE": 0.2949
+      },
+      "gamma_CMC": {
+        "R2": 0.629,
+        "RMSE": 4.3578,
+        "MAE": 3.2354
+      },
+      "Pi_CMC": {
+        "R2": 0.5569,
+        "RMSE": 4.7942,
+        "MAE": 3.3396
+      },
+      "pC20": {
+        "R2": 0.8149,
+        "RMSE": 0.5137,
+        "MAE": 0.3777
+      }
+    },
+    "RNN-original": {
+      "Gamma_max": {
+        "R2": -0.009,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "A_min": {
+        "R2": -0.0377,
+        "RMSE": 0.8223,
+        "MAE": 0.5408
+      },
+      "pCMC": {
+        "R2": 0.5086,
+        "RMSE": 0.779,
+        "MAE": 0.6016
+      },
+      "gamma_CMC": {
+        "R2": -0.0514,
+        "RMSE": 7.3356,
+        "MAE": 5.7534
+      },
+      "Pi_CMC": {
+        "R2": -0.0285,
+        "RMSE": 7.3039,
+        "MAE": 5.7362
+      },
+      "pC20": {
+        "R2": -0.0354,
+        "RMSE": 1.215,
+        "MAE": 1.0287
+      }
+    },
+    "RNN-large": {
+      "Gamma_max": {
+        "R2": 0.0072,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "pCMC": {
+        "R2": 0.5713,
+        "RMSE": 0.7277,
+        "MAE": 0.5523
+      },
+      "gamma_CMC": {
+        "R2": -0.0508,
+        "RMSE": 7.3336,
+        "MAE": 5.7521
+      },
+      "A_min": {
+        "R2": 0.3234,
+        "RMSE": 0.664,
+        "MAE": 0.4694
+      },
+      "Pi_CMC": {
+        "R2": -0.0709,
+        "RMSE": 7.453,
+        "MAE": 5.8275
+      },
+      "pC20": {
+        "R2": 0.4624,
+        "RMSE": 0.8755,
+        "MAE": 0.7004
+      }
+    },
+    "Transformer-original": {
+      "Gamma_max": {
+        "R2": -0.0227,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "pCMC": {
+        "R2": 0.2798,
+        "RMSE": 0.9431,
+        "MAE": 0.7137
+      },
+      "gamma_CMC": {
+        "R2": 0.152,
+        "RMSE": 6.588,
+        "MAE": 5.4287
+      },
+      "A_min": {
+        "R2": 0.3797,
+        "RMSE": 0.6358,
+        "MAE": 0.4021
+      },
+      "Pi_CMC": {
+        "R2": 0.3603,
+        "RMSE": 5.7602,
+        "MAE": 4.7066
+      },
+      "pC20": {
+        "R2": 0.1699,
+        "RMSE": 1.0879,
+        "MAE": 0.8639
+      }
+    },
+    "Transformer-large": {
+      "Gamma_max": {
+        "R2": -0.0278,
+        "RMSE": 0.0,
+        "MAE": 0.0
+      },
+      "pCMC": {
+        "R2": 0.1137,
+        "RMSE": 1.0462,
+        "MAE": 0.7863
+      },
+      "gamma_CMC": {
+        "R2": -0.0709,
+        "RMSE": 7.4034,
+        "MAE": 5.7951
+      },
+      "A_min": {
+        "R2": -0.0409,
+        "RMSE": 0.8236,
+        "MAE": 0.5406
+      },
+      "Pi_CMC": {
+        "R2": -0.0665,
+        "RMSE": 7.4377,
+        "MAE": 5.8171
+      },
+      "pC20": {
+        "R2": 0.2089,
+        "RMSE": 1.062,
+        "MAE": 0.8586
+      }
+    }
+  }
+}

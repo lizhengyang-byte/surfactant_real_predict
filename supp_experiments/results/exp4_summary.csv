@@ -1,0 +1,13 @@
+﻿Model,Target,baseline_R2,mean_perm_R2,delta_R2
+RNN-original,pCMC,0.5086,0.1399,-0.3687
+RNN-original,gamma_CMC,-0.0514,-0.0518,-0.0004
+RNN-original,Gamma_max,-0.009,-0.0293,-0.0203
+RNN-original,A_min,-0.0377,0.1759,0.2136
+RNN-original,Pi_CMC,-0.0285,-0.0302,-0.0017
+RNN-original,pC20,-0.0354,-0.0236,0.0118
+Transformer-original,pCMC,0.2798,0.2395,-0.0403
+Transformer-original,gamma_CMC,0.152,0.0663,-0.0857
+Transformer-original,Gamma_max,-0.0227,-0.0406,-0.0179
+Transformer-original,A_min,0.3797,0.2172,-0.1625
+Transformer-original,Pi_CMC,0.3603,0.1551,-0.2052
+Transformer-original,pC20,0.1699,0.0115,-0.1584

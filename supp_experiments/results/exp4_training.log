@@ -1,0 +1,115 @@
+
+=== 实验四：特征排列随机化 ===
+device=cuda, n_permutations=5, resume=False
+[复用实验一基线] RNN-original / Transformer-original 6×2 per-target 结果
+
+==============================================================================
+实验四：特征排列随机化（5 次独立列置换 × 2 序列模型 × 6 目标）
+特征维度: 522
+==============================================================================
+
+--- Permutation 1/5 (seed=43) ---
+  RNN-original         × pCMC       R2=+0.5240  (101s, ep=233)
+  RNN-original         × gamma_CMC  R2=-0.0520  (29s, ep=69)
+  RNN-original         × Gamma_max  R2=-0.0099  (7s, ep=5)
+  RNN-original         × A_min      R2=-0.0489  (6s, ep=3)
+  RNN-original         × Pi_CMC     R2=-0.0298  (18s, ep=59)
+  RNN-original         × pC20       R2=-0.0399  (6s, ep=4)
+  Transformer-original × pCMC       R2=+0.4907  (491s, ep=93)
+  Transformer-original × gamma_CMC  R2=+0.1425  (446s, ep=130)
+  Transformer-original × Gamma_max  R2=-0.0522  (71s, ep=4)
+  Transformer-original × A_min      R2=+0.1928  (231s, ep=85)
+  Transformer-original × Pi_CMC     R2=+0.2771  (410s, ep=166)
+  Transformer-original × pC20       R2=+0.1088  (91s, ep=19)
+
+--- Permutation 2/5 (seed=44) ---
+  RNN-original         × pCMC       R2=-0.0015  (33s, ep=58)
+  RNN-original         × gamma_CMC  R2=-0.0520  (25s, ep=69)
+  RNN-original         × Gamma_max  R2=-0.0538  (7s, ep=2)
+  RNN-original         × A_min      R2=+0.4356  (59s, ep=300)
+  RNN-original         × Pi_CMC     R2=-0.0301  (17s, ep=57)
+  RNN-original         × pC20       R2=+0.0001  (9s, ep=17)
+  Transformer-original × pCMC       R2=+0.0714  (164s, ep=11)
+  Transformer-original × gamma_CMC  R2=+0.1176  (522s, ep=157)
+  Transformer-original × Gamma_max  R2=-0.0389  (70s, ep=4)
+  Transformer-original × A_min      R2=+0.1863  (203s, ep=71)
+  Transformer-original × Pi_CMC     R2=+0.2240  (197s, ep=65)
+  Transformer-original × pC20       R2=-0.0113  (61s, ep=3)
+
+--- Permutation 3/5 (seed=45) ---
+  RNN-original         × pCMC       R2=+0.1805  (85s, ep=193)
+  RNN-original         × gamma_CMC  R2=-0.0512  (23s, ep=58)
+  RNN-original         × Gamma_max  R2=-0.0177  (7s, ep=5)
+  RNN-original         × A_min      R2=+0.4090  (33s, ep=145)
+  RNN-original         × Pi_CMC     R2=-0.0288  (18s, ep=60)
+  RNN-original         × pC20       R2=-0.0381  (6s, ep=4)
+  Transformer-original × pCMC       R2=+0.4851  (472s, ep=88)
+  Transformer-original × gamma_CMC  R2=+0.1609  (514s, ep=154)
+  Transformer-original × Gamma_max  R2=-0.0298  (74s, ep=6)
+  Transformer-original × A_min      R2=+0.2509  (253s, ep=96)
+  Transformer-original × Pi_CMC     R2=+0.0088  (209s, ep=71)
+  Transformer-original × pC20       R2=-0.0224  (136s, ep=43)
+
+--- Permutation 4/5 (seed=46) ---
+  RNN-original         × pCMC       R2=-0.0018  (23s, ep=33)
+  RNN-original         × gamma_CMC  R2=-0.0520  (25s, ep=69)
+  RNN-original         × Gamma_max  R2=-0.0551  (6s, ep=2)
+  RNN-original         × A_min      R2=+0.1401  (13s, ep=40)
+  RNN-original         × Pi_CMC     R2=-0.0327  (17s, ep=57)
+  RNN-original         × pC20       R2=+0.0000  (8s, ep=17)
+  Transformer-original × pCMC       R2=+0.0699  (164s, ep=11)
+  Transformer-original × gamma_CMC  R2=-0.0301  (179s, ep=35)
+  Transformer-original × Gamma_max  R2=-0.0346  (70s, ep=4)
+  Transformer-original × A_min      R2=+0.2427  (207s, ep=73)
+  Transformer-original × Pi_CMC     R2=+0.2453  (256s, ep=93)
+  Transformer-original × pC20       R2=-0.0056  (91s, ep=19)
+
+--- Permutation 5/5 (seed=47) ---
+  RNN-original         × pCMC       R2=-0.0016  (32s, ep=58)
+  RNN-original         × gamma_CMC  R2=-0.0520  (25s, ep=69)
+  RNN-original         × Gamma_max  R2=-0.0102  (7s, ep=5)
+  RNN-original         × A_min      R2=-0.0561  (6s, ep=3)
+  RNN-original         × Pi_CMC     R2=-0.0298  (18s, ep=59)
+  RNN-original         × pC20       R2=-0.0403  (6s, ep=4)
+  Transformer-original × pCMC       R2=+0.0802  (160s, ep=10)
+  Transformer-original × gamma_CMC  R2=-0.0592  (147s, ep=23)
+  Transformer-original × Gamma_max  R2=-0.0475  (66s, ep=2)
+  Transformer-original × A_min      R2=+0.2131  (126s, ep=33)
+  Transformer-original × Pi_CMC     R2=+0.0203  (192s, ep=62)
+  Transformer-original × pC20       R2=-0.0121  (88s, ep=17)
+
+==============================================================================
+实验结果汇总
+==============================================================================
+
+--- RNN-original ---
+   Target  baseline  mean_perm     ΔR2
+     pCMC    0.5086     0.1399 -0.3687
+gamma_CMC   -0.0514    -0.0518 -0.0004
+Gamma_max   -0.0090    -0.0293 -0.0203
+    A_min   -0.0377     0.1759  0.2136
+   Pi_CMC   -0.0285    -0.0302 -0.0017
+     pC20   -0.0354    -0.0236  0.0118
+
+--- Transformer-original ---
+   Target  baseline  mean_perm     ΔR2
+     pCMC    0.2798     0.2395 -0.0403
+gamma_CMC    0.1520     0.0663 -0.0857
+Gamma_max   -0.0227    -0.0406 -0.0179
+    A_min    0.3797     0.2172 -0.1625
+   Pi_CMC    0.3603     0.1551 -0.2052
+     pC20    0.1699     0.0115 -0.1584
+
+------------------------------------------------------------------------------
+总体统计（60 个 baseline vs perm 单组配对）:
+  均值 ΔR² (mean of all per-cell deltas): -0.0697
+  均值 |ΔR²|: 0.1233
+  最大 |ΔR²|: 0.5104
+  ΔR² 标准差: 0.1782
+
+文档判据（用均值 |ΔR²| 判别）:
+  判定：场景 C
+  ✗ 结论：排列后 R² 变化 > 0.10，维度顺序有显著信息；需重新审视「无序描述符」前提。
+  最敏感组合: RNN-original × pCMC, ΔR²=-0.3687
+
+完成，耗时 7035s → results/exp4_permutation.json / exp4_summary.csv

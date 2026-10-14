@@ -1,0 +1,36 @@
+{
+  "feature_dim": 522,
+  "target_names": [
+    "pCMC",
+    "gamma_CMC",
+    "Gamma_max",
+    "A_min",
+    "Pi_CMC",
+    "pC20"
+  ],
+  "target_csv_cols": [
+    "pCMC",
+    "AW_ST_CMC",
+    "Gamma_max",
+    "Area_min",
+    "Pi_CMC",
+    "pC20"
+  ],
+  "yscale_gmax": 1000000.0,
+  "n_train": 1335,
+  "n_test": 140,
+  "train_valid_mask_count": 1335,
+  "test_valid_mask_count": 140,
+  "train_bad_rows": [],
+  "test_bad_rows": [],
+  "crosscheck_vs_pcmc_cache": {
+    "max_feat_abs_diff": 0.0,
+    "max_y_abs_diff": 0.0,
+    "features_match": true,
+    "labels_match": true
+  },
+  "featurization_time_s": {
+    "train": 265.06246876716614,
+    "test": 37.97299909591675
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "n_permutations": 5,
+  "mean_delta_R2": -0.06965500000000001,
+  "mean_abs_delta_R2": 0.12330166666666668,
+  "max_abs_delta_R2": 0.5104000000000001,
+  "std_delta_R2": 0.1782336176903785,
+  "verdict": "C"
+}

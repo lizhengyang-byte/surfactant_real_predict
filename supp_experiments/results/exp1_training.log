@@ -1,0 +1,377 @@
+
+=== 实验一：容量匹配消融 ===
+device=cuda, resume=False
+==============================================================================
+实验一：容量匹配消融（6 模型 × 6 目标 = 36 组 per-target 训练）
+device: cuda
+==============================================================================
+
+[参数量统计]
+  MLP-original           params=   975,513  (5层×488隐藏维 (论文/文档原型))
+  MLP-small              params=    37,953  (3层×64隐藏维 (小容量，非序列化反向对照))
+  RNN-original           params=    83,777  (3层×64隐藏单元 (论文/文档原型))
+  RNN-large              params= 1,001,377  (容量匹配 (与 MLP-original 对齐: 2层×288hs, ratio=1.027x))
+  Transformer-original   params=   150,145  (3层×d_model=64 (论文/文档原型))
+  Transformer-large      params=   991,745  (容量匹配 (与 MLP-original 对齐: 5层×dm128×ff512, ratio=1.017x))
+
+  MLP/RNN-original 参数量比: 11.64x
+  MLP/Transformer-original 参数量比: 6.5x
+  RNN-large 搜索结果: {"num_layers": 2, "hidden_size": 288, "params": 1001377, "ratio": 1.027, "best_fit": 0.027, "tolerance": 0.15}
+  Transformer-large 搜索结果: {"num_layers": 5, "d_model": 128, "dim_feedforward": 512, "params": 991745, "ratio": 1.017, "best_fit": 0.017, "tolerance": 0.15}
+
+[目标 pCMC (pCMC)] train=1053 val=151 test=140
+  --- MLP-original           params=975,513 ---
+  epochs= 86  R2=+0.8919  RMSE=0.3654  MAE=0.2457  (17s)
+  --- MLP-small              params=37,953 ---
+  epochs= 83  R2=+0.8713  RMSE=0.3987  MAE=0.2949  (10s)
+  --- RNN-original           params=83,777 ---
+  epochs=200  R2=+0.5086  RMSE=0.779  MAE=0.6016  (275s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 41  R2=+0.5713  RMSE=0.7277  MAE=0.5523  (369s)
+  --- Transformer-original   params=150,145 ---
+  epochs=119  R2=+0.4918  RMSE=0.7922  MAE=0.6107  (653s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 37  R2=+0.0032  RMSE=1.109  MAE=0.873  (761s)
+
+[目标 gamma_CMC (AW_ST_CMC)] train=737 val=106 test=70
+  --- MLP-original           params=975,513 ---
+  epochs=104  R2=+0.6736  RMSE=4.087  MAE=2.985  (9s)
+  --- MLP-small              params=37,953 ---
+  epochs=124  R2=+0.6531  RMSE=4.213  MAE=3.118  (8s)
+  --- RNN-original           params=83,777 ---
+  epochs= 69  R2=-0.0520  RMSE=7.338  MAE=5.755  (26s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 28  R2=-0.0515  RMSE=7.336  MAE=5.753  (189s)
+  --- Transformer-original   params=150,145 ---
+  epochs=129  R2=+0.1548  RMSE=6.577  MAE=5.172  (501s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 13  R2=-0.0604  RMSE=7.367  MAE=5.773  (334s)
+
+[目标 Gamma_max (Gamma_max)] train=549 val=79 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 18  R2=-2.4236  RMSE=2.607  MAE=2.193  (3s)
+  --- MLP-small              params=37,953 ---
+  epochs= 69  R2=-2.4236  RMSE=2.607  MAE=2.193  (4s)
+  --- RNN-original           params=83,777 ---
+  epochs=  5  R2=-2.4236  RMSE=2.607  MAE=2.193  (7s)
+  --- RNN-large              params=1,001,377 ---
+device=cuda, resume=True
+==============================================================================
+实验一：容量匹配消融（6 模型 × 6 目标 = 36 组 per-target 训练）
+device: cuda
+==============================================================================
+
+[参数量统计]
+  MLP-original           params=   975,513  (5层×488隐藏维 (论文/文档原型))
+  MLP-small              params=    37,953  (3层×64隐藏维 (小容量，非序列化反向对照))
+  RNN-original           params=    83,777  (3层×64隐藏单元 (论文/文档原型))
+  RNN-large              params= 1,001,377  (容量匹配 (与 MLP-original 对齐: 2层×288hs, ratio=1.027x))
+  Transformer-original   params=   150,145  (3层×d_model=64 (论文/文档原型))
+  Transformer-large      params=   991,745  (容量匹配 (与 MLP-original 对齐: 5层×dm128×ff512, ratio=1.017x))
+
+  MLP/RNN-original 参数量比: 11.64x
+  MLP/Transformer-original 参数量比: 6.5x
+  RNN-large 搜索结果: {"num_layers": 2, "hidden_size": 288, "params": 1001377, "ratio": 1.027, "best_fit": 0.027, "tolerance": 0.15}
+  Transformer-large 搜索结果: {"num_layers": 5, "d_model": 128, "dim_feedforward": 512, "params": 991745, "ratio": 1.017, "best_fit": 0.017, "tolerance": 0.15}
+
+[目标 pCMC (pCMC)] train=1053 val=151 test=140
+  skip MLP-original × pCMC (已完成)
+  skip MLP-small × pCMC (已完成)
+  skip RNN-original × pCMC (已完成)
+  skip RNN-large × pCMC (已完成)
+  skip Transformer-original × pCMC (已完成)
+  skip Transformer-large × pCMC (已完成)
+
+[目标 gamma_CMC (AW_ST_CMC)] train=737 val=106 test=70
+  skip MLP-original × gamma_CMC (已完成)
+  skip MLP-small × gamma_CMC (已完成)
+  skip RNN-original × gamma_CMC (已完成)
+  skip RNN-large × gamma_CMC (已完成)
+  skip Transformer-original × gamma_CMC (已完成)
+  skip Transformer-large × gamma_CMC (已完成)
+
+[目标 Gamma_max (Gamma_max)] train=549 val=79 test=70
+  --- MLP-original           params=975,513 ---
+  epochs=139  R2=+0.7530  RMSE=0  MAE=0  (7s)
+  --- MLP-small              params=37,953 ---
+  epochs= 75  R2=+0.6757  RMSE=0  MAE=0  (3s)
+  --- RNN-original           params=83,777 ---
+  epochs=  3  R2=-0.0273  RMSE=0  MAE=0  (5s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 40  R2=-0.0128  RMSE=0  MAE=0  (167s)
+  --- Transformer-original   params=150,145 ---
+  epochs=  1  R2=-0.0397  RMSE=0  MAE=0  (72s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 22  R2=-0.0244  RMSE=0  MAE=0  (298s)
+
+[目标 A_min (Area_min)] train=531 val=76 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 53  R2=+0.5869  RMSE=0.5189  MAE=0.2609  (4s)
+  --- MLP-small              params=37,953 ---
+  epochs= 39  R2=+0.6412  RMSE=0.4835  MAE=0.2907  (2s)
+  --- RNN-original           params=83,777 ---
+  epochs=  5  R2=-0.0353  RMSE=0.8213  MAE=0.5406  (6s)
+  --- RNN-large              params=1,001,377 ---
+device=cuda, resume=True
+==============================================================================
+实验一：容量匹配消融（6 模型 × 6 目标 = 36 组 per-target 训练）
+device: cuda
+==============================================================================
+
+[参数量统计]
+  MLP-original           params=   975,513  (5层×488隐藏维 (论文/文档原型))
+  MLP-small              params=    37,953  (3层×64隐藏维 (小容量，非序列化反向对照))
+  RNN-original           params=    83,777  (3层×64隐藏单元 (论文/文档原型))
+  RNN-large              params= 1,001,377  (容量匹配 (与 MLP-original 对齐: 2层×288hs, ratio=1.027x))
+  Transformer-original   params=   150,145  (3层×d_model=64 (论文/文档原型))
+  Transformer-large      params=   991,745  (容量匹配 (与 MLP-original 对齐: 5层×dm128×ff512, ratio=1.017x))
+
+  MLP/RNN-original 参数量比: 11.64x
+  MLP/Transformer-original 参数量比: 6.5x
+  RNN-large 搜索结果: {"num_layers": 2, "hidden_size": 288, "params": 1001377, "ratio": 1.027, "best_fit": 0.027, "tolerance": 0.15}
+  Transformer-large 搜索结果: {"num_layers": 5, "d_model": 128, "dim_feedforward": 512, "params": 991745, "ratio": 1.017, "best_fit": 0.017, "tolerance": 0.15}
+[resume] 已载入既有结果 9 组、CSV 9 行
+
+[目标 pCMC (pCMC)] train=1053 val=151 test=140
+  --- MLP-original           params=975,513 ---
+  epochs= 86  R2=+0.8919  RMSE=0.3654  MAE=0.2457  (9s)
+  --- MLP-small              params=37,953 ---
+  epochs= 83  R2=+0.8713  RMSE=0.3987  MAE=0.2949  (5s)
+  --- RNN-original           params=83,777 ---
+  epochs=200  R2=+0.5086  RMSE=0.779  MAE=0.6016  (96s)
+  --- RNN-large              params=1,001,377 ---
+device=cuda, resume=True
+==============================================================================
+实验一：容量匹配消融（6 模型 × 6 目标 = 36 组 per-target 训练）
+device: cuda
+==============================================================================
+
+[参数量统计]
+  MLP-original           params=   975,513  (5层×488隐藏维 (论文/文档原型))
+  MLP-small              params=    37,953  (3层×64隐藏维 (小容量，非序列化反向对照))
+  RNN-original           params=    83,777  (3层×64隐藏单元 (论文/文档原型))
+  RNN-large              params= 1,001,377  (容量匹配 (与 MLP-original 对齐: 2层×288hs, ratio=1.027x))
+  Transformer-original   params=   150,145  (3层×d_model=64 (论文/文档原型))
+  Transformer-large      params=   991,745  (容量匹配 (与 MLP-original 对齐: 5层×dm128×ff512, ratio=1.017x))
+
+  MLP/RNN-original 参数量比: 11.64x
+  MLP/Transformer-original 参数量比: 6.5x
+  RNN-large 搜索结果: {"num_layers": 2, "hidden_size": 288, "params": 1001377, "ratio": 1.027, "best_fit": 0.027, "tolerance": 0.15}
+  Transformer-large 搜索结果: {"num_layers": 5, "d_model": 128, "dim_feedforward": 512, "params": 991745, "ratio": 1.017, "best_fit": 0.017, "tolerance": 0.15}
+[resume] 已载入既有结果 12 组、CSV 12 行
+
+[目标 pCMC (pCMC)] train=1053 val=151 test=140
+  skip MLP-original × pCMC (已完成)
+  skip MLP-small × pCMC (已完成)
+  skip RNN-original × pCMC (已完成)
+  --- RNN-large              params=1,001,377 ---
+
+=== 实验一：容量匹配消融 ===
+device=cuda, resume=False
+==============================================================================
+实验一：容量匹配消融（6 模型 × 6 目标 = 36 组 per-target 训练）
+device: cuda
+==============================================================================
+
+[参数量统计]
+  MLP-original           params=   975,513  (5层×488隐藏维 (论文/文档原型))
+  MLP-small              params=    37,953  (3层×64隐藏维 (小容量，非序列化反向对照))
+  RNN-original           params=    83,777  (3层×64隐藏单元 (论文/文档原型))
+  RNN-large              params= 1,001,377  (容量匹配 (与 MLP-original 对齐: 2层×288hs, ratio=1.027x))
+  Transformer-original   params=   150,145  (3层×d_model=64 (论文/文档原型))
+  Transformer-large      params=   991,745  (容量匹配 (与 MLP-original 对齐: 5层×dm128×ff512, ratio=1.017x))
+
+  MLP/RNN-original 参数量比: 11.64x
+  MLP/Transformer-original 参数量比: 6.5x
+  RNN-large 搜索结果: {"num_layers": 2, "hidden_size": 288, "params": 1001377, "ratio": 1.027, "best_fit": 0.027, "tolerance": 0.15}
+  Transformer-large 搜索结果: {"num_layers": 5, "d_model": 128, "dim_feedforward": 512, "params": 991745, "ratio": 1.017, "best_fit": 0.017, "tolerance": 0.15}
+
+[目标 pCMC (pCMC)] train=1053 val=151 test=140
+  --- MLP-original           params=975,513 ---
+  epochs= 86  R2=+0.8919  RMSE=0.3654  MAE=0.2457  (18s)
+  --- MLP-small              params=37,953 ---
+  epochs= 83  R2=+0.8713  RMSE=0.3987  MAE=0.2949  (10s)
+  --- RNN-original           params=83,777 ---
+  epochs=200  R2=+0.5086  RMSE=0.779  MAE=0.6016  (307s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 41  R2=+0.5713  RMSE=0.7277  MAE=0.5523  (965s)
+  --- Transformer-original   params=150,145 ---
+  epochs=167  R2=+0.7084  RMSE=0.6  MAE=0.4368  (2232s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 54  R2=+0.2100  RMSE=0.9877  MAE=0.7337  (952s)
+  --- Transformer-large      params=991,745 ---
+  epochs=115  R2=+0.2798  RMSE=0.9431  MAE=0.7137  (1779s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 16  R2=+0.1137  RMSE=1.046  MAE=0.7863  (1346s)
+
+[目标 gamma_CMC (AW_ST_CMC)] train=737 val=106 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 75  R2=+0.6382  RMSE=4.303  MAE=3.259  (8s)
+  --- MLP-small              params=37,953 ---
+  epochs= 89  R2=+0.6290  RMSE=4.358  MAE=3.235  (7s)
+  --- RNN-original           params=83,777 ---
+  epochs= 58  R2=-0.0514  RMSE=7.336  MAE=5.753  (64s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 21  R2=-0.0508  RMSE=7.334  MAE=5.752  (405s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 42  R2=+0.0642  RMSE=1.075  MAE=0.8263  (2104s)
+
+[目标 gamma_CMC (AW_ST_CMC)] train=737 val=106 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 75  R2=+0.6636  RMSE=4.149  MAE=2.836  (8s)
+  --- MLP-small              params=37,953 ---
+  epochs= 89  R2=+0.6290  RMSE=4.358  MAE=3.235  (7s)
+  --- RNN-original           params=83,777 ---
+  epochs= 58  R2=-0.0514  RMSE=7.336  MAE=5.753  (60s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 21  R2=-0.0508  RMSE=7.334  MAE=5.752  (395s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 42  R2=+0.1198  RMSE=6.712  MAE=5.194  (556s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 13  R2=-0.0642  RMSE=7.38  MAE=5.78  (859s)
+
+[目标 Gamma_max (Gamma_max)] train=549 val=79 test=70
+  skip MLP-original × Gamma_max (已完成)
+  skip MLP-small × Gamma_max (已完成)
+  skip RNN-original × Gamma_max (已完成)
+  skip RNN-large × Gamma_max (已完成)
+  skip Transformer-original × Gamma_max (已完成)
+  skip Transformer-large × Gamma_max (已完成)
+
+[目标 A_min (Area_min)] train=531 val=76 test=70
+  skip MLP-original × A_min (已完成)
+  skip MLP-small × A_min (已完成)
+  skip RNN-original × A_min (已完成)
+  --- RNN-large              params=1,001,377 ---
+  epochs=248  R2=+0.1520  RMSE=6.588  MAE=5.429  (2205s)
+  --- Transformer-large      params=991,745 ---
+  epochs=118  R2=+0.3042  RMSE=0.6734  MAE=0.4657  (869s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 13  R2=-0.0709  RMSE=7.403  MAE=5.795  (945s)
+
+[目标 Gamma_max (Gamma_max)] train=549 val=79 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 18  R2=+0.6726  RMSE=0  MAE=0  (3s)
+  --- MLP-small              params=37,953 ---
+  epochs= 69  R2=+0.7340  RMSE=0  MAE=0  (4s)
+  --- RNN-original           params=83,777 ---
+  epochs=  5  R2=-0.0090  RMSE=0  MAE=0  (18s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 41  R2=+0.1931  RMSE=0.7251  MAE=0.4908  (420s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 22  R2=+0.0072  RMSE=0  MAE=0  (310s)
+  --- Transformer-original   params=150,145 ---
+  epochs=  2  R2=-0.0227  RMSE=0  MAE=0  (193s)
+  --- Transformer-large      params=991,745 ---
+  epochs=  4  R2=-0.0395  RMSE=0.823  MAE=0.5408  (508s)
+
+[目标 Pi_CMC (Pi_CMC)] train=552 val=79 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 51  R2=+0.6034  RMSE=4.535  MAE=3.128  (5s)
+  --- MLP-small              params=37,953 ---
+  epochs= 82  R2=+0.5419  RMSE=4.875  MAE=3.365  (5s)
+  --- RNN-original           params=83,777 ---
+  epochs= 60  R2=-0.0290  RMSE=7.306  MAE=5.737  (48s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 13  R2=-0.0717  RMSE=7.456  MAE=5.829  (254s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 17  R2=-0.0278  RMSE=0  MAE=0  (719s)
+
+[目标 A_min (Area_min)] train=531 val=76 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 43  R2=+0.5685  RMSE=0.5303  MAE=0.2966  (4s)
+  --- MLP-small              params=37,953 ---
+  epochs= 53  R2=+0.6092  RMSE=0.5047  MAE=0.2813  (3s)
+  --- RNN-original           params=83,777 ---
+  epochs=  5  R2=-0.0377  RMSE=0.8223  MAE=0.5408  (17s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 49  R2=+0.2166  RMSE=6.374  MAE=5.066  (475s)
+  --- Transformer-large      params=991,745 ---
+  epochs=152  R2=+0.3234  RMSE=0.664  MAE=0.4694  (1045s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 24  R2=-0.0628  RMSE=7.425  MAE=5.809  (878s)
+
+[目标 pC20 (pC20)] train=493 val=71 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 81  R2=+0.8051  RMSE=0.5272  MAE=0.3868  (6s)
+  --- MLP-small              params=37,953 ---
+  epochs= 89  R2=+0.8375  RMSE=0.4814  MAE=0.3631  (4s)
+  --- RNN-original           params=83,777 ---
+  epochs= 17  R2=-0.0000  RMSE=1.194  MAE=0.9952  (22s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 30  R2=+0.4446  RMSE=0.8898  MAE=0.7242  (316s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 17  R2=-0.0122  RMSE=1.201  MAE=1.009  (248s)
+  --- Transformer-large      params=991,745 ---
+  epochs=136  R2=+0.3797  RMSE=0.6358  MAE=0.4021  (971s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 10  R2=-0.0119  RMSE=1.201  MAE=1.01  (554s)
+
+[R² 汇总表 (rows=模型, cols=目标)]
+Target                 A_min  Gamma_max  Pi_CMC  gamma_CMC    pC20    pCMC    Mean
+Model                                                                             
+MLP-original          0.5869     0.7530  0.6034     0.6636  0.8051  0.8919  0.7173
+MLP-small             0.6412     0.6757  0.5419     0.6290  0.8375  0.8713  0.6994
+RNN-original         -0.0353    -0.0273 -0.0290    -0.0514 -0.0000  0.5086  0.0609
+RNN-large             0.3042    -0.0128 -0.0717    -0.0508  0.4446  0.7084  0.2203
+Transformer-original  0.1931    -0.0397  0.2166     0.1198 -0.0122  0.2100  0.1146
+Transformer-large    -0.0395    -0.0244 -0.0628    -0.0642 -0.0119  0.0642 -0.0231
+
+[关键比较]
+  pCMC       MLP-orig=+0.892 MLP-small=+0.871 RNN-orig=+0.509 RNN-large=+0.708 Trans-orig=+0.210 Trans-large=+0.064
+  gamma_CMC  MLP-orig=+0.664 MLP-small=+0.629 RNN-orig=-0.051 RNN-large=-0.051 Trans-orig=+0.120 Trans-large=-0.064
+  Gamma_max  MLP-orig=+0.753 MLP-small=+0.676 RNN-orig=-0.027 RNN-large=-0.013 Trans-orig=-0.040 Trans-large=-0.024
+  A_min      MLP-orig=+0.587 MLP-small=+0.641 RNN-orig=-0.035 RNN-large=+0.304 Trans-orig=+0.193 Trans-large=-0.040
+  Pi_CMC     MLP-orig=+0.603 MLP-small=+0.542 RNN-orig=-0.029 RNN-large=-0.072 Trans-orig=+0.217 Trans-large=-0.063
+  pC20       MLP-orig=+0.805 MLP-small=+0.838 RNN-orig=-0.000 RNN-large=+0.445 Trans-orig=-0.012 Trans-large=-0.012
+
+全部完成，耗时 11786s → results/exp1_capacity.csv/.json
+  epochs= 39  R2=-0.0409  RMSE=0.8236  MAE=0.5406  (562s)
+
+[目标 Pi_CMC (Pi_CMC)] train=552 val=79 test=70
+  --- MLP-original           params=975,513 ---
+  epochs= 48  R2=+0.6035  RMSE=4.535  MAE=3.052  (4s)
+  --- MLP-small              params=37,953 ---
+  epochs=101  R2=+0.5569  RMSE=4.794  MAE=3.34  (5s)
+  --- RNN-original           params=83,777 ---
+  epochs= 59  R2=-0.0285  RMSE=7.304  MAE=5.736  (16s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 13  R2=-0.0709  RMSE=7.453  MAE=5.827  (98s)
+  --- Transformer-original   params=150,145 ---
+  epochs=119  R2=+0.3603  RMSE=5.76  MAE=4.707  (325s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 35  R2=-0.0665  RMSE=7.438  MAE=5.817  (366s)
+
+[目标 pC20 (pC20)] train=493 val=71 test=70
+  --- MLP-original           params=975,513 ---
+  epochs=110  R2=+0.8434  RMSE=0.4725  MAE=0.3281  (6s)
+  --- MLP-small              params=37,953 ---
+  epochs= 96  R2=+0.8149  RMSE=0.5137  MAE=0.3777  (4s)
+  --- RNN-original           params=83,777 ---
+  epochs=  4  R2=-0.0354  RMSE=1.215  MAE=1.029  (6s)
+  --- RNN-large              params=1,001,377 ---
+  epochs= 35  R2=+0.4624  RMSE=0.8755  MAE=0.7004  (141s)
+  --- Transformer-original   params=150,145 ---
+  epochs= 61  R2=+0.1699  RMSE=1.088  MAE=0.8639  (181s)
+  --- Transformer-large      params=991,745 ---
+  epochs= 70  R2=+0.2089  RMSE=1.062  MAE=0.8586  (505s)
+
+[R² 汇总表 (rows=模型, cols=目标)]
+Target                 A_min  Gamma_max  Pi_CMC  gamma_CMC    pC20    pCMC    Mean
+Model                                                                             
+MLP-original          0.5685     0.6726  0.6035     0.6382  0.8434  0.8919  0.7030
+MLP-small             0.6092     0.7340  0.5569     0.6290  0.8149  0.8713  0.7025
+RNN-original         -0.0377    -0.0090 -0.0285    -0.0514 -0.0354  0.5086  0.0578
+RNN-large             0.3234     0.0072 -0.0709    -0.0508  0.4624  0.5713  0.2071
+Transformer-original  0.3797    -0.0227  0.3603     0.1520  0.1699  0.2798  0.2198
+Transformer-large    -0.0409    -0.0278 -0.0665    -0.0709  0.2089  0.1137  0.0194
+
+[关键比较]
+  pCMC       MLP-orig=+0.892 MLP-small=+0.871 RNN-orig=+0.509 RNN-large=+0.571 Trans-orig=+0.280 Trans-large=+0.114
+  gamma_CMC  MLP-orig=+0.638 MLP-small=+0.629 RNN-orig=-0.051 RNN-large=-0.051 Trans-orig=+0.152 Trans-large=-0.071
+  Gamma_max  MLP-orig=+0.673 MLP-small=+0.734 RNN-orig=-0.009 RNN-large=+0.007 Trans-orig=-0.023 Trans-large=-0.028
+  A_min      MLP-orig=+0.569 MLP-small=+0.609 RNN-orig=-0.038 RNN-large=+0.323 Trans-orig=+0.380 Trans-large=-0.041
+  Pi_CMC     MLP-orig=+0.604 MLP-small=+0.557 RNN-orig=-0.029 RNN-large=-0.071 Trans-orig=+0.360 Trans-large=-0.067
+  pC20       MLP-orig=+0.843 MLP-small=+0.815 RNN-orig=-0.035 RNN-large=+0.462 Trans-orig=+0.170 Trans-large=+0.209
+
+全部完成，耗时 13564s → results/exp1_capacity.csv/.json
